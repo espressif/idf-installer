@@ -1,0 +1,9 @@
+build
+Output
+cmdlinerunner/build
+dist
+unzip
+keys
+idf_versions.txt
+releases
+tools
