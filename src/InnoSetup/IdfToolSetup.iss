@@ -38,7 +38,7 @@
 ;  or it can be stored in .INI file which can be passed to installer by /CONFIG=[PATH].
 ;  Code for evaluating configuration is in the file configuration.inc.iss.
 #ifndef COMPRESSION
-  #define COMPRESSION = 'lzma';
+  #define COMPRESSION = 'none';
 #endif
 ; In case of large installer set it to 'no' to avoid problem delay during starting installer
 ; In case of 1 GB installer it could be 30+ seconds just to start installer.
@@ -55,6 +55,7 @@
 #endif
 
 #define EXT = '..\..\ext'
+#define COMPONENT_ECLIPSE = 'ide\eclipse'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -76,8 +77,8 @@ DisableProgramGroupPage=yes
 OutputBaseFilename=esp-idf-tools-setup-unsigned
 Compression={#COMPRESSION}
 SolidCompression={#SOLIDCOMPRESSION}
-;ArchitecturesAllowed=x64
-;ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
 LicenseFile=..\Resources\License.txt
 PrivilegesRequired=lowest
 SetupLogging=yes
@@ -113,7 +114,7 @@ Source: "idf_cmd_init.ps1"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 Source: "dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
-;Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: ide\eclipse; Flags:  recursesubdirs 
+Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs 
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 Source: "releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
@@ -130,7 +131,7 @@ Source: "tools_WD_clean.ps1"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntex
 
 [Components]
 Name: "ide"; Description: "IDE support"; Types: full custom; Flags: fixed
-Name: "ide\eclipse"; Description: "Eclipse"; Types: full
+Name: "{#COMPONENT_ECLIPSE}"; Description: "Eclipse"; Types: full
 ;Name: "ide\eclipse\openjdk"; Description: "OpenJDK"; Types: full
 ;Name: "idf"; Description: "ESP-IDF"; Types: full
 ;Name: "idf\tools"; Description: "Chip"; Types: full
@@ -185,6 +186,8 @@ Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH
 
 #include "Configuration.iss"
 #include "Utils.iss"
+
+
 #include "Pages/ChoicePage.iss"
 #include "Pages/CmdlinePage.iss"
 #include "Pages/IdfPage.iss"
@@ -193,7 +196,12 @@ Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH
 #include "Pages/SystemCheckPage.iss"
 #include "Pages/IdfDownloadPage.iss"
 #include "Environment.iss"
+
+#include "Eclipse.iss"
+
+
 #include "Summary.iss"
 #include "PreInstall.iss"
+#include "PostInstall.iss"
 
 

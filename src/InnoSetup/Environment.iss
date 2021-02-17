@@ -396,6 +396,15 @@ begin
   Result := PythonVirtualEnvPath;
 end;
 
+function GetPathWithForwardSlashes(Path: String): String;
+var
+  ResultPath: String;
+begin
+  ResultPath := Path;
+  StringChangeEx(ResultPath, '\', '/', True);
+  Result := ResultPath;
+end;
+
 procedure IDFToolsSetup();
 var
   CmdLine: String;
@@ -500,18 +509,12 @@ var
   Destination: String;
   Description: String;
   Command: String;
-  GitPathWithForwardSlashes: String;
-  PythonPathWithForwardSlashes: String;
 begin
   ForceDirectories(ExpandConstant(LnkString));
   Destination := ExpandConstant(LnkString + '\{#IDFPsShortcutFile}');
   Description := '{#IDFPsShortcutDescription}';
-  GitPathWithForwardSlashes := GitPath;
 
-  PythonPathWithForwardSlashes := GetPythonVirtualEnvPath();
-  StringChangeEx(GitPathWithForwardSlashes, '\', '/', True);
-  StringChangeEx(PythonPathWithForwardSlashes, '\', '/', True);
-  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}\idf_cmd_init.ps1"" ') + '"' + GitPathWithForwardSlashes + '" "' + PythonPathWithForwardSlashes + '"'
+  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}\idf_cmd_init.ps1"" ') + '"' +  GetPathWithForwardSlashes(GitPath) + '" "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"'
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(

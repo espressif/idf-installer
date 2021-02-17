@@ -1,5 +1,7 @@
-
 [Code]
+{ Copyright 2019-2021 Espressif Systems (Shanghai) CO LTD
+  SPDX-License-Identifier: Apache-2.0 }
+
 const
   EVENT_BEFORE_NAVIGATE = 1;
   EVENT_FRAME_COMPLETE = 2;
