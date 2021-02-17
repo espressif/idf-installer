@@ -12,8 +12,12 @@ var
     FilePath: String;
     Content: String;
     IdfId: String;
+    IdfPathWithForwardSlashes: String;
+    IdfVersion: String;
 begin
-  IdfId := 'esp-idf-' + IDFDownloadVersion;
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''))
+  IdfId := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
+  IdfVersion := GetIDFVersionFromHeaderFile();
 
   Content := '{';
   Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
@@ -23,8 +27,8 @@ begin
   Content := Content + '  "idfSelectedId": "' + IdfId + '",' + #13#10;
   Content := Content + '  "idfInstalled": {' + #13#10;
   Content := Content + '    "' + IdfId + '": {' + #13#10;
-  Content := Content + '      "version": "' + IDFDownloadVersion + '",' + #13#10;
-  Content := Content + '      "path": "' + GetPathWithForwardSlashes(GetIDFPath('')) + '",' + #13#10;
+  Content := Content + '      "version": "' + IdfVersion + '",' + #13#10;
+  Content := Content + '      "path": "' + IdfPathWithForwardSlashes + '",' + #13#10;
   Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"' + #13#10;
   Content := Content + '    },' + #13#10;
   Content := Content + '  }' + #13#10;
