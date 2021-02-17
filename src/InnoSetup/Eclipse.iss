@@ -2,6 +2,11 @@
 { Copyright 2019-2021 Espressif Systems (Shanghai) CO LTD
   SPDX-License-Identifier: Apache-2.0 }
 
+function GetEclipsePath(FileName:String): String;
+begin
+  Result := ExpandConstant('{app}\tools\eclipse\2020-12\') + FileName;
+end;
+
 procedure SaveEclipseConfiguration();
 var
     FilePath: String;
@@ -25,7 +30,7 @@ begin
   Content := Content + '  }' + #13#10;
   Content := Content + '}' + #13#10;
 
-  FilePath := ExpandConstant('{app}\tools\eclipse\2020-12\esp_idf.json');
+  FilePath := GetEclipsePath('esp_idf.json');
   Log('Writing Eclipse configuration to file ' + FilePath);
   Log(Content);
   if (SaveStringToFile(FilePath, Content, False)) then begin
@@ -35,5 +40,31 @@ begin
               + 'Please check the file access and retry the installation.',
               mbInformation, MB_OK);
     Log('Unable to write configuration!');
+  end;
+end;
+
+procedure CreateIDFEclipseShortcut(LnkString: String);
+var
+  Destination: String;
+  Description: String;
+  Command: String;
+begin
+  ForceDirectories(ExpandConstant(LnkString));
+  Destination := ExpandConstant(LnkString + '\{#IDFEclipseShortcutFile}');
+  Description := '{#IDFEclipseShortcutDescription}';
+
+  Command := GetEclipsePath('eclipse.exe');
+  Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
+  try
+    CreateShellLink(
+      Destination,
+      Description,
+      Command,
+      '',
+      GetIDFPath(''),
+      '', 0, SW_SHOWNORMAL);
+  except
+    MsgBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
+    RaiseException('Failed to create the shortcut');
   end;
 end;

@@ -33,6 +33,9 @@
 #define IDFPsShortcutDescription "Open ESP-IDF PowerShell Environment"
 #define IDFPsShortcutFile "ESP-IDF PowerShell.lnk"
 
+#define IDFEclipseShortcutDescription "Open ESP-IDF Eclipse IDE"
+#define IDFEclipseShortcutFile "ESP-IDF Eclipse.lnk"
+
 ; List of default values
 ;  Default values can be set by command-line option when startig installer
 ;  or it can be stored in .INI file which can be passed to installer by /CONFIG=[PATH].
@@ -55,7 +58,17 @@
 #endif
 
 #define EXT = '..\..\ext'
+
 #define COMPONENT_ECLIPSE = 'ide\eclipse'
+#define COMPONENT_ECLIPSE_DESKTOP = 'ide\eclipse\desktop'
+#define COMPONENT_POWERSHELL = 'ide\powershell'
+#define COMPONENT_POWERSHELL_DESKTOP = 'ide\powershell\desktop'
+#define COMPONENT_POWERSHELL_STARTMENU = 'ide\powershell\startmenu'
+#define COMPONENT_CMD = 'ide\cmd'
+#define COMPONENT_CMD_DESKTOP = 'ide\cmd\desktop'
+#define COMPONENT_CMD_STARTMENU = 'ide\cmd\startmenu'
+#define COMPONENT_OPTIMIZATION = 'optimization'
+#define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization\espressif_download'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -131,7 +144,19 @@ Source: "tools_WD_clean.ps1"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntex
 
 [Components]
 Name: "ide"; Description: "IDE support"; Types: full custom; Flags: fixed
-Name: "{#COMPONENT_ECLIPSE}"; Description: "Eclipse"; Types: full
+Name: "{#COMPONENT_ECLIPSE}"; Description: "Eclipse"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: "Desktop shortcut"; Types: full
+Name: "{#COMPONENT_POWERSHELL}"; Description: "PowerShell"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: "Desktop shortcut"; Types: full
+Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
+Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
+Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
+Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Types: full custom; Flags: fixed
+Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub"; Types: full
+;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
+
+
 ;Name: "ide\eclipse\openjdk"; Description: "OpenJDK"; Types: full
 ;Name: "idf"; Description: "ESP-IDF"; Types: full
 ;Name: "idf\tools"; Description: "Chip"; Types: full
@@ -155,20 +180,24 @@ Type: files; Name: "{group}\{#IDFPsShortcutFile}"
 Type: files; Name: "{autodesktop}\{#IDFCmdExeShortcutFile}"
 Type: files; Name: "{autodesktop}\{#IDFPsShortcutFile}"
 
-[Tasks]
-Name: CreateLinkStartPowerShell; GroupDescription: "{cm:CreateShortcutPowerShell}"; Description: "{cm:CreateShortcutStartMenu}";
-Name: CreateLinkDeskPowerShell; GroupDescription: "{cm:CreateShortcutPowerShell}"; Description: "{cm:CreateShortcutDesktop}";
+;[Tasks]
+;Name: CreateLinkStartPowerShell; GroupDescription: "{cm:CreateShortcutPowerShell}"; Description: "{cm:CreateShortcutStartMenu}";
+;Name: CreateLinkDeskPowerShell; GroupDescription: "{cm:CreateShortcutPowerShell}"; Description: "{cm:CreateShortcutDesktop}";
 
-Name: CreateLinkStartCmd; GroupDescription: "{cm:CreateShortcutCMD}"; Description: "{cm:CreateShortcutStartMenu}";
-Name: CreateLinkDeskCmd; GroupDescription: "{cm:CreateShortcutCMD}"; Description: "{cm:CreateShortcutDesktop}";
+;Name: CreateLinkStartCmd; GroupDescription: "{cm:CreateShortcutCMD}"; Description: "{cm:CreateShortcutStartMenu}";
+;Name: CreateLinkDeskCmd; GroupDescription: "{cm:CreateShortcutCMD}"; Description: "{cm:CreateShortcutDesktop}";
 
 ; Optimization for Online mode
-Name: UseMirror;  GroupDescription:"{cm:OptimizationTitle}"; Description: "{cm:OptimizationDownloadMirror}"; Flags: unchecked; Check: IsOnlineMode
+;Name: UseMirror;  GroupDescription:"{cm:OptimizationTitle}"; Description: "{cm:OptimizationDownloadMirror}"; Flags: unchecked; Check: IsOnlineMode
 
 [Run]
 Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: "Installing Git"; Check: GitInstallRequired
-Filename: "{group}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Check: IsPowerShellInstalled
-Filename: "{group}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Check: IsCmdInstalled
+Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Eclipse Environment"; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
+Filename: "{autodesktop}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP}"
+Filename: "{autodesktop}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP}"
+
+;Filename: "{group}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Check: IsPowerShellInstalled
+;Filename: "{group}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Check: IsCmdInstalled
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
 ; Please, keep this in mind when making changes to the item's description - WD checkbox is to be disabled on systems without the Windows Defender installed
 Filename: "powershell"; Parameters: "-ExecutionPolicy ByPass -File ""{app}\dist\tools_WD_excl.ps1"" -AddExclPath ""{app}\*.exe"""; Flags: postinstall shellexec runhidden; Description: "{cm:OptimizationWindowsDefender}"; Check: GetIsWindowsDefenderEnabled
@@ -196,12 +225,7 @@ Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH
 #include "Pages/SystemCheckPage.iss"
 #include "Pages/IdfDownloadPage.iss"
 #include "Environment.iss"
-
 #include "Eclipse.iss"
-
-
 #include "Summary.iss"
 #include "PreInstall.iss"
 #include "PostInstall.iss"
-
-
