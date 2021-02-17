@@ -127,7 +127,7 @@ Source: "idf_cmd_init.ps1"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 Source: "dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
-;Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs 
+Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs 
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 Source: "releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;

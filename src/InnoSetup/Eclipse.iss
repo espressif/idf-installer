@@ -29,7 +29,7 @@ begin
   Content := Content + '    "' + IdfId + '": {' + #13#10;
   Content := Content + '      "version": "' + IdfVersion + '",' + #13#10;
   Content := Content + '      "path": "' + IdfPathWithForwardSlashes + '",' + #13#10;
-  Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"' + #13#10;
+  Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"' + #13#10;
   Content := Content + '    },' + #13#10;
   Content := Content + '  }' + #13#10;
   Content := Content + '}' + #13#10;
