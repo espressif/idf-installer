@@ -479,6 +479,33 @@ begin
   Result := IsWindowsDefenderEnabled;
 end;
 
+{ Check whether long path is enabled in Windows. }
+{ Some components like Eclipse or Ninja might have problem if the option is disabled. }
+procedure VerifyLongPathsEnabled();
+var
+  LongPathsEnabled: Cardinal;
+  Command: String;
+begin
+  SystemLogTitle(CustomMessage('SystemCheckForLongPathsEnabled') + ' ');
+  if (RegQueryDWordValue(HKLM, 'SYSTEM\CurrentControlSet\Control\FileSystem', 'LongPathsEnabled', LongPathsEnabled)) then begin
+    if (LongPathsEnabled = 1) then begin
+      SystemLog(' [' + CustomMessage('SystemCheckResultOk') + ']');
+      Exit;
+    end;
+  end;
+  SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
+  { Run as Adminstrator: reg ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f }
+  Command := 'powershell -Command "&{ Start-Process -FilePath reg ''ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f'' -Verb runAs}"';
+  AddFix(Command);
+
+  SystemCheckHint := #13#10 + CustomMessage('SystemCheckRemedyFailedLongPathsEnabled');
+
+  SystemLogTitle(CustomMessage('SystemCheckHint') + ': ' + SystemCheckHint);
+  SystemLog(#13#10 + Command);
+
+  SystemLog(#13#10 + CustomMessage('SystemCheckRemedyApplyFixInfo'));
+end;
+
 { Execute system check }
 procedure ExecuteSystemCheck();
 begin
@@ -490,6 +517,8 @@ begin
   SystemCheckState := SYSTEM_CHECK_STATE_RUNNING;
   SystemLogTitle(CustomMessage('SystemCheckStart'));
   StopSystemCheckButton.Enabled := True;
+
+  VerifyLongPathsEnabled();
 
   if (not IsOfflineMode) then begin
     VerifyRootCertificates();
