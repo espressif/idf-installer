@@ -125,7 +125,7 @@ Source: "..\..\lib\cmdlinerunner.dll"; Flags: dontcopy
 Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy 
 ;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy 
 Source: "{#EXT}\unzip\7za.exe"; Flags: dontcopy
-Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy skipifsourcedoesntexist
+Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
 Source: "..\..\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.
 Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json" ;Flags: skipifsourcedoesntexist

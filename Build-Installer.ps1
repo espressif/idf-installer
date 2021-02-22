@@ -92,7 +92,7 @@ function PrepareOfflineBranches {
     Get-ChildItem "$BundleDir" -recurse -force | Where-Object { $_.Attributes -match "ReparsePoint" }
 }
 
-$OutputFileName = "esp-idf-tools-setup-${InstallerType}-unsigned.exe"
+$OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
 $IdfToolsPath = (Get-Location).Path + "\build\$InstallerType"
 $Versions = $IdfToolsPath + '\idf_versions.txt'
 $env:IDF_TOOLS_PATH=$IdfToolsPath
@@ -115,7 +115,7 @@ if ('offline' -eq $InstallerType) {
 }
 
 $IsccParameters += ".\src\InnoSetup\IdfToolSetup.iss"
-$IsccParameters += "/F$OutputFileName"
+$IsccParameters += "/F$OutputFileBaseName"
 
 $Command = "iscc $IsccParameters"
 $Command

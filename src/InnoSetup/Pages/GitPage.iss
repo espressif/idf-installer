@@ -113,6 +113,10 @@ end;
 
 function GitInstallRequired(): Boolean;
 begin
+  if (UseEmbeddedGit) then begin
+    Result := false;
+    Exit;
+  end;
   Result := not GitUseExisting;
 end;
 
