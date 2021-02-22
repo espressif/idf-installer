@@ -59,6 +59,8 @@
 
 #define EXT = '..\..\ext'
 
+#define COMPONENT_TOOLS = 'tools'
+#define COMPONENT_TOOLS_GIT = 'tools\git'
 #define COMPONENT_ECLIPSE = 'ide\eclipse'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide\eclipse\desktop'
 #define COMPONENT_POWERSHELL = 'ide\powershell'
@@ -128,6 +130,7 @@ Source: "dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
 Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs 
+Source:  "{#EXT}\tools\git\*"; DestDir: "{app}\tools\git"; Flags: recursesubdirs
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 Source: "releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
@@ -154,6 +157,8 @@ Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
 Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Types: full custom; Flags: fixed
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub"; Types: full
+;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
+;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
 
 

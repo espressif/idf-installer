@@ -19,10 +19,10 @@ begin
   IdfId := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
   IdfVersion := GetIDFVersionFromHeaderFile();
 
-  Content := '{';
+  Content := '{' + #13#10;
   Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
   Content := Content + '  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",' + #13#10;
-  Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitPath) + '",' + #13#10;
+  Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitExecutablePath) + '",' + #13#10;
   Content := Content + '  "idfToolsPath": "' + GetPathWithForwardSlashes(ExpandConstant('{app}')) + '",' + #13#10;
   Content := Content + '  "idfSelectedId": "' + IdfId + '",' + #13#10;
   Content := Content + '  "idfInstalled": {' + #13#10;
@@ -30,7 +30,7 @@ begin
   Content := Content + '      "version": "' + IdfVersion + '",' + #13#10;
   Content := Content + '      "path": "' + IdfPathWithForwardSlashes + '",' + #13#10;
   Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"' + #13#10;
-  Content := Content + '    },' + #13#10;
+  Content := Content + '    }' + #13#10;
   Content := Content + '  }' + #13#10;
   Content := Content + '}' + #13#10;
 

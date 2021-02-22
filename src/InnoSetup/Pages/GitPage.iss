@@ -286,3 +286,14 @@ begin
     @OnGitSelectionChange,
     @OnGitPageValidate);
 end;
+
+<event('ShouldSkipPage')>
+function ShouldSkipGitPage(PageID: Integer): Boolean;
+begin
+  if (PageID = GitPage.ID) then begin
+    { Skip in case of embedded Python. }
+    if (UseEmbeddedGit) then begin
+      Result := True;
+    end;
+  end;
+end;

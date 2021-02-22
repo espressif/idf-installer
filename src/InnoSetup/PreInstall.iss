@@ -54,6 +54,10 @@ begin
     Exit;
   end;
 
+  if (UseEmbeddedGit) then begin
+    GitUseExisting := true;
+  end;
+
   if not GitUseExisting then
   begin
     DestPath := ExpandConstant('{app}\dist\{#GitInstallerName}');
@@ -82,8 +86,14 @@ var
 begin
   EnvPath := GetEnv('PATH');
 
-  if not GitUseExisting then
-    GitExecutablePathUpdateAfterInstall();
+  if (UseEmbeddedGit) then begin
+    GitPath := ExpandConstant('{app}\tools\git\2.30.1\cmd\');
+    GitExecutablePath := GitPath + 'git.exe';
+  end else begin
+    if not GitUseExisting then begin
+      GitExecutablePathUpdateAfterInstall();
+    end;
+  end;
 
   EnvPath := PythonPath + ';' + GitPath + ';' + EnvPath;
   Log('Setting PATH for this process: ' + EnvPath);

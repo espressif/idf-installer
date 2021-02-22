@@ -18,6 +18,7 @@ var
     PythonWheelsUrl: String;
     PythonWheelsVersion: String;
     SkipSystemCheck: Boolean;
+    UseEmbeddedGit: Boolean;
     UseEmbeddedPython: Boolean;
 
 function GetConfigurationString(Key: String; Default: String):String;
@@ -63,6 +64,7 @@ begin
     PythonWheelsUrl := GetConfigurationString('PYTHONWHEELSURL', 'https://dl.espressif.com/pypi');
     PythonWheelsVersion := GetConfigurationString('PYTHONWHEELSVERSION', '{#PYTHONWHEELSVERSION}');
     SkipSystemCheck := GetConfigurationBoolean('SKIPSYSTEMCHECK', 'no');
+    UseEmbeddedGit := GetConfigurationBoolean('USEEMBEDDEDGIT', 'yes');
     UseEmbeddedPython := GetConfigurationBoolean('USEEMBEDDEDPYTHON', 'yes');
 end;
 

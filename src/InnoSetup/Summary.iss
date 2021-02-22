@@ -16,8 +16,10 @@ begin
     Result := Result + 'Using embedded Python ' + PythonVersion + NewLine + NewLine;
   end;
 
-  if GitUseExisting then
-  begin
+  if (UseEmbeddedGit) then begin
+    Result := Result + 'Using Embedded Git ' + GitVersion + ':' + NewLine
+            + Space + GitExecutablePath + NewLine + NewLine;
+  end else if (GitUseExisting) then begin
     Result := Result + 'Using Git ' + GitVersion + ':' + NewLine
               + Space + GitExecutablePath + NewLine + NewLine;
   end else begin
