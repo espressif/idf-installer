@@ -57,7 +57,12 @@
   #define PYTHONWHEELSVERSION = '3.8-2021-01-21'
 #endif
 
+#ifndef DIST
+  #define DIST = '..\..\build\offline\dist'
+#endif
+
 #define EXT = '..\..\ext'
+#define BUILD = '..\..\build\offline'
 
 #define COMPONENT_TOOLS = 'tools'
 #define COMPONENT_TOOLS_GIT = 'tools\git'
@@ -120,20 +125,20 @@ Source: "..\..\lib\cmdlinerunner.dll"; Flags: dontcopy
 Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy 
 ;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy 
 Source: "{#EXT}\unzip\7za.exe"; Flags: dontcopy
-Source: "idf_versions.txt"; Flags: dontcopy skipifsourcedoesntexist
+Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy skipifsourcedoesntexist
 Source: "..\..\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.
 Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json" ;Flags: skipifsourcedoesntexist
 Source: "idf_cmd_init.bat"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 Source: "idf_cmd_init.ps1"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
-Source: "dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
+Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
 Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs 
 Source:  "{#EXT}\tools\git\*"; DestDir: "{app}\tools\git"; Flags: recursesubdirs
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
-Source: "releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 Source: "{#EXT}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs;
 Source: "{#EXT}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
