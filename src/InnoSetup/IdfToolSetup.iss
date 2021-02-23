@@ -119,18 +119,18 @@ Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-
 [Dirs]
 Name: "{app}\dist"
 
-[Files]                                                  
+[Files]
 ;Source: "configuration.ini"; Flags: dontcopy noencryption
-Source: "..\..\lib\cmdlinerunner.dll"; Flags: dontcopy 
-Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy 
-;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy 
+Source: "..\..\lib\cmdlinerunner.dll"; Flags: dontcopy
+Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy
+;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy
 Source: "{#EXT}\unzip\7za.exe"; Flags: dontcopy
 Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
-Source: "..\..\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
+Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.
 Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json" ;Flags: skipifsourcedoesntexist
-Source: "idf_cmd_init.bat"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
-Source: "idf_cmd_init.ps1"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
+Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
+Source: "..\PowerShell\Initialize-IDF.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
@@ -143,12 +143,12 @@ Source: "{#BUILD}\releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flag
 Source: "{#EXT}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs;
 Source: "{#EXT}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
 ; Helper Python files for sanity check of Python environment - used by system_check_page
-Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy skipifsourcedoesntexist
-Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy                      skipifsourcedoesntexist
-Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy                                             skipifsourcedoesntexist
+Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
+Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy
+Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
 ; Helper PowerShell scripts for managing exceptions in Windows Defender
-Source: "tools_WD_excl.ps1"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist
-Source: "tools_WD_clean.ps1"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist
+Source: "..\PowerShell\Register-WindowsDefenderExclusions.ps1"; DestDir: "{app}\dist";
+Source: "..\PowerShell\Unregister-WindowsDefenderExclusions.ps1"; DestDir: "{app}\dist";
 
 [Components]
 Name: "ide"; Description: "IDE support"; Types: full custom; Flags: fixed
@@ -210,12 +210,12 @@ Filename: "{autodesktop}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec
 ;Filename: "{group}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Check: IsCmdInstalled
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
 ; Please, keep this in mind when making changes to the item's description - WD checkbox is to be disabled on systems without the Windows Defender installed
-Filename: "powershell"; Parameters: "-ExecutionPolicy ByPass -File ""{app}\dist\tools_WD_excl.ps1"" -AddExclPath ""{app}\*.exe"""; Flags: postinstall shellexec runhidden; Description: "{cm:OptimizationWindowsDefender}"; Check: GetIsWindowsDefenderEnabled
+Filename: "powershell"; Parameters: "-ExecutionPolicy ByPass -File ""{app}\dist\Register-WindowsDefenderExclusions.ps1"" -AddExclPath ""{app}\*.exe"""; Flags: postinstall shellexec runhidden; Description: "{cm:OptimizationWindowsDefender}"; Check: GetIsWindowsDefenderEnabled
 
 
 [UninstallRun]
 Filename: "powershell.exe"; \
-  Parameters: "-ExecutionPolicy Bypass -File ""{app}\dist\tools_WD_clean.ps1"" -RmExclPath ""{app}"""; \
+  Parameters: "-ExecutionPolicy Bypass -File ""{app}\dist\Unregister-WindowsDefenderExclusions.ps1"" -RmExclPath ""{app}"""; \
   WorkingDir: {app}; Flags: runhidden
 
 [Registry]
