@@ -1,3 +1,4 @@
+[Code]
 { Copyright 2019-2021 Espressif Systems (Shanghai) CO LTD
   SPDX-License-Identifier: Apache-2.0 }
 
@@ -17,6 +18,10 @@ begin
   end;
 
   if (UseEmbeddedGit) then begin
+    { app is know only in this section, it's not possible to set it in Page }
+    GitPath := ExpandConstant('{app}\tools\git\2.30.1\cmd\');
+    GitExecutablePath := GitPath + 'git.exe';
+
     Result := Result + 'Using Embedded Git ' + GitVersion + ':' + NewLine
             + Space + GitExecutablePath + NewLine + NewLine;
   end else if (GitUseExisting) then begin

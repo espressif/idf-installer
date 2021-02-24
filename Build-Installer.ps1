@@ -14,6 +14,11 @@ param (
 # Stop on error
 $ErrorActionPreference = "Stop"
 
+function DownloadIdfVersions() {
+    "Downloading idf_versions.txt..."
+    Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
+}
+
 function PrepareIdfGit {
 
 }
@@ -110,9 +115,16 @@ if ('offline' -eq $InstallerType) {
     PrepareIdfPythonWheels
     Copy-Item .\src\Resources\idf_versions_offline.txt $Versions
     PrepareOfflineBranches
+} elseif ('online' -eq $InstallerType) {
+    PrepareIdfGit
+    PrepareIdfPython
+    DownloadIdfVersions
+    $IsccParameters += '/DOFFLINE=no'
 } else {
     $IsccParameters += '/DOFFLINE=no'
 }
+
+$IsccParameters += "/DINSTALLERBUILDTYPE=$InstallerType"
 
 $IsccParameters += ".\src\InnoSetup\IdfToolSetup.iss"
 $IsccParameters += "/F$OutputFileBaseName"

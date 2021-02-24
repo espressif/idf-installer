@@ -57,12 +57,18 @@
   #define PYTHONWHEELSVERSION = '3.8-2021-01-21'
 #endif
 
+; Build time variable which determines location of sources for the installer.
+; OFFLINE mentioned above is runtime variable which allows to switch way how installer operates
+#ifndef INSTALLERBUILDTYPE
+  #define INSTALLERBUILDTYPE = 'online'
+#endif
+
 #ifndef DIST
-  #define DIST = '..\..\build\offline\dist'
+  #define DIST = '..\..\build\' + INSTALLERBUILDTYPE + '\dist'
 #endif
 
 #define EXT = '..\..\ext'
-#define BUILD = '..\..\build\offline'
+#define BUILD = '..\..\build\' + INSTALLERBUILDTYPE
 
 #define COMPONENT_TOOLS = 'tools'
 #define COMPONENT_TOOLS_GIT = 'tools\git'
@@ -134,14 +140,14 @@ Source: "..\PowerShell\Initialize-IDF.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
-Source:  "{#EXT}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs 
+Source:  "{#BUILD}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source:  "{#EXT}\tools\git\*"; DestDir: "{app}\tools\git"; Flags: recursesubdirs
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 Source: "{#BUILD}\releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 Source: "{#EXT}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs;
-Source: "{#EXT}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
 ; Helper Python files for sanity check of Python environment - used by system_check_page
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy
@@ -150,18 +156,23 @@ Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
 Source: "..\PowerShell\Register-WindowsDefenderExclusions.ps1"; DestDir: "{app}\dist";
 Source: "..\PowerShell\Unregister-WindowsDefenderExclusions.ps1"; DestDir: "{app}\dist";
 
+[Types]
+Name: "full"; Description: "Full installation"
+Name: "minimal"; Description: "Minimal installation"
+Name: "custom"; Description: "Custom installation"; Flags: iscustom
+
 [Components]
 Name: "ide"; Description: "IDE support"; Types: full custom; Flags: fixed
 Name: "{#COMPONENT_ECLIPSE}"; Description: "Eclipse"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: "Desktop shortcut"; Types: full
-Name: "{#COMPONENT_POWERSHELL}"; Description: "PowerShell"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: "Desktop shortcut"; Types: full
+Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: "Desktop shortcut"; Types: full custom
+Name: "{#COMPONENT_POWERSHELL}"; Description: "PowerShell"; Types: full custom; Flags: checkablealone
+Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: "Desktop shortcut"; Types: full custom minimal
 Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
 Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
 Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
-Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Types: full custom; Flags: fixed
-Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub"; Types: full
+Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Flags: fixed
+Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub";
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
