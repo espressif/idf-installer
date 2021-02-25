@@ -12,7 +12,7 @@ var
 begin
   ForceDirectories(ExpandConstant(LnkString));
   Destination := ExpandConstant(LnkString + '\{#IDFCmdExeShortcutFile}');
-  Description := '{#IDFCmdExeShortcutDescription}';
+  Description := '{#IDFCmdExeShortcutDescription} ' + IDFDownloadVersion;
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
@@ -40,7 +40,7 @@ var
 begin
   ForceDirectories(ExpandConstant(LnkString));
   Destination := ExpandConstant(LnkString + '\{#IDFPsShortcutFile}');
-  Description := '{#IDFPsShortcutDescription}';
+  Description := '{#IDFPsShortcutDescription} ' + IDFDownloadVersion;
 
   Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}\Initialize-IDF.ps1"" ') + '"' +  GetPathWithForwardSlashes(GitPath) + '" "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"'
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
@@ -58,6 +58,53 @@ begin
   end;
 end;
 
+procedure InstallEmbeddedPython();
+var
+  EmbeddedPythonPath: String;
+  PythonDistZip: String;
+  CmdLine: String;
+begin
+  if (Pos('tools', PythonPath) <> 1) then begin
+    Exit;
+  end;
+
+  EmbeddedPythonPath := GetEmbeddedPythonPath();
+  PythonDistZip := GetPythonDistZip();
+
+  Log('Checking existence of Embedded Python: ' + EmbeddedPythonPath);
+  if (FileExists(EmbeddedPythonPath)) then begin
+    Log('Embedded Python found.');
+    Exit;
+  end;
+
+  CmdLine := ExpandConstant('{tmp}\7za.exe x -o{app}\tools\idf-python\' + PythonVersion + '\ -r -aoa "' + PythonDistZip + '"');
+  DoCmdlineInstall('Extracting Python Interpreter', 'Using Embedded Python', CmdLine);
+end;
+
+procedure InstallEmbeddedGit();
+var
+  EmbeddedGitPath: String;
+  GitDistZip: String;
+  CmdLine: String;
+begin
+  if (not UseEmbeddedGit) then begin
+    Exit;
+  end;
+
+  EmbeddedGitPath := GetEmbeddedGitPath();
+  GitDistZip := GetGitDistZip();
+
+  Log('Checking existence of Embedded Git: ' + EmbeddedGitPath);
+  if (FileExists(EmbeddedGitPath)) then begin
+    Log('Embedded Git found.');
+    Exit;
+  end;
+
+  CmdLine := ExpandConstant('{tmp}\7za.exe x -o{app}\tools\idf-git\{#GITVERSION}\ -r -aoa "' + GitDistZip + '"');
+  DoCmdlineInstall('Extracting Git', 'Using Embedded Git', CmdLine);
+end;
+
+
 <event('CurStepChanged')>
 procedure PostInstallSteps(CurStep: TSetupStep);
 var
@@ -69,6 +116,7 @@ begin
   ExtractTemporaryFile('7za.exe');
 
   InstallEmbeddedPython();
+  InstallEmbeddedGit();
 
   try
     AddPythonGitToPath();

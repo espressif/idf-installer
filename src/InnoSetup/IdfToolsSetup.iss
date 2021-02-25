@@ -16,14 +16,14 @@
 #define PythonInstallerDownloadURL "https://dl.espressif.com/dl/idf-python/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.30.0.2"
+  #define GITVERSION "2.30.1"
 #endif
 ; The URL where git is stored is not equal to it's version. Minor build has prefixes with windows
 #ifndef GITVERSIONDIR
   #define GITVERSIONDIR "v2.30.0.windows.2"
 #endif
-#define GitInstallerName "Git-" + GITVERSION + "-64-bit.exe"
-#define GitInstallerDownloadURL "https://github.com/git-for-windows/git/releases/download/" + GITVERSIONDIR + "/Git-" + GITVERSION + "-64-bit.exe"
+#define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
+#define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
@@ -128,7 +128,7 @@ Name: "{app}\dist"
 [Files]
 ;Source: "configuration.ini"; Flags: dontcopy noencryption
 Source: "..\..\lib\cmdlinerunner.dll"; Flags: dontcopy
-Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy
+;Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy
 ;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy
 Source: "{#EXT}\unzip\7za.exe"; Flags: dontcopy
 Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
@@ -140,13 +140,13 @@ Source: "..\PowerShell\Initialize-IDF.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
-Source:  "{#BUILD}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source:  "{#EXT}\tools\git\*"; DestDir: "{app}\tools\git"; Flags: recursesubdirs
+Source: "{#BUILD}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 Source: "{#BUILD}\releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
-Source: "{#EXT}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs;
+Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
 ; Helper Python files for sanity check of Python environment - used by system_check_page
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
@@ -187,9 +187,6 @@ Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressi
 ;Name: "idf\tools\chip_esp8266"; Description: "ESP32"; Types: full
 ;Name: "idf\tools\chip_esp8266\esp_idf_v3_3_4"; Description: "ESP-IDF v3.3.4"; Types: full
 ;Name: "idf\tools\chip_esp8266\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
-
-
-;Name: "idf\tools\git"; Description: "Git"; Types: full
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\dist"

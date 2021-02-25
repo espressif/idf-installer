@@ -126,11 +126,15 @@ if ('offline' -eq $InstallerType) {
 
 $IsccParameters += "/DINSTALLERBUILDTYPE=$InstallerType"
 
-$IsccParameters += ".\src\InnoSetup\IdfToolSetup.iss"
+$IsccParameters += ".\src\InnoSetup\IdfToolsSetup.iss"
 $IsccParameters += "/F$OutputFileBaseName"
 
 $Command = "iscc $IsccParameters"
 $Command
 iscc $IsccParameters
-$Command
-Get-ChildItem -l build\$OutputFileName
+if (0 -eq $LASTEXITCODE) {
+    $Command
+    Get-ChildItem -l build\$OutputFileName
+} else {
+    "Build failed!"
+}

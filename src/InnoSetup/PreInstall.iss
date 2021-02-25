@@ -35,6 +35,78 @@ begin
   end;
 end;
 
+function GetEmbeddedPythonPath():String;
+begin
+  Result := ExpandConstant('{app}\') + PythonExecutablePath;
+end;
+
+function GetPythonDistZip():String;
+begin
+  Result := ExpandConstant('{app}\dist\{#PythonInstallerName}');
+end;
+
+procedure PrepareEmbeddedPython();
+var
+  EmbeddedPythonPath: String;
+  PythonDistZip: String;
+  CmdLine: String;
+begin
+  if (Pos('tools', PythonPath) <> 1) then begin
+    Exit;
+  end;
+
+  EmbeddedPythonPath := GetEmbeddedPythonPath();
+  UpdatePythonVariables(EmbeddedPythonPath);
+  Log('Checking existence of Embedded Python: ' + EmbeddedPythonPath);
+  if (FileExists(EmbeddedPythonPath)) then begin
+    Log('Embedded Python found.');
+    Exit;
+  end;
+
+  PythonDistZip := GetPythonDistZip();
+  if (not FileExists(PythonDistZip)) then begin
+    Log('Downloading {#PythonInstallerDownloadURL} to ' + PythonDistZip);
+    idpAddFile('{#PythonInstallerDownloadURL}', PythonDistZip);
+  end;
+end;
+
+function GetEmbeddedGitPath():String;
+begin
+  Result := ExpandConstant('{app}\') + GitExecutablePath;
+end;
+
+function GetGitDistZip():String;
+begin
+  Result := ExpandConstant('{app}\dist\{#GitInstallerName}');
+end;
+
+
+
+procedure PrepareEmbeddedGit();
+var
+  EmbeddedGitPath: String;
+  GitDistZip: String;
+  CmdLine: String;
+begin
+  if (not UseEmbeddedGit) then begin
+    Exit;
+  end;
+
+  EmbeddedGitPath := GetEmbeddedGitPath();
+  Log('Checking existence of Embedded Git: ' + EmbeddedGitPath);
+  if (FileExists(EmbeddedGitPath)) then begin
+    Log('Embedded Git found.');
+    Exit;
+  end;
+
+  GitDistZip := GetGitDistZip();
+  if (not FileExists(GitDistZip)) then begin
+    Log('Downloading {#GitInstallerDownloadURL} to ' + GitDistZip);
+    idpAddFile('{#GitInstallerDownloadURL}', GitDistZip);
+  end;
+end;
+
+
 <event('NextButtonClick')>
 function PreInstallSteps(CurPageID: Integer): Boolean;
 var
@@ -54,8 +126,11 @@ begin
     Exit;
   end;
 
+  PrepareEmbeddedPython();
+
   if (UseEmbeddedGit) then begin
     GitUseExisting := true;
+    PrepareEmbeddedGit();
   end;
 
   if not GitUseExisting then
@@ -121,25 +196,4 @@ begin
   EnvPythonHome := GetEnv('PYTHONHOME')
   Log('PYTHONHOME=' + EnvPythonHome)
   SetEnvironmentVariable('PYTHONHOME', '')
-end;
-
-procedure InstallEmbeddedPython();
-var
-  EmbeddedPythonPath: String;
-  CmdLine: String;
-begin
-  if (Pos('tools', PythonPath) <> 1) then begin
-    Exit;
-  end;
-
-  EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;
-  UpdatePythonVariables(EmbeddedPythonPath);
-  Log('Checking existence of Embedded Python: ' + EmbeddedPythonPath);
-  if (FileExists(EmbeddedPythonPath)) then begin
-    Log('Embedded Python found.');
-    Exit;
-  end;
-
-  CmdLine := ExpandConstant('{tmp}\7za.exe x -o{app}\tools\idf-python\' + PythonVersion + '\ -r -aoa "{app}\dist\idf-python-' + PythonVersion + '-embed-win64.zip"');
-  DoCmdlineInstall('Extracting Python Interpreter', 'Using Embedded Python', CmdLine);
 end;
