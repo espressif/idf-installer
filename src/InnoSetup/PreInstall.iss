@@ -37,7 +37,7 @@ end;
 
 function GetEmbeddedPythonPath():String;
 begin
-  Result := ExpandConstant('{app}\') + PythonExecutablePath;
+  Result := PythonExecutablePath;
 end;
 
 function GetPythonDistZip():String;
@@ -45,34 +45,41 @@ begin
   Result := ExpandConstant('{app}\dist\{#PythonInstallerName}');
 end;
 
+procedure PrepareIdfPackage(FilePath: String; DistZip: String; DownloadUrl: String);
+begin
+  Log('Checking existence of: ' + FilePath);
+  if (FileExists(FilePath)) then begin
+    Log('Found.');
+    Exit;
+  end;
+
+  Log('Checking download cache for: ' + DistZip)
+  if (FileExists(DistZip)) then begin
+    Log('Found.');
+    Exit;
+  end;
+
+  Log('Scheduling download of ' + DownloadUrl  + ' to ' + DistZip);
+  idpAddFile(DownloadUrl, DistZip);
+end;
+
 procedure PrepareEmbeddedPython();
 var
-  EmbeddedPythonPath: String;
-  PythonDistZip: String;
-  CmdLine: String;
+  EmbeddedPythonPath:String;
 begin
   if (Pos('tools', PythonPath) <> 1) then begin
     Exit;
   end;
 
-  EmbeddedPythonPath := GetEmbeddedPythonPath();
+  EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;
   UpdatePythonVariables(EmbeddedPythonPath);
-  Log('Checking existence of Embedded Python: ' + EmbeddedPythonPath);
-  if (FileExists(EmbeddedPythonPath)) then begin
-    Log('Embedded Python found.');
-    Exit;
-  end;
 
-  PythonDistZip := GetPythonDistZip();
-  if (not FileExists(PythonDistZip)) then begin
-    Log('Downloading {#PythonInstallerDownloadURL} to ' + PythonDistZip);
-    idpAddFile('{#PythonInstallerDownloadURL}', PythonDistZip);
-  end;
+  PrepareIdfPackage(EmbeddedPythonPath, GetPythonDistZip(), '{#PythonInstallerDownloadURL}');
 end;
 
 function GetEmbeddedGitPath():String;
 begin
-  Result := ExpandConstant('{app}\') + GitExecutablePath;
+  Result := GitExecutablePath;
 end;
 
 function GetGitDistZip():String;
@@ -80,32 +87,29 @@ begin
   Result := ExpandConstant('{app}\dist\{#GitInstallerName}');
 end;
 
-
-
 procedure PrepareEmbeddedGit();
-var
-  EmbeddedGitPath: String;
-  GitDistZip: String;
-  CmdLine: String;
 begin
   if (not UseEmbeddedGit) then begin
     Exit;
   end;
 
-  EmbeddedGitPath := GetEmbeddedGitPath();
-  Log('Checking existence of Embedded Git: ' + EmbeddedGitPath);
-  if (FileExists(EmbeddedGitPath)) then begin
-    Log('Embedded Git found.');
+  PrepareIdfPackage(GetEmbeddedGitPath(), GetGitDistZip(), '{#GitInstallerDownloadURL}');
+  GitUseExisting := true;
+end;
+
+function GetEclipseDistZip():String;
+begin
+  Result := ExpandConstant('{app}\dist\{#ECLIPSE_INSTALLER}');
+end;
+
+procedure PrepareEclipse();
+begin
+  if (not WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
     Exit;
   end;
 
-  GitDistZip := GetGitDistZip();
-  if (not FileExists(GitDistZip)) then begin
-    Log('Downloading {#GitInstallerDownloadURL} to ' + GitDistZip);
-    idpAddFile('{#GitInstallerDownloadURL}', GitDistZip);
-  end;
+  PrepareIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), '{#ECLIPSE_DOWNLOADURL}');
 end;
-
 
 <event('NextButtonClick')>
 function PreInstallSteps(CurPageID: Integer): Boolean;
@@ -127,11 +131,8 @@ begin
   end;
 
   PrepareEmbeddedPython();
-
-  if (UseEmbeddedGit) then begin
-    GitUseExisting := true;
-    PrepareEmbeddedGit();
-  end;
+  PrepareEmbeddedGit();
+  PrepareEclipse();
 
   if not GitUseExisting then
   begin

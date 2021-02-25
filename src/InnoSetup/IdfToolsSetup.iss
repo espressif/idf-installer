@@ -25,13 +25,17 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
+#define ECLIPSE_VERSION "2020-12"
+#define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
+#define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
+
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
-#define IDFCmdExeShortcutDescription "Open ESP-IDF Command Prompt (cmd.exe) Environment"
-#define IDFCmdExeShortcutFile "ESP-IDF Command Prompt (cmd.exe).lnk"
+#define IDFCmdExeShortcutDescription "Open ESP-IDF CMD Environment"
+#define IDFCmdExeShortcutFile "ESP-IDF CMD"
 
 #define IDFPsShortcutDescription "Open ESP-IDF PowerShell Environment"
-#define IDFPsShortcutFile "ESP-IDF PowerShell.lnk"
+#define IDFPsShortcutFile "ESP-IDF PowerShell"
 
 #define IDFEclipseShortcutDescription "Open ESP-IDF Eclipse IDE"
 #define IDFEclipseShortcutFile "ESP-IDF Eclipse.lnk"
@@ -211,8 +215,8 @@ Type: files; Name: "{autodesktop}\{#IDFPsShortcutFile}"
 [Run]
 Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: "Installing Git"; Check: GitInstallRequired
 Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Eclipse Environment"; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
-Filename: "{autodesktop}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP}"
-Filename: "{autodesktop}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP}"
+;Filename: "{autodesktop}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP}"
+;Filename: "{autodesktop}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP}"
 
 ;Filename: "{group}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Check: IsPowerShellInstalled
 ;Filename: "{group}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Check: IsCmdInstalled

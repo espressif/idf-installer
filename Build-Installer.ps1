@@ -15,6 +15,10 @@ param (
 $ErrorActionPreference = "Stop"
 
 function DownloadIdfVersions() {
+    if (Test-Path -Path $Versions -PathType Leaf) {
+        "$Versions exists."
+        return
+    }
     "Downloading idf_versions.txt..."
     Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }

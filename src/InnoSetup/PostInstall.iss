@@ -3,6 +3,11 @@
   SPDX-License-Identifier: Apache-2.0 }
 
 { ------------------------------ Start menu shortcut ------------------------------ }
+{ Get suffix of the text for link so that user can see multiple IDF installed. }
+function GetLinkDescriptionSuffix(): String;
+begin
+  Result := ' ' + GetIDFShortVersion();
+end;
 
 procedure CreateIDFCommandPromptShortcut(LnkString: String);
 var
@@ -11,8 +16,8 @@ var
   Command: String;
 begin
   ForceDirectories(ExpandConstant(LnkString));
-  Destination := ExpandConstant(LnkString + '\{#IDFCmdExeShortcutFile}');
-  Description := '{#IDFCmdExeShortcutDescription} ' + IDFDownloadVersion;
+  Destination := ExpandConstant(LnkString + '\{#IDFCmdExeShortcutFile}') + GetLinkDescriptionSuffix() + '.lnk';
+  Description := '{#IDFCmdExeShortcutDescription}' + GetLinkDescriptionSuffix();
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
@@ -32,6 +37,16 @@ begin
   end;
 end;
 
+function GetPowerShellLinkDestination(LinkString: String):String;
+begin
+  Result := ExpandConstant(LinkString + '\{#IDFPsShortcutFile}') + GetLinkDescriptionSuffix() + '.lnk';
+end;
+
+function GetPowerShellLinkDesktopDestination():String;
+begin
+  Result := GetPowerShellLinkDestination('{autodesktop}');
+end;
+
 procedure CreateIDFPowershellShortcut(LnkString: String);
 var
   Destination: String;
@@ -39,8 +54,8 @@ var
   Command: String;
 begin
   ForceDirectories(ExpandConstant(LnkString));
-  Destination := ExpandConstant(LnkString + '\{#IDFPsShortcutFile}');
-  Description := '{#IDFPsShortcutDescription} ' + IDFDownloadVersion;
+  Destination := GetPowerShellLinkDestination(LnkString);
+  Description := '{#IDFPsShortcutDescription} ' + GetLinkDescriptionSuffix();
 
   Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}\Initialize-IDF.ps1"" ') + '"' +  GetPathWithForwardSlashes(GitPath) + '" "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"'
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
@@ -64,7 +79,7 @@ var
   PythonDistZip: String;
   CmdLine: String;
 begin
-  if (Pos('tools', PythonPath) <> 1) then begin
+  if (not UseEmbeddedPython) then begin
     Exit;
   end;
 
@@ -104,6 +119,29 @@ begin
   DoCmdlineInstall('Extracting Git', 'Using Embedded Git', CmdLine);
 end;
 
+procedure InstallIdfPackage(FilePath:String; DistZip:String; Destination:String);
+var
+  CmdLine: String;
+begin
+  Log('Checking existence of: ' + FilePath);
+  if (FileExists(FilePath)) then begin
+    Log('Found.');
+    Exit;
+  end;
+
+  CmdLine := ExpandConstant('{tmp}\7za.exe x -o' + Destination + ' -r -aoa "' + DistZip + '"');
+  DoCmdlineInstall('Extracting...', 'Extracting...', CmdLine);
+end;
+
+procedure InstallEclipse();
+begin
+  if (not WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
+    Exit;
+  end;
+
+  InstallIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), GetEclipsePath(''));
+end;
+
 
 <event('CurStepChanged')>
 procedure PostInstallSteps(CurStep: TSetupStep);
@@ -117,6 +155,7 @@ begin
 
   InstallEmbeddedPython();
   InstallEmbeddedGit();
+  InstallEclipse();
 
   try
     AddPythonGitToPath();

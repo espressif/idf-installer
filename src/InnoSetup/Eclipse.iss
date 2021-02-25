@@ -4,7 +4,12 @@
 
 function GetEclipsePath(FileName:String): String;
 begin
-  Result := ExpandConstant('{app}\tools\eclipse\2020-12\') + FileName;
+  Result := ExpandConstant('{app}\tools\idf-eclipse\{#ECLIPSE_VERSION}\') + FileName;
+end;
+
+function GetEclipseExePath():String;
+begin
+  Result := GetEclipsePath('eclipse.exe');
 end;
 
 procedure SaveEclipseConfiguration();
@@ -57,7 +62,7 @@ begin
   Destination := ExpandConstant(LnkString + '\{#IDFEclipseShortcutFile}');
   Description := '{#IDFEclipseShortcutDescription}';
 
-  Command := GetEclipsePath('eclipse.exe');
+  Command := GetEclipseExePath();
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(

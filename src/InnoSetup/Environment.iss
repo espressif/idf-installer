@@ -364,20 +364,21 @@ begin
   Result := VersionString;
 end;
 
-{ Get IDF version string in combination with Python version. }
-{ Result e.g.: idf4.1_py38 }
-function GetIDFPythonEnvironmentVersion():String;
-var
-  IDFVersionString: String;
+function GetIDFShortVersion(): String;
 begin
   { Transform main or master to x.y }
   if (Pos('main', IDFDownloadVersion) > 0) or (Pos('master', IDFDownloadVersion) > 0) then begin
-    IDFVersionString := GetIDFVersionFromHeaderFile();
+    Result := GetIDFVersionFromHeaderFile();
   end else begin
-    IDFVersionString := GetShortVersion(IDFDownloadVersion);
+    Result := GetShortVersion(IDFDownloadVersion);
   end;
+end;
 
-  Result := 'idf' + IDFVersionString + '_py' + GetShortVersion(PythonVersion);
+{ Get IDF version string in combination with Python version. }
+{ Result e.g.: idf4.1_py38 }
+function GetIDFPythonEnvironmentVersion():String;
+begin
+  Result := 'idf' + GetIDFShortVersion() + '_py' + GetShortVersion(PythonVersion);
 end;
 
 function GetPythonVirtualEnvPath(): String;
