@@ -23,6 +23,39 @@ function DownloadIdfVersions() {
     Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }
 
+function PrepareIdfPackage {
+    param (
+        [Parameter()]
+        [String]
+        $BasePath,
+        [String]
+        $FilePath,
+        [String]
+        $DownloadUrl,
+        [String]
+        $DistZip
+    )
+    $FullFilePath = Join-Path -Path $BasePath -ChildPath $FilePath
+    if (Test-Path -Path $FullFilePath -PathType Leaf) {
+        "$FullFilePath found."
+        return
+    }
+    $FullDistZipPath = Join-Path -Path $BasePath -ChildPath $DistZip
+    if (-Not(Test-Path -Path $FullDistZipPath -PathType Leaf)) {
+        "Downloading $FullDistZipPath"
+        Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
+    }
+    Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
+}
+
+function PrepareIdfCmdlinerunner {
+    PrepareIdfPackage -BasePath build\$InstallerType\lib -FilePath cmdlinerunner.dll -DistZip idf-cmdlinerunner-1.0.zip -DownloadUrl https://dl.espressif.com/dl/idf-cmdlinerunner/idf-cmdlinerunner-1.0.zip
+}
+
+function PrepareIdf7za {
+    PrepareIdfPackage -BasePath build\$InstallerType\lib -FilePath 7za.exe -DistZip idf-7za.zip -DownloadUrl https://dl.espressif.com/dl/idf-7za/idf-7za-19.0.zip
+}
+
 function PrepareIdfGit {
 
 }
@@ -112,6 +145,12 @@ if (!(Test-Path -PathType Container -Path  $IdfToolsPath)) {
 $IsccParameters = @("/DCOMPRESSION=$Compression", "/DSOLIDCOMPRESSION=no", "/DPYTHONWHEELSVERSION=$IdfPythonWheelsVersion")
 $IsccParameters += "/DDIST=..\..\build\$InstallerType"
 
+if (-Not(Test-Path build\$InstallerType\lib -PathType Leaf)) {
+    mkdir build\$InstallerType\lib
+}
+PrepareIdfCmdlinerunner
+PrepareIdf7za
+
 if ('offline' -eq $InstallerType) {
     $IsccParameters += '/DOFFLINE=yes'
     PrepareIdfGit
@@ -120,8 +159,6 @@ if ('offline' -eq $InstallerType) {
     Copy-Item .\src\Resources\idf_versions_offline.txt $Versions
     PrepareOfflineBranches
 } elseif ('online' -eq $InstallerType) {
-    PrepareIdfGit
-    PrepareIdfPython
     DownloadIdfVersions
     $IsccParameters += '/DOFFLINE=no'
 } else {
