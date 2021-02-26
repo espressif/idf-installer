@@ -1,6 +1,9 @@
 name: build-online-installer
 
-on: push
+on:
+  push:
+    tags:
+    - '*'
 
 jobs:
   build-installer:

@@ -2,13 +2,13 @@
 
 This directory contains source files required to build the tools installer for Windows.
 
-The installer is built using [Inno Setup](http://www.jrsoftware.org/isinfo.php). At the time of writing, the installer can be built with Inno Setup version 6.0.2.
+The installer is built using [Inno Setup](http://www.jrsoftware.org/isinfo.php).
 
-The main source file of the installer is `idf_tools_setup.iss`. PascalScript code is split into multiple `*.iss.inc` files.
+The main source file of the installer is `src/InnoSetup/IdfToolsSetup.iss`. PascalScript code is split into multiple `*.iss` files in directory `src/InnoSetup`.
 
 Some functionality of the installer depends on additional programs:
 
-* [Inno Download Plugin](https://bitbucket.org/mitrich_k/inno-download-plugin) — used to download additional files during the installation.
+* [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/) — used to download additional files during the installation.
 
 * [7-zip](https://www.7-zip.org) — used to extract downloaded IDF archives.
 
@@ -23,6 +23,30 @@ choco install inno-download-plugin
 ```
 
 ## Building the installer
+
+### Building Online Installer on Windows
+
+The minimalistic version of the installer.
+
+```
+.\Build-Installer.ps1 -InstallerType online
+```
+
+Output file: `build\esp-idf-tools-setup-online-unsigned.exe`
+
+### Building Offline Installer on Windows
+
+The version which bundles all packages into one installer file which does not requires internet connection to complete the installation.
+
+```
+.\Build-Installer.ps1 -InstallerType offline
+```
+
+Output file: `build\esp-idf-tools-setup-offline-unsigned.exe`
+
+### Building the installer by GitHub Actions
+
+Build script is stored in .github\workflows
 
 ### In Docker
 
@@ -49,8 +73,7 @@ Requirements:
 This step is bootstrapping the whole process. Open Windows Terminal, click + sign and select Ubuntu.
 
 ```
-cd tools/windows/tools_setup/
-./build_installer.sh online
+.\Build-Installer -InstallerType online
 ```
 
 The setup will download the necessary dependencies and it will build the installer.
@@ -60,30 +83,24 @@ The setup will download the necessary dependencies and it will build the install
 The offline version is built by setting /DOFFLINE=yes to ISCC on the command-line. To speed up build, it's possible to redirect stdout of ISCC to the file.
 
 ```
-./build_installer.sh offline >out.txt
+.\Build-Installer.ps1 -InstallerType offline >out.txt
 ```
 
 To speed up development build it's possible to disable compression which is set by default to lzma.
 
 ```
-./build_installer.sh offline none >out.txt
+.\Build-Installer.ps1 -InstallerType offline -Compression none >out.txt
 ```
 
 #### Development work in idf_tool_setup.iss
 
-Open Inno Setup and open file idf_tool_setup.iss. This is the main file of the installer
+Open Inno Setup and open file `src\InnoSetup\IdfToolsSetup.iss`. This is the main file of the installer
 
 Press CTRL+F9 to rebuild the whole installer. Inno Setup detects changes only in the main file. If you change anything in include files, you need to explicitly press CTRL+F9 to build and Run.
 
 Press F9 to run the installer.
 
 Additional parameters to speed up development could be passed via Run - Parameters
-
-#### Development work in iss.inc files
-
-The majority of code is store in iss.inc files. The best way to develop it is to open a whole esp-idf directory in Visual Studio Code.
-
-To configure syntax highlight for inc files, open Settings CTRL+, search for `Associations`. In section TextEditor - Files find `File: Associations`. Click `Add Item`, set `item` to `*.inc`, set `value` to `innnosetup`.
 
 #### Manually, step by step
 
