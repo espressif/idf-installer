@@ -48,12 +48,18 @@ Output file: `build\esp-idf-tools-setup-offline-unsigned.exe`
 
 Build script is stored in .github\workflows
 
-### In Docker
+### Building the installer in Docker with Linux kernel
 
-This uses `wine-innosetup` Docker image and `build_installer.sh` script. This is how the installer is built in CI.
+The project contains multi-stage Dockerfile which allows build of the installer even on macOS or Linux. The build is using Wine.
 
+Execute all stages including test:
 ```
-docker run --rm -v $IDF_PATH:/idf -w /idf/tools/windows/tool_setup -it $CI_DOCKER_REGISTRY/wine-innosetup:1 /bin/bash build_installer.sh
+docker build . -t online-installer
+```
+
+Execute just build stage:
+```
+docker build --target online-installer . -t online-installer
 ```
 
 ### Windows development env with WSL2 and Windows Docker Containers

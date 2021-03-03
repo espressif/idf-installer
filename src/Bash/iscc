@@ -1,0 +1,18 @@
+#!/bin/bash
+# A wrapper script to start ISCC.exe without typing long paths.
+# Also acts as an entrypoint.
+
+set -e
+
+if [ -z "$ISCC_PATH" ]; then
+    echo "ISCC_PATH should be set; check Dockerfile"
+    exit 1
+fi
+
+if [ -z "$1" ]; then
+    echo "Usage: iscc <script.iss>"
+    exit 1
+fi
+
+echo Running "$ISCC_PATH" $*
+xvfb-run-wine "$ISCC_PATH" $*

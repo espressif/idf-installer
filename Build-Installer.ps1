@@ -135,18 +135,18 @@ function PrepareOfflineBranches {
 }
 
 $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
-$IdfToolsPath = (Get-Location).Path + "\build\$InstallerType"
-$Versions = $IdfToolsPath + '\idf_versions.txt'
+$IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
+$Versions = Join-Path -Path $IdfToolsPath -ChildPath '/idf_versions.txt'
 $env:IDF_TOOLS_PATH=$IdfToolsPath
 if (!(Test-Path -PathType Container -Path  $IdfToolsPath)) {
-    mkdir $IdfToolsPath
+    New-Item $IdfToolsPath -Type Directory
 }
 "Using IDF_TOOLS_PATH specific for installer type: $IdfToolsPath"
 $IsccParameters = @("/DCOMPRESSION=$Compression", "/DSOLIDCOMPRESSION=no", "/DPYTHONWHEELSVERSION=$IdfPythonWheelsVersion")
 $IsccParameters += "/DDIST=..\..\build\$InstallerType"
 
-if (-Not(Test-Path build\$InstallerType\lib -PathType Leaf)) {
-    mkdir build\$InstallerType\lib
+if (-Not(Test-Path build/$InstallerType/lib -PathType Container)) {
+    New-Item build/$InstallerType/lib -Type Directory
 }
 PrepareIdfCmdlinerunner
 PrepareIdf7za
