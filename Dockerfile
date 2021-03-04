@@ -34,19 +34,6 @@ RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod
 RUN apt-get install -y xvfb
 RUN dpkg --add-architecture i386 \
     && apt-get update && apt-get install -y wine
-#  && wget --no-verbose -nc https://dl.winehq.org/wine-builds/winehq.key \
-#  && apt-key add winehq.key \
-#  && apt-add-repository https://dl.winehq.org/wine-builds/debian/ \
-#    winehq-stable \
-#    xvfb \
-#  && apt-get remove -y \
-#    software-properties-common \
-#    apt-transport-https \
-#    gnupg \
-#  && apt-get clean -y \
-#  && apt-get autoremove -y \
-#  && rm -rf /var/lib/apt/lists/*
-
 
 ENV WINEPREFIX=/opt/wine
 # Disable Mono and Gecko popups in wineboot
@@ -59,8 +46,7 @@ ARG INNO_SHA256=a3ce1c40ef9c71a92691aaff0f413f530c8c9e3c766be481bc63ca7cc74e35e7
 
 ARG IDP_DIST=idpsetup-1.5.1.exe
 ARG IDP_SHA256=e7a7013f533e1f8f9ebbb5138c5c208af0c58c80590b72acabdbb337af8fd060
-#RUN dpkg --add-architecture i386 \
-#    && apt-get install wine32
+
 ADD src/Bash/* /usr/local/bin/
 ADD src/Resources/ShowDotFiles.reg /usr/local/share/
 
@@ -76,16 +62,8 @@ RUN wget --no-verbose http://files.jrsoftware.org/is/6/${INNO_DIST} \
 
 ENV ISCC_PATH="/opt/wine/drive_c/Program Files (x86)/Inno Setup 6/ISCC.exe"
 
-
 FROM base-image AS builder
-CMD [ "/usr/bin/pwsh" ]
-SHELL [ "/usr/bin/pwsh" ]
 COPY src /opt/idf-installer/src
 COPY Build-Installer.ps1 /opt/idf-installer/Build-Installer.ps1
 WORKDIR /opt/idf-installer
-
-#FROM builder AS installer-online
-#RUN [ "pwsh", "./Build-Installer.ps1", "-InstallerType", "online" ]
-
-#FROM installer-online AS runner-online
-#RUN src/PowerShell/Install-Idf.ps1 -Installer 'build/online/esp-idf-tools-setup-online-unsigned.exe'
+CMD [ "pwsh" ]

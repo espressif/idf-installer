@@ -48,19 +48,30 @@ Output file: `build\esp-idf-tools-setup-offline-unsigned.exe`
 
 Build script is stored in .github\workflows
 
-### Building the installer in Docker with Linux kernel
+### Building the installer in Docker with Linux image
 
 The project contains multi-stage Dockerfile which allows build of the installer even on macOS or Linux. The build is using Wine.
 
-Execute all stages including test:
+Build the image:
 ```
-docker build . -t online-installer
+docker build . -t wine-innosetup
 ```
 
-Execute just build stage:
+Execute the build:
 ```
-docker build --target online-installer . -t online-installer
+docker run -it wine-innosetup
+.\Build-Installer.ps1 -InstallerType online
 ```
+
+Copy installer from the container
+```
+docker ps
+docker cp CONTAINER_ID:/opt/idf-installer/build/esp-idf-tools-setup-online-unsigned.exe .
+```
+
+### Testing the installer in Docker with Linux image
+
+It's possible to build the installer using Docker with Linux image, but it's not possible to make full test of the installer. Wine is not working correctly with Windows version of Git. The recommended approach for testing in containers is to use Docker with Windows image.
 
 ### Windows development env with WSL2 and Windows Docker Containers
 
