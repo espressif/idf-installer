@@ -12,10 +12,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        shell: bash
       - name: Install Inno Setup Download plugin
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install inno-download-plugin
+        shell: pwsh
+        run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
       - name: Build Installer
         shell: pwsh
         run: .\Build-Installer.ps1 -InstallerType online
@@ -37,6 +40,6 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/esp-idf-tools-setup-online-unsigned.exe
-          asset_name: build/esp-idf-tools-setup-${{ github.ref }}-unsigned.exe
+          asset_name: build/esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}-unsigned.exe
           asset_content_type: application/octet-stream
 
