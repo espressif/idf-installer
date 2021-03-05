@@ -25,7 +25,7 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
-#define ECLIPSE_VERSION "2020-12"
+#define ECLIPSE_VERSION "2021-03"
 #define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
 #define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
 
@@ -144,7 +144,7 @@ Source: "..\PowerShell\Initialize-IDF.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 ;Source:  "{#EXT}\Curator\*"; Flags: dontcopy recursesubdirs
-Source: "{#BUILD}\tools\eclipse\*"; DestDir: "\\?\{app}\tools\eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-eclipse\*"; DestDir: "\\?\{app}\tools\idf-eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer

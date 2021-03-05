@@ -3,7 +3,7 @@ name: build-online-installer
 on:
   push:
     tags:
-    - '*'
+    - online-*
 
 jobs:
   build-installer:
@@ -19,8 +19,24 @@ jobs:
       - name: Build Installer
         shell: pwsh
         run: .\Build-Installer.ps1 -InstallerType online
-      - name: Archive artifact
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: esp-idf-tools-setup-online-unsigned.exe
-          path: build/esp-idf-tools-setup-online-unsigned.exe
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/esp-idf-tools-setup-online-unsigned.exe
+          asset_name: build/esp-idf-tools-setup-${{ github.ref }}-unsigned.exe
+          asset_content_type: application/octet-stream
+
