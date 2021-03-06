@@ -40,6 +40,11 @@ function PrepareIdfPackage {
         "$FullFilePath found."
         return
     }
+
+    if (-Not(Test-Path $BasePath -PathType Container)) {
+        New-Item $BasePath -Type Directory
+    }
+
     $FullDistZipPath = Join-Path -Path $BasePath -ChildPath $DistZip
     if (-Not(Test-Path -Path $FullDistZipPath -PathType Leaf)) {
         "Downloading $FullDistZipPath"
