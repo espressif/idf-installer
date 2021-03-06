@@ -71,10 +71,6 @@ procedure PrepareEmbeddedPython();
 var
   EmbeddedPythonPath:String;
 begin
-  if (Pos('tools', PythonPath) <> 1) then begin
-    Exit;
-  end;
-
   EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;
   UpdatePythonVariables(EmbeddedPythonPath);
 
