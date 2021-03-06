@@ -1,13 +1,12 @@
-name: build-installer
+name: build-online-installer
 
 on:
   push:
     tags:
     - online-*
-    - offline-*
 
 jobs:
-  build-installer:
+  build-online-installer:
     name: Build Installer
     runs-on: windows-latest
     steps:
@@ -26,7 +25,7 @@ jobs:
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
       - name: Build Installer
         shell: pwsh
-        run: .\Build-Installer.ps1 -InstallerType ${{ steps.get_installer_type.outputs.INSTALLER_TYPE }}
+        run: .\Build-Installer.ps1 -InstallerType online
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -44,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/esp-idf-tools-setup-${{ steps.get_installer_type.outputs.INSTALLER_TYPE }}-unsigned.exe
+          asset_path: ./build/esp-idf-tools-setup-online-unsigned.exe
           asset_name: esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}-unsigned.exe
           asset_content_type: application/octet-stream
 
