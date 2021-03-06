@@ -51,6 +51,7 @@ function PrepareIdfPackage {
         Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
     }
     Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
+    Remove-Item -Path $FullDistZipPath
 }
 
 function PrepareIdfCmdlinerunner {
@@ -103,6 +104,9 @@ function PrepareOfflineBranches {
     } else {
         "Performing full clone."
         git clone --shallow-since=2020-01-01 --jobs 8 --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
+
+        # Remove hidden attribute from .git. Inno Setup is not able to read it.
+        attrib "$BundleDir\.git" -s -h
 
         # Fix repo mode
         git -C "$BundleDir" config --local core.fileMode false
