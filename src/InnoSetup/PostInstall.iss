@@ -123,10 +123,6 @@ procedure InstallIdfPackage(FilePath:String; DistZip:String; Destination:String)
 var
   CmdLine: String;
 begin
-  if (IsOfflineMode) then begin
-    Exit;
-  end;
-
   Log('Checking existence of: ' + FilePath);
   if (FileExists(FilePath)) then begin
     Log('Found.');
@@ -157,9 +153,11 @@ begin
 
   ExtractTemporaryFile('7za.exe');
 
-  InstallEmbeddedPython();
-  InstallEmbeddedGit();
-  InstallEclipse();
+  if (not IsOfflineMode) then begin
+    InstallEmbeddedPython();
+    InstallEmbeddedGit();
+    InstallEclipse();
+  end;
 
   try
     AddPythonGitToPath();
