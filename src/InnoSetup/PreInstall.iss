@@ -47,6 +47,10 @@ end;
 
 procedure PrepareIdfPackage(FilePath: String; DistZip: String; DownloadUrl: String);
 begin
+  if (IsOfflineMode) then begin
+    Exit;
+  end;
+
   Log('Checking existence of: ' + FilePath);
   if (FileExists(FilePath)) then begin
     Log('Found.');
