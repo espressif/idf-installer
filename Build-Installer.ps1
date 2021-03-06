@@ -64,7 +64,7 @@ function PrepareIdf7za {
 
 function PrepareIdfGit {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git `
-        -FilePath python.exe `
+        -FilePath cmd/git.exe `
         -DistZip idf-git-2.30.1-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.30.1-win64.zip
 }
@@ -175,6 +175,11 @@ PrepareIdf7za
 
 if ('offline' -eq $InstallerType) {
     $IsccParameters += '/DOFFLINE=yes'
+
+    if (-Not(Test-Path build/$InstallerType/tools -PathType Container)) {
+        New-Item build/$InstallerType/tools -Type Directory
+    }
+
     PrepareIdfGit
     PrepareIdfPython
     PrepareIdfPythonWheels
