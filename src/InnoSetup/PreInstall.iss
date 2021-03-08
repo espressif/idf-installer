@@ -15,7 +15,7 @@ end;
 { Wrapper function for Run task. Run tasks requires calling function. }
 function GetIsWindowsDefenderEnabled(): Boolean;
 begin
-  if (InstallationSuccessful()) then begin
+  if (not InstallationSuccessful()) then begin
     Result := false;
     Exit;
   end;

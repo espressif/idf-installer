@@ -31,11 +31,11 @@
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
-#define IDFCmdExeShortcutDescription "Open ESP-IDF CMD Environment"
-#define IDFCmdExeShortcutFile "ESP-IDF CMD"
+; Example of file name on desktop "ESP-IDF 4.2 Powershell"
+#define IDF_SHORTCUT_PREFIX "ESP-IDF"
 
+#define IDFCmdExeShortcutDescription "Open ESP-IDF CMD Environment"
 #define IDFPsShortcutDescription "Open ESP-IDF PowerShell Environment"
-#define IDFPsShortcutFile "ESP-IDF PowerShell"
 
 #define IDFEclipseShortcutDescription "Open ESP-IDF Eclipse IDE"
 #define IDFEclipseShortcutFile "ESP-IDF Eclipse.lnk"
@@ -197,10 +197,10 @@ Type: filesandordirs; Name: "{app}\dist"
 Type: filesandordirs; Name: "{app}\releases"
 Type: filesandordirs; Name: "{app}\tools"
 Type: filesandordirs; Name: "{app}\python_env"
-Type: files; Name: "{group}\{#IDFCmdExeShortcutFile}"
-Type: files; Name: "{group}\{#IDFPsShortcutFile}"
-Type: files; Name: "{autodesktop}\{#IDFCmdExeShortcutFile}"
-Type: files; Name: "{autodesktop}\{#IDFPsShortcutFile}"
+;Type: files; Name: "{group}\{#IDFCmdExeShortcutFile}"
+;Type: files; Name: "{group}\{#IDFPsShortcutFile}"
+;Type: files; Name: "{autodesktop}\{#IDFCmdExeShortcutFile}"
+;Type: files; Name: "{autodesktop}\{#IDFPsShortcutFile}"
 
 ;[Tasks]
 ;Name: CreateLinkStartPowerShell; GroupDescription: "{cm:CreateShortcutPowerShell}"; Description: "{cm:CreateShortcutStartMenu}";

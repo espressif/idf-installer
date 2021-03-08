@@ -4,20 +4,20 @@
 
 { ------------------------------ Start menu shortcut ------------------------------ }
 { Get suffix of the text for link so that user can see multiple IDF installed. }
-function GetLinkDescriptionSuffix(): String;
+function GetLinkDestination(LinkString: String; Title: String): String;
 begin
-  Result := ' ' + GetIDFShortVersion();
+  Result := ExpandConstant(LinkString) + '\{#IDF_SHORTCUT_PREFIX} ' + GetIDFShortVersion() + ' ' + Title + '.lnk';
 end;
 
-procedure CreateIDFCommandPromptShortcut(LnkString: String);
+procedure CreateIDFCommandPromptShortcut(LinkString: String);
 var
   Destination: String;
   Description: String;
   Command: String;
 begin
-  ForceDirectories(ExpandConstant(LnkString));
-  Destination := ExpandConstant(LnkString + '\{#IDFCmdExeShortcutFile}') + GetLinkDescriptionSuffix() + '.lnk';
-  Description := '{#IDFCmdExeShortcutDescription}' + GetLinkDescriptionSuffix();
+  ForceDirectories(ExpandConstant(LinkString));
+  Destination := GetLinkDestination(LinkString, 'CMD');
+  Description := '{#IDFCmdExeShortcutDescription}';
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
@@ -37,25 +37,15 @@ begin
   end;
 end;
 
-function GetPowerShellLinkDestination(LinkString: String):String;
-begin
-  Result := ExpandConstant(LinkString + '\{#IDFPsShortcutFile}') + GetLinkDescriptionSuffix() + '.lnk';
-end;
-
-function GetPowerShellLinkDesktopDestination():String;
-begin
-  Result := GetPowerShellLinkDestination('{autodesktop}');
-end;
-
-procedure CreateIDFPowershellShortcut(LnkString: String);
+procedure CreateIDFPowershellShortcut(LinkString: String);
 var
   Destination: String;
   Description: String;
   Command: String;
 begin
-  ForceDirectories(ExpandConstant(LnkString));
-  Destination := GetPowerShellLinkDestination(LnkString);
-  Description := '{#IDFPsShortcutDescription} ' + GetLinkDescriptionSuffix();
+  ForceDirectories(ExpandConstant(LinkString));
+  Destination := GetLinkDestination(LinkString, 'PowerShell');
+  Description := '{#IDFPsShortcutDescription}';
 
   Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}\Initialize-IDF.ps1"" ') + '"' +  GetPathWithForwardSlashes(GitPath) + '" "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"'
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
