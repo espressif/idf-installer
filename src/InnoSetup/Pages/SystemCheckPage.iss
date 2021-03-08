@@ -473,12 +473,6 @@ begin
   end;
 end;
 
-{ Wrapper function for Run task. Run tasks requires calling function. }
-function GetIsWindowsDefenderEnabled(): Boolean;
-begin
-  Result := IsWindowsDefenderEnabled;
-end;
-
 { Check whether long path is enabled in Windows. }
 { Some components like Eclipse or Ninja might have problem if the option is disabled. }
 procedure VerifyLongPathsEnabled();

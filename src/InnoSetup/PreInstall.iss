@@ -12,6 +12,16 @@ begin
   Result := not SetupAborted;
 end;
 
+{ Wrapper function for Run task. Run tasks requires calling function. }
+function GetIsWindowsDefenderEnabled(): Boolean;
+begin
+  if (InstallationSuccessful()) then begin
+    Result := false;
+    Exit;
+  end;
+  Result := IsWindowsDefenderEnabled;
+end;
+
 <event('InitializeWizard')>
 procedure InitializeDownloader();
 begin
