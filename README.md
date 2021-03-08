@@ -57,16 +57,15 @@ Build the image:
 docker build . -t wine-innosetup
 ```
 
-Execute the build:
+Copy installer from the container
+```
+docker run --name builder --rm wine-innosetup && docker cp builder:/opt/idf-installer/build/esp-idf-tools-setup-online-unsigned.exe . && docker stop builder
+```
+
+Another option is to execute the build manually:
 ```
 docker run -it wine-innosetup
 .\Build-Installer.ps1 -InstallerType online
-```
-
-Copy installer from the container
-```
-docker ps
-docker cp CONTAINER_ID:/opt/idf-installer/build/esp-idf-tools-setup-online-unsigned.exe .
 ```
 
 ### Testing the installer in Docker with Linux image
@@ -161,6 +160,17 @@ These combinations of parameters will result:
 * ``GITRECURSIVE=no`` - The clone of the repo won't contain modules, it speeds up the cloning process. Use when modules are not necessary.
 
 Documentation of parameters is available in api-guides/tools/idf-windows-installer.rst
+
+### Testing installation directly on Windows
+
+Recommendation: For higher level of isolation you can use Docker with Windows containers described in the next chapter.
+
+Test can be executed by following commands which will peform the installation and execute tests by accessing desktop link to PowerShell and CMD:
+
+```
+cd src\PowerShell
+.\Install-Idf.ps1 -Installer ..\..\build\esp-tools-setup-online-unsigned.exe -IdfPath C:\idf-test -IdfVersion v4.2
+```
 
 ### Testing installation in Docker with Windows containers
 

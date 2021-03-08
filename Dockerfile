@@ -67,3 +67,4 @@ COPY src /opt/idf-installer/src
 COPY Build-Installer.ps1 /opt/idf-installer/Build-Installer.ps1
 WORKDIR /opt/idf-installer
 CMD [ "pwsh" ]
+RUN pwsh -Command ./Build-Installer.ps1 -InstallerType online

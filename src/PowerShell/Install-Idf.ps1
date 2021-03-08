@@ -1,7 +1,12 @@
+[CmdletBinding()]
 param (
-    [string]$Installer="C:\Output\esp-idf-tools-setup-unsigned.exe",
-    [string]$IdfPath = "C:\Users\ContainerAdministrator\Desktop\esp-idf",
-    [string]$IdfVersion = "v4.1"
+    [Parameter()]
+    [String]
+    $Installer="C:\Output\esp-idf-tools-setup-unsigned.exe",
+    [String]
+    $IdfPath = "C:\Users\ContainerAdministrator\Desktop\esp-idf",
+    [String]
+    $IdfVersion = "v4.1"
 )
 
 "Configuration:"
