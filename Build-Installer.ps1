@@ -69,28 +69,28 @@ function PrepareIdf7za {
 }
 
 function PrepareIdfGit {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.30.1 `
         -FilePath cmd/git.exe `
         -DistZip idf-git-2.30.1-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.30.1-win64.zip
 }
 
 function PrepareIdfPython {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python\3.8.7 `
         -FilePath python.exe `
         -DistZip idf-python-3.8.7-embed-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-3.8.7-embed-win64.zip
 }
 
 function PrepareIdfPythonWheels {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\3.8-2021-01-21 `
         -FilePath version.txt `
         -DistZip idf-python-wheels-3.8-2021-01-21-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-3.8-2021-01-21-win64.zip
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-03 `
         -FilePath eclipse.exe `
         -DistZip idf-eclipse-2021-03-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-03-win64.zip
