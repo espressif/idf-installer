@@ -71,7 +71,11 @@ procedure PrepareEmbeddedPython();
 var
   EmbeddedPythonPath:String;
 begin
-  EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;
+  { Embedded Python always begin with tools since 'app' location is not known. }
+  if (Pos('tools',PythonExecutablePath) = 1) then begin
+    EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;
+  end;
+
   UpdatePythonVariables(EmbeddedPythonPath);
 
   PrepareIdfPackage(EmbeddedPythonPath, GetPythonDistZip(), '{#PythonInstallerDownloadURL}');
@@ -123,6 +127,8 @@ begin
 
   ForceDirectories(ExpandConstant('{app}\dist'));
 
+  PrepareEmbeddedPython();
+
   if (IsOfflineMode) then begin
     ForceDirectories(ExpandConstant('{app}\releases'));
     IDFZIPFileVersion := IDFDownloadVersion;
@@ -130,7 +136,6 @@ begin
     Exit;
   end;
 
-  PrepareEmbeddedPython();
   PrepareEmbeddedGit();
   PrepareEclipse();
 
