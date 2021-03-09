@@ -208,6 +208,15 @@ $IsccParameters += "/DINSTALLERBUILDTYPE=$InstallerType"
 $IsccParameters += ".\src\InnoSetup\IdfToolsSetup.iss"
 $IsccParameters += "/F$OutputFileBaseName"
 
+# Add signing tool to Inno Setup parameters
+$SingTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+$CertificateFile = "certificate.pfx"
+if (Test-Path -Path $SingTool -PathType Leaf) {
+    [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
+    [IO.File]::WriteAllBytes($filename, $CertificateBytes)
+    $IsccParameters += "/Ssigntool=C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe sign /f $CertificateFile /p my_password `$f"
+}
+
 $Command = "iscc $IsccParameters"
 $Command
 iscc $IsccParameters
@@ -232,3 +241,8 @@ if (Test-Path -Path $SingTool -PathType Leaf) {
     }
     Remove-Item $CertificateFile
 }
+
+if (Test-Path -Path $CertificateFile -PathType Leaf) {
+    Remove-Item $CertificateFile
+}
+
