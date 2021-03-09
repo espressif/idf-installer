@@ -166,6 +166,7 @@ function PrepareOfflineBranches {
 }
 
 $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
+$OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
 $Versions = Join-Path -Path $IdfToolsPath -ChildPath '/idf_versions.txt'
 $env:IDF_TOOLS_PATH=$IdfToolsPath
@@ -215,4 +216,19 @@ if (0 -eq $LASTEXITCODE) {
     Get-ChildItem -l build\$OutputFileName
 } else {
     "Build failed!"
+    Exit 1
+}
+
+# Add signing tool to Inno Setup parameters
+$SingTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+$CertificateFile = "${env:TEMP}\certificate.pfx"
+if (Test-Path -Path $SingTool -PathType Leaf) {
+    [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
+    [IO.File]::WriteAllBytes($CertificateFile, $CertificateBytes)
+    &'C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe' sign /tr 'http://timestamp.digicert.com' /f $CertificateFile build\${OutputFileBaseName}.exe
+    if (0 -eq $LASTEXITCODE) {
+        mv build\${OutputFileBaseName}.exe build\$OutputFileSigned
+        Get-ChildItem -l build\$OutputFileSigned
+    }
+    Remove-Item $CertificateFile
 }
