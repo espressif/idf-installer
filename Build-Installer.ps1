@@ -233,6 +233,7 @@ $SingTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
 $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
 if (Test-Path -Path $SingTool -PathType Leaf) {
     [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
+    "File: $CertificateFile"
     [IO.File]::WriteAllBytes($CertificateFile, $CertificateBytes)
     &'C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe' sign /tr 'http://timestamp.digicert.com' /f $CertificateFile build\${OutputFileBaseName}.exe
     if (0 -eq $LASTEXITCODE) {
