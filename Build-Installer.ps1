@@ -15,6 +15,8 @@ param (
 
 # Stop on error
 $ErrorActionPreference = "Stop"
+# Display logs correctly on GitHub Runner
+$ErrorView = 'NormalView'
 
 function DownloadIdfVersions() {
     if (Test-Path -Path $Versions -PathType Leaf) {
