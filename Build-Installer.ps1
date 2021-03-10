@@ -190,18 +190,29 @@ function SignInstaller {
     $SignTool = FindSignTool
     "Using: $SignTool"
     $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
+
     if ($null -eq $env:CERTIFICATE) {
         "CERTIFICATE variable not set, unable to sign installer"
         Exit 1
     }
+
     if ("" -eq $env:CERTIFICATE) {
         "CERTIFICATE variable is empty, unable to sign installer"
         Exit 1
     }
+
+    $SignParameters = @("sign", "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile, "build\${OutputFileBaseName}.exe")
+    if ($env:CERTIFICATE_PASSWORD) {
+        $SignParameters += "/p"
+        $SignParameters += $env:CERTIFICATE_PASSWORD
+    }
+
     [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
     "File: $CertificateFile"
     [IO.File]::WriteAllBytes($CertificateFile, $CertificateBytes)
-    &$SignTool sign /tr 'http://timestamp.digicert.com' /f $CertificateFile build\${OutputFileBaseName}.exe
+
+    &$SignTool $SignParameters
+
     if (0 -eq $LASTEXITCODE) {
         mv build\${OutputFileBaseName}.exe build\$OutputFileSigned
         Get-ChildItem -l build\$OutputFileSigned
