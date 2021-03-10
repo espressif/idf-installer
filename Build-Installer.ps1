@@ -8,7 +8,9 @@ param (
     [String]
     $InstallerType = 'online',
     [String]
-    $Python = 'python'
+    $Python = 'python',
+    [Boolean]
+    $SignInstaller = $true
 )
 
 # Stop on error
@@ -165,6 +167,37 @@ function PrepareOfflineBranches {
     Get-ChildItem "$BundleDir" -recurse -force | Where-Object { $_.Attributes -match "ReparsePoint" }
 }
 
+function SignInstaller {
+    $SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+    $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
+    if (Test-Path -Path $SignTool -PathType Leaf) {
+        "Sign tool not found: $SignTool"
+        Exit 1
+    }
+    if ($null -eq $env:CERTIFICATE) {
+        "CERTIFICATE variable not set, unable to sign installer"
+        Exit 1
+    }
+    if ("" -eq $env:CERTIFICATE) {
+        "CERTIFICATE variable is empty, unable to sign installer"
+        Exit 1
+    }
+    [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
+    "File: $CertificateFile"
+    [IO.File]::WriteAllBytes($CertificateFile, $CertificateBytes)
+    &$SignTool sign /tr 'http://timestamp.digicert.com' /f $CertificateFile build\${OutputFileBaseName}.exe
+    if (0 -eq $LASTEXITCODE) {
+        mv build\${OutputFileBaseName}.exe build\$OutputFileSigned
+        Get-ChildItem -l build\$OutputFileSigned
+        Remove-Item $CertificateFile
+    } else {
+        Remove-Item $CertificateFile
+        "Signing failed"
+        Exit 1
+    }
+
+}
+
 $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
 $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
@@ -228,22 +261,9 @@ if (0 -eq $LASTEXITCODE) {
     Exit 1
 }
 
-# Add signing tool to Inno Setup parameters
-$SingTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
-$CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
-if (Test-Path -Path $SingTool -PathType Leaf) {
-    [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
-    "File: $CertificateFile"
-    [IO.File]::WriteAllBytes($CertificateFile, $CertificateBytes)
-    &'C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe' sign /tr 'http://timestamp.digicert.com' /f $CertificateFile build\${OutputFileBaseName}.exe
-    if (0 -eq $LASTEXITCODE) {
-        mv build\${OutputFileBaseName}.exe build\$OutputFileSigned
-        Get-ChildItem -l build\$OutputFileSigned
-    }
-    Remove-Item $CertificateFile
-}
-
-if (Test-Path -Path $CertificateFile -PathType Leaf) {
-    Remove-Item $CertificateFile
+if ($true -eq $SignInstaller) {
+    SignInstaller
+} else {
+    "Signing installer disabled by command line option. Leaving installer unsigned."
 }
 
