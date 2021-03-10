@@ -188,6 +188,7 @@ function FindSignTool {
 
 function SignInstaller {
     $SignTool = FindSignTool
+    "Using: $SignTool"
     $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
     if ($null -eq $env:CERTIFICATE) {
         "CERTIFICATE variable not set, unable to sign installer"
