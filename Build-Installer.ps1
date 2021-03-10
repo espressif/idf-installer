@@ -169,14 +169,26 @@ function PrepareOfflineBranches {
     Get-ChildItem "$BundleDir" -recurse -force | Where-Object { $_.Attributes -match "ReparsePoint" }
 }
 
-function SignInstaller {
-    #$SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
-    $SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x86\signtool.exe"
-    $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
-    if (Test-Path -Path $SignTool -PathType Leaf) {
-        "Sign tool not found: $SignTool"
-        Exit 1
+function FindSignTool {
+    $SignTool = "signtool.exe"
+    if (Get-Command $SignTool -ErrorAction SilentlyContinue) {
+        return $SignTool
     }
+    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\x64\signtool.exe"
+    if (Test-Path -Path $SignTool -PathType Leaf) {
+        return $SignTool
+    }
+    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\x86\signtool.exe"
+    if (Test-Path -Path $SignTool -PathType Leaf) {
+        return $SignTool
+    }
+    "signtool.exe not found"
+    Exit 1
+}
+
+function SignInstaller {
+    $SignTool = FindSignTool
+    $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
     if ($null -eq $env:CERTIFICATE) {
         "CERTIFICATE variable not set, unable to sign installer"
         Exit 1
