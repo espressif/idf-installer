@@ -170,7 +170,8 @@ function PrepareOfflineBranches {
 }
 
 function SignInstaller {
-    $SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+    #$SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+    $SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x86\signtool.exe"
     $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
     if (Test-Path -Path $SignTool -PathType Leaf) {
         "Sign tool not found: $SignTool"
