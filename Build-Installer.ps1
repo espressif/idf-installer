@@ -201,11 +201,13 @@ function SignInstaller {
         Exit 1
     }
 
-    $SignParameters = @("sign", "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile, "build\${OutputFileBaseName}.exe")
+    $SignParameters = @("sign", "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile)
     if ($env:CERTIFICATE_PASSWORD) {
+        "CERTIFICATE_PASSWORD detected, using the password"
         $SignParameters += "/p"
         $SignParameters += $env:CERTIFICATE_PASSWORD
     }
+    $SignParameters += "build\${OutputFileBaseName}.exe"
 
     [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
     "File: $CertificateFile"
