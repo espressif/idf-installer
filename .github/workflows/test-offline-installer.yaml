@@ -1,0 +1,38 @@
+name: test-offline-installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      idf_version:
+        description: 'IDF Version'
+        required: true
+        default: 'v4.2'
+      idf_short_version:
+        description: 'IDF Version - only major and minor numbers contained in name of desktop link'
+        required: true
+        default: 'v4.2'
+      installer_url:
+        description: 'Installer URL'
+        required: true
+        default: 'https://github.com/espressif/idf-installer/releases/download/offline-2.6-beta-21/esp-idf-tools-setup-offline-2.6-beta-21.exe'
+      components:
+        description: 'Comma separated list of installer components from IdfToolsSetup.iss'
+        required: true
+        default: ide/powershell/desktop,ide/cmd/desktop
+
+jobs:
+  check-requirements:
+    name: Test Offline installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Download Installer
+        run:  Invoke-WebRequest ${{ github.event.inputs.installer_url }} -OutFile installer.exe
+        shell: pwsh
+      - name: Run installer
+        run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "${{ github.event.inputs.idf_version }}" -Components "${{ github.event.inputs.components }}"
+        shell: pwsh
+      - name: Build blink
+        run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "${{ github.event.inputs.idf_short_version }}"
+        shell: pwsh
