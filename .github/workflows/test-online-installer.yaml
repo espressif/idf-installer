@@ -8,9 +8,9 @@ on:
         required: true
         default: 'v4.2'
       idf_short_version:
-        description: 'IDF Version - only major and minor numbers contained in name of desktop link'
+        description: 'IDF Version - only major and minor numbers without any "v" contained in name of desktop link'
         required: true
-        default: 'v4.2'
+        default: '4.2'
       installer_url:
         description: 'Installer URL'
         required: true
