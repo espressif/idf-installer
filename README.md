@@ -3,11 +3,11 @@
 ## Download
 | ESP-IDF Tools Installer | Online | Offline |
 | ----------------------- | ------ | ------- |
-| 2.6 (Beta) with Eclipse | 2.1 MB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.6.exe) | 1.2 GB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.6.exe) ] |
-| 2.5 - 2021-02-09 | 19 MB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.5.exe) | 793 MB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.5.exe) ] |
-| 2.4 - 2021-02-09 | 19 MB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.4.exe) | |
-| 2.3 - 2020-05-28 | 336 MB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.3.exe) | |
-| 2.2 - 2020-05-28 | 390 MB [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.2.exe) | |
+| 2.6 (Beta) with Eclipse | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.6.exe) 2.1 MB  | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.6.exe) 1.2 GB |
+| 2.5 - 2021-02-09 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.5.exe) 19 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.5.exe) 793 MB |
+| 2.4 - 2021-02-09 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.4.exe) 19 MB | |
+| 2.3 - 2020-05-28 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.3.exe) 336 MB | |
+| 2.2 - 2020-05-28 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.2.exe) 390 MB | |
 
 
 ## Developer documentation
