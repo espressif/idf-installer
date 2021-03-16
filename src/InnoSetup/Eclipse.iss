@@ -25,6 +25,8 @@ begin
   IdfVersion := GetIDFVersionFromHeaderFile();
 
   Content := '{' + #13#10;
+  Content := Content + '  "$schema": "http://json-schema.org/schema#",' + #13#10;
+  Content := Content + '  "$id": "http://dl.espressif.com/dl/schemas/esp_idf",' + #13#10;
   Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
   Content := Content + '  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",' + #13#10;
   Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitExecutablePath) + '",' + #13#10;

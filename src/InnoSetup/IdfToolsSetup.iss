@@ -75,17 +75,17 @@
 #define BUILD = '..\..\build\' + INSTALLERBUILDTYPE
 
 #define COMPONENT_TOOLS = 'tools'
-#define COMPONENT_TOOLS_GIT = 'tools\git'
-#define COMPONENT_ECLIPSE = 'ide\eclipse'
-#define COMPONENT_ECLIPSE_DESKTOP = 'ide\eclipse\desktop'
-#define COMPONENT_POWERSHELL = 'ide\powershell'
-#define COMPONENT_POWERSHELL_DESKTOP = 'ide\powershell\desktop'
-#define COMPONENT_POWERSHELL_STARTMENU = 'ide\powershell\startmenu'
-#define COMPONENT_CMD = 'ide\cmd'
-#define COMPONENT_CMD_DESKTOP = 'ide\cmd\desktop'
-#define COMPONENT_CMD_STARTMENU = 'ide\cmd\startmenu'
+#define COMPONENT_TOOLS_GIT = 'tools/git'
+#define COMPONENT_ECLIPSE = 'ide/eclipse'
+#define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
+#define COMPONENT_POWERSHELL = 'ide/powershell'
+#define COMPONENT_POWERSHELL_DESKTOP = 'ide/powershell/desktop'
+#define COMPONENT_POWERSHELL_STARTMENU = 'ide\powershell/startmenu'
+#define COMPONENT_CMD = 'ide/cmd'
+#define COMPONENT_CMD_DESKTOP = 'ide/cmd/desktop'
+#define COMPONENT_CMD_STARTMENU = 'ide/cmd/startmenu'
 #define COMPONENT_OPTIMIZATION = 'optimization'
-#define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization\espressif_download'
+#define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
