@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param (
     [Parameter()]
-    [string]$IdfPath = "C:/Users/runneradmin/Desktop/esp-idf"
+    [String]
+    $IdfPath = "C:/Users/runneradmin/Desktop/esp-idf",
+    [String]
+    $IdfShortVersion = "4.2"
 )
 
 Set-Location "${IdfPath}"
@@ -11,7 +14,7 @@ Set-Location "${IdfPath}"
 Start-Sleep -s 5
 
 $WSShell = New-Object -comObject WScript.Shell
-$LinkPath = 'C:/Users/runneradmin/Desktop/ESP-IDF 4.2 CMD.lnk'
+$LinkPath = "C:/Users/runneradmin/Desktop/ESP-IDF ${IdfShortVersion} CMD.lnk"
 
 if (-Not(Test-Path $LinkPath -PathType Leaf)) {
     "$LinkPath does not exist"

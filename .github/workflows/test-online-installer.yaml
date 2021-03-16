@@ -7,6 +7,10 @@ on:
         description: 'IDF Version'
         required: true
         default: 'v4.2'
+      idf_short_version:
+        description: 'IDF Version - only major and minor numbers contained in name of desktop link'
+        required: true
+        default: 'v4.2'
       installer_url:
         description: 'Installer URL'
         required: true
@@ -30,5 +34,5 @@ jobs:
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "${{ github.event.inputs.idf_version }}" -Components "${{ github.event.inputs.components }}"
         shell: pwsh
       - name: Build blink
-        run: ./src/PowerShell/Test-IdfCmd.ps1
+        run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "${{ github.event.inputs.idf_short_version }}"
         shell: pwsh
