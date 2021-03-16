@@ -2,28 +2,34 @@
 param (
     [Parameter()]
     [String]
-    $Installer="C:\Output\esp-idf-tools-setup-unsigned.exe",
+    $Installer="./installer.exe",
     [String]
-    $IdfPath = "C:\Users\ContainerAdministrator\Desktop\esp-idf",
+    $IdfVersion = "v4.2",
     [String]
-    $IdfVersion = "v4.1"
+    $Components = "ide/powershell,ide/cmd"
 )
 
 "Configuration:"
 "* Installer = $Installer"
-"* IdfPath = $IdfPath"
 "* IdfVersion = $IdfVersion"
 
+$Directory = (Get-Location).Path
+$LogFile = Join-Path -Path $Directory -ChildPath out.txt
 $ProcessName = (Get-Item $Installer).Basename
 "Waiting for process: $ProcessName"
-
-# Set PYTHONHOME and PYTHONPATH to some directory which is not on the system to test process of creating venv
-# The Installer and IDF shell wrappers contains clearing of variables
-$env:PYTHONPATH="C:\Hvannadalshnúkur"
-$env:PYTHONHOME="C:\Hvannadalshnúkur"
-
-mkdir C:\Temp
-&$Installer /VERYSILENT /LOG=C:\Temp\install.txt /SUPPRESSMSGBOXES /SP- /NOCANCEL /NORESTART /IDFVERSION=${IdfVersion}
+&$Installer /VERYSILENT /LOG=$LogFile /COMPONENTS=$Components /SUPPRESSMSGBOXES /SP- /NOCANCEL /NORESTART /IDFVERSION=${IdfVersion}
 $InstallerProcess = Get-Process $ProcessName
-Wait-Process -Id $InstallerProcess.id
-Get-Content -Tail 80 C:\Temp\install.txt
+Sleep 5
+# Logs must be watched in separate job, because Inno Setup does not allow to print stdout.
+$LogWatcher = Start-Job -ArgumentList $LogFile -ScriptBlock {
+    Param($LogFile)
+    Get-Content -Path $LogFile -Wait
+}
+
+# Wait for installer to finish
+while (!$InstallerProcess.HasExited) {
+    Sleep 1
+    Receive-Job $LogWatcher
+}
+
+Stop-Job $LogWatcher
