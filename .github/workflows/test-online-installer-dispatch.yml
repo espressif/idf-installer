@@ -1,4 +1,4 @@
-name: test-online-installer
+name: test-online-installer-dispatch
 
 on:
   workflow_dispatch:

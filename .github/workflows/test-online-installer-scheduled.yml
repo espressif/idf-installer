@@ -1,4 +1,4 @@
-name: test-online-installer-scheduled
+name: test-online-installer
 
 on:
   schedule:
