@@ -107,7 +107,7 @@ function PrepareOfflineBranches {
         git -C "$BundleDir" fetch
     } else {
         "Performing full clone."
-        git clone --shallow-since=2020-01-01 --jobs 8 --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
+        git clone -q --shallow-since=2020-01-01 --jobs 8 --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
 
         # Remove hidden attribute from .git. Inno Setup is not able to read it.
         attrib "$BundleDir\.git" -s -h

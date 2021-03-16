@@ -22,10 +22,11 @@ jobs:
         shell: bash
       - name: Install Inno Setup Download plugin
         shell: pwsh
-        run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
+        run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         run: .\Build-Installer.ps1 -InstallerType offline
       - name: Create Release
