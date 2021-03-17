@@ -7,12 +7,17 @@
 var
   IDFZIPFileVersion, IDFZIPFileName: String;
 
-function GetIDFPath(Unused: String): String;
+function GetIDFPath(FileName: String): String;
 begin
-  if IDFUseExisting then
-    Result := IDFExistingPath
-  else
+  if IDFUseExisting then begin
+    Result := IDFExistingPath;
+  end else begin
     Result := IDFDownloadPath;
+  end;
+  if (Result[Length(Result)] <> '\') then begin
+    Result := Result + '\';
+  end;
+  Result := Result + FileName;
 end;
 
 function GetIDFZIPFileVersion(Version: String): String;

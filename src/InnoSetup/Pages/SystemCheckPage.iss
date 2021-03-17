@@ -727,3 +727,13 @@ begin
   StopSystemCheckButton.Visible := CurPageID = SystemCheckPage.ID;
   SystemCheckViewer.Visible := CurPageID = SystemCheckPage.ID;
 end;
+
+<event('ShouldSkipPage')>
+function ShouldSkipSystemCheckPage(PageID: Integer): Boolean;
+begin
+  if (PageID = SystemCheckPage.ID) then begin
+    if (SkipSystemCheck) then begin
+      Result := True;
+    end;
+  end;
+end;

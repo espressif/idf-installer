@@ -117,7 +117,7 @@ The offline version is built by setting /DOFFLINE=yes to ISCC on the command-lin
 To speed up development build it's possible to disable compression which is set by default to lzma.
 
 ```
-.\Build-Installer.ps1 -InstallerType offline -Compression none >out.txt
+.\Build-Installer.ps1 -InstallerType offline -Compression none -SignInstaller $false >out.txt
 ```
 
 #### Development work in idf_tool_setup.iss

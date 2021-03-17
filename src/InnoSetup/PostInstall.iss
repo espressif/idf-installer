@@ -21,7 +21,7 @@ begin
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
-  Command := ExpandConstant('/k ""{app}\idf_cmd_init.bat" "') + GetPythonVirtualEnvPath() + '" "' + GitPath + '""';
+  Command := '/k ""' + GetIDFPath('idf_cmd_init.bat') + '"';
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
@@ -47,7 +47,7 @@ begin
   Destination := GetLinkDestination(LinkString, 'PowerShell');
   Description := '{#IDFPsShortcutDescription}';
 
-  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}\Initialize-IDF.ps1"" ') + '"' +  GetPathWithForwardSlashes(GitPath) + '" "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '"'
+  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""' + GetIDFPath('Initialize-Idf.ps1') + '"" ') + '"';
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
@@ -132,6 +132,47 @@ begin
   InstallIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), GetEclipsePath(''));
 end;
 
+procedure CreateCommandPromptLauncherFile();
+var
+  Content: String;
+  FileName: String;
+begin
+  Content := '@echo off' + #13#10;
+  Content := Content + 'set PYTHONPATH=' + #13#10;
+  Content := Content + 'set PYTHONHOME=' + #13#10;
+  Content := Content + 'set PYTHONNOUSERSITE=True' + #13#10;
+  Content := Content + 'set "PATH='
+  Content := Content + GitPath + ';';
+  Content := Content + GetPythonVirtualEnvPath() + ';';
+  Content := Content + '%PATH%"' + #13#10;
+  Content := Content + 'export.bat' + #13#10;
+
+  FileName := GetIDFPath('idf_cmd_init.bat');
+  if not (SaveStringToFile(FileName, Content, False)) then begin
+    Log('Unable to update the file.')
+  end;
+end;
+
+procedure CreatePowerShellLauncherFile();
+var
+  Content: String;
+  FileName: String;
+begin
+  Content := '';
+  Content := Content + '$env:PYTHONPATH=""' + #13#10;
+  Content := Content + '$env:PYTHONHOME=""' + #13#10;
+  Content := Content + '$env:PYTHONNOUSERSITE="True"' + #13#10;
+  Content := Content + '$env:PATH="'
+  Content := Content + GitPath + ';';
+  Content := Content + GetPythonVirtualEnvPath() + ';';
+  Content := Content + '$env:PATH"' + #13#10;
+  Content := Content + '.\export.ps1' + #13#10;
+
+  FileName := GetIDFPath('Initialize-Idf.ps1');
+  if not (SaveStringToFile(FileName, Content, False)) then begin
+    Log('Unable to update the file.')
+  end;
+end;
 
 <event('CurStepChanged')>
 procedure PostInstallSteps(CurStep: TSetupStep);
@@ -166,6 +207,14 @@ begin
     end;
 
     IDFToolsSetup();
+
+    if (WizardIsComponentSelected('{#COMPONENT_CMD}')) then begin
+      CreateCommandPromptLauncherFile();
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_POWERSHELL}')) then begin
+      CreatePowerShellLauncherFile();
+    end;
 
     if (WizardIsComponentSelected('{#COMPONENT_CMD_STARTMENU}')) then begin
       CreateIDFCommandPromptShortcut('{autostartmenu}\Programs\ESP-IDF');

@@ -10,7 +10,9 @@ param (
     [String]
     $Python = 'python',
     [Boolean]
-    $SignInstaller = $true
+    $SignInstaller = $true,
+    [String]
+    $SetupCompiler = 'iscc'
 )
 
 # Stop on error
@@ -227,6 +229,17 @@ function SignInstaller {
 
 }
 
+function CheckInnoSetupInstallation {
+    if (Get-Command $SetupCompiler -ErrorAction SilentlyContinue) {
+        "Inno Setup found"
+        return
+    }
+    "Inno Setup not found in PATH. Please install as Administrator following dependencies:"
+    "choco install innosetup inno-download-plugin"
+    Exit 1
+}
+
+CheckInnoSetupInstallation
 $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
 $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
@@ -270,9 +283,9 @@ $IsccParameters += "/DINSTALLERBUILDTYPE=$InstallerType"
 $IsccParameters += ".\src\InnoSetup\IdfToolsSetup.iss"
 $IsccParameters += "/F$OutputFileBaseName"
 
-$Command = "iscc $IsccParameters"
+$Command = "$SetupCompiler $IsccParameters"
 $Command
-iscc $IsccParameters
+&$SetupCompiler $IsccParameters
 if (0 -eq $LASTEXITCODE) {
     $Command
     Get-ChildItem -l build\$OutputFileName
