@@ -119,9 +119,11 @@ var
   MajorVersion: String;
   MinorVersion: String;
 begin
-  HeaderFileName := GetIDFPath('') + '\components\esp_common\include\esp_idf_version.h';
+  HeaderFileName := GetIDFPath('\components\esp_common\include\esp_idf_version.h');
+  Log('Parsing version from header file: ' + HeaderFileName);
   if (not FileExists(HeaderFileName)) then begin
     Result := '';
+    Log('Unable to determine version');
     Exit;
   end;
 
@@ -136,6 +138,7 @@ begin
       Delete(Line, 1, 29);
       MinorVersion := Trim(Line);
       Result := MajorVersion + '.' + MinorVersion;
+      Log('Detected version: ' + Result);
       Exit;
     end
   end;
@@ -176,7 +179,7 @@ end;
 function GetIDFShortVersion(): String;
 begin
   { Transform main or master to x.y }
-  if (Pos('main', IDFDownloadVersion) > 0) or (Pos('master', IDFDownloadVersion) > 0) then begin
+  if (Pos('main', IDFDownloadVersion) > 0) or (Pos('master', IDFDownloadVersion) > 0) or IDFUseExisting then begin
     Result := GetIDFVersionFromHeaderFile();
   end else begin
     Result := GetShortVersion(IDFDownloadVersion);
