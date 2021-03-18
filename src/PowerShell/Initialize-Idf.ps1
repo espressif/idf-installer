@@ -14,6 +14,13 @@ if (-not $isEspIdfRoot) {
     Write-Output "This script must be invoked from ESP-IDF directory."
 }
 
+$PythonCommand="$IdfPythonDir\python.exe"
+function idf.py { &$PythonCommand "$IDF_PATH\tools\idf.py" $args }
+function esptool.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\esptool.py" $args }
+function espefuse.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\espefuse.py" $args }
+function otatool.py { &$PythonCommand "$IDF_PATH\components\app_update\otatool.py" $args }
+function parttool.py { &$PythonCommand "$IDF_PATH\components\partition_table\parttool.py" $args }
+
 # Clear PYTHONPATH as it may contain libraries of other Python versions
 if ($null -ne $env:PYTHONPATH) {
     "Clearing PYTHONPATH, was set to $env:PYTHONPATH"
