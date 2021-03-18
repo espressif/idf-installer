@@ -184,7 +184,7 @@ begin
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
-      SaveIdfConfiguration(GetEclipsePath('esp_idf.json'));
+      SaveIdfEclipseConfiguration(GetEclipsePath('esp_idf.json'));
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin

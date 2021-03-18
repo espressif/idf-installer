@@ -8,10 +8,10 @@
 
 set IDF_PATH=%CD%
 
-%IDF_TOOLS_PATH%/curator.exe get-property python --idf-path "%IDF_PATH%">"%IDF_PATH%"\out2.txt
+%IDF_TOOLS_PATH%/curator.exe get --property python --idf-path %IDF_PATH%\>"%IDF_PATH%"\out2.txt
 set /p IDF_PYTHON_DIR=<"%IDF_PATH%"\out2.txt
 
-%IDF_TOOLS_PATH%/curator.exe get-property gitPath>"%IDF_PATH%"\out.txt
+%IDF_TOOLS_PATH%/curator.exe get --property gitPath>"%IDF_PATH%"\out.txt
 set /p IDF_GIT_DIR=<"%IDF_PATH%"\out.txt
 
 :: Clear PYTHONPATH as it may contain libraries of other Python versions

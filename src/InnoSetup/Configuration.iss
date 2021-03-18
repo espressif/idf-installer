@@ -206,7 +206,7 @@ begin
   Result := PythonVirtualEnvPath;
 end;
 
-procedure SaveIdfConfiguration(FilePath: String);
+procedure SaveIdfEclipseConfiguration(FilePath: String);
 var
     Content: String;
     IdfId: String;
@@ -245,4 +245,59 @@ begin
               mbInformation, MB_OK);
     Log('Unable to write configuration!');
   end;
+end;
+
+procedure SaveIdfConfiguration(FilePath: String);
+var
+    Content: String;
+    IdfId: String;
+    IdfPathWithForwardSlashes: String;
+    IdfVersion: String;
+    Command: String;
+    ResultCode: Integer;
+begin
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''))
+  IdfId := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
+  IdfVersion := GetIDFVersionFromHeaderFile();
+
+  if (not FileExists(FilePath)) then begin
+
+    Content := '{' + #13#10;
+    Content := Content + '  "$schema": "http://json-schema.org/schema#",' + #13#10;
+    Content := Content + '  "$id": "http://dl.espressif.com/dl/schemas/esp_idf",' + #13#10;
+    Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
+    Content := Content + '  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",' + #13#10;
+    Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitExecutablePath) + '",' + #13#10;
+    Content := Content + '  "idfToolsPath": "' + GetPathWithForwardSlashes(ExpandConstant('{app}')) + '",' + #13#10;
+    Content := Content + '  "idfSelectedId": "' + IdfId + '",' + #13#10;
+    Content := Content + '  "idfInstalled": {' + #13#10;
+    Content := Content + '  }' + #13#10;
+    Content := Content + '}' + #13#10;
+
+
+    Log('Writing ESP-IDF configuration to file ' + FilePath);
+    Log(Content);
+    if (SaveStringToFile(FilePath, Content, False)) then begin
+      Log('Configuration stored.');
+    end else begin
+      MsgBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
+                + 'Please check the file access and retry the installation.',
+                mbInformation, MB_OK);
+      Log('Unable to write configuration!');
+    end;
+  end;
+
+  Command := 'add';
+  Command := Command + ' --idf-version "' + IdfVersion + '"';
+  Command := Command + ' --idf-path "' + IdfPathWithForwardSlashes + '"';
+  Command := Command + ' --python "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"';
+
+  Log(ExpandConstant('{app}\curator.exe') + ' ' + Command);
+  if Exec(ExpandConstant('{app}\curator.exe'), Command, '', SW_SHOW,
+     ewWaitUntilTerminated, ResultCode) then begin
+     Log('Curator success');
+  end else begin
+    Log('Curator failed');
+  end;
+
 end;

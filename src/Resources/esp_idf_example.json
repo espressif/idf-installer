@@ -4,11 +4,11 @@
     "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",
     "gitPath": "C:/Users/User/.espressif/tools/idf-git/2.30.1/cmd/git.exe",
     "idfToolsPath": "C:/Users/User/.espressif",
-    "idfSelectedId": "esp-idf-e97559e8bec9da84e13bc848492aafb2",
+    "idfSelectedId": "esp-idf-2caff7ee4b32b184c15aa6da168d817b",
     "idfInstalled": {
-      "esp-idf-e97559e8bec9da84e13bc848492aafb2": {
+      "esp-idf-2caff7ee4b32b184c15aa6da168d817b": {
         "version": "4.2",
-        "path": "C:/Users/User/Desktop/esp-idf-4.2",
+        "path": "C:/Users/User/Desktop/esp-idf-4.2/",
         "python": "C:/Users/User/.espressif/python_env/idf4.2_py3.8_env/Scripts/python.exe"
       }
     }
