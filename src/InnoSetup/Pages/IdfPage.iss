@@ -8,8 +8,6 @@ var
   IDFPage: TInputOptionWizardPage;
   IDFSelectionDownloadIndex: Integer;
   IDFSelectionCustomPathIndex: Integer;
-  IDFUseExisting: Boolean;
-  IDFExistingPath: String;
 
 function IDFDownloadRequired(): Boolean;
 begin

@@ -67,8 +67,6 @@ end;
 
 var
   PythonPage: TInputOptionWizardPage;
-  PythonVersion, PythonPath, PythonExecutablePath: String;
-
 
 function GetPythonPath(Unused: String): String;
 begin

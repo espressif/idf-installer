@@ -4,13 +4,10 @@
 # installation for ESP-IDF versions older than IDF v4.1.
 # It does the same thing as "export.ps1" in IDF v4.1.
 
-Param
-(
-    [String]$IdfGitDir,
-    [String]$IdfPythonDir
-)
+$IDF_PATH=(Get-Location).Path
+$IdfGitDir=&$env:IDF_TOOLS_PATH/curator.exe get-property gitPath
+$IdfPythonDir=&$env:IDF_TOOLS_PATH/curator.exe get-property python --idf-path "$IDF_PATH"
 
-$IDF_PATH = "."
 $isEspIdfRoot = (Test-Path "$IDF_PATH/tools/idf.py")
 if (-not $isEspIdfRoot) {
     Write-Output "Usage: Initialize-IDF.ps1 ^<Python directory^> ^<Git directory^>"

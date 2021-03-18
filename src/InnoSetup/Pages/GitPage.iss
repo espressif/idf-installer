@@ -101,7 +101,6 @@ end;
 
 var
   GitPage: TInputOptionWizardPage;
-  GitPath, GitExecutablePath, GitVersion: String;
   GitUseExisting: Boolean;
   GitSelectionInstallIndex: Integer;
   GitSelectionCustomPathIndex: Integer;

@@ -20,6 +20,16 @@ var
     SkipSystemCheck: Boolean;
     UseEmbeddedGit: Boolean;
     UseEmbeddedPython: Boolean;
+    IDFUseExisting: Boolean;
+    IDFExistingPath: String;
+    IDFDownloadPath: String;
+    IDFDownloadVersion: String;
+    GitPath:String;
+    GitExecutablePath:String;
+    GitVersion: String;
+    PythonVersion:String;
+    PythonPath:String;
+    PythonExecutablePath: String;
 
 function GetConfigurationString(Key: String; Default: String):String;
 var Value: String;
@@ -73,4 +83,166 @@ end;
 function IsOnlineMode():Boolean;
 begin
     Result := not IsOfflineMode;
+end;
+
+
+function GetIDFPath(FileName: String): String;
+begin
+  if IDFUseExisting then begin
+    Result := IDFExistingPath;
+  end else begin
+    Result := IDFDownloadPath;
+  end;
+  if (Result[Length(Result)] <> '\') then begin
+    Result := Result + '\';
+  end;
+  Result := Result + FileName;
+end;
+
+function GetPathWithForwardSlashes(Path: String): String;
+var
+  ResultPath: String;
+begin
+  ResultPath := Path;
+  StringChangeEx(ResultPath, '\', '/', True);
+  Result := ResultPath;
+end;
+
+{ Find Major and Minor version in esp_idf_version.h file. }
+function GetIDFVersionFromHeaderFile():String;
+var
+  HeaderFileName: String;
+  HeaderLines: TArrayOfString;
+  LineIndex: Integer;
+  LineCount: Longint;
+  Line: String;
+  MajorVersion: String;
+  MinorVersion: String;
+begin
+  HeaderFileName := GetIDFPath('') + '\components\esp_common\include\esp_idf_version.h';
+  if (not FileExists(HeaderFileName)) then begin
+    Result := '';
+    Exit;
+  end;
+
+  LoadStringsFromFile(HeaderFileName, HeaderLines);
+  LineCount := GetArrayLength(HeaderLines);
+  for LineIndex := 0 to LineCount - 1 do begin
+    Line := HeaderLines[LineIndex];
+    if (pos('define ESP_IDF_VERSION_MAJOR', Line) > 0) then begin
+      Delete(Line, 1, 29);
+      MajorVersion := Trim(Line);
+    end else if (pos('define ESP_IDF_VERSION_MINOR', Line) > 0) then begin
+      Delete(Line, 1, 29);
+      MinorVersion := Trim(Line);
+      Result := MajorVersion + '.' + MinorVersion;
+      Exit;
+    end
+  end;
+end;
+
+{ Get short version from long version e.g. 3.7.9 -> 3.7 }
+function GetShortVersion(VersionString:String):String;
+var
+  VersionIndex: Integer;
+  MajorString: String;
+  MinorString: String;
+  DotIndex: Integer;
+begin
+  { Transform version vx.y or release/vx.y to x.y }
+  VersionIndex := pos('v', VersionString);
+  if (VersionIndex > 0) then begin
+    Delete(VersionString, 1, VersionIndex);
+  end;
+
+  { Transform version x.y.z to x.y }
+  DotIndex := pos('.', VersionString);
+  if (DotIndex > 0) then begin
+    MajorString := Copy(VersionString, 1, DotIndex - 1);
+    Delete(VersionString, 1, DotIndex);
+    { Trim trailing version numbers. }
+    DotIndex := pos('.', VersionString);
+    if (DotIndex > 0) then begin
+      MinorString := Copy(VersionString, 1, DotIndex - 1);
+      VersionString := MajorString + '.' + MinorString;
+    end else begin
+     VersionString :=  MajorString + '.' + VersionString;
+    end;
+  end;
+
+  Result := VersionString;
+end;
+
+function GetIDFShortVersion(): String;
+begin
+  { Transform main or master to x.y }
+  if (Pos('main', IDFDownloadVersion) > 0) or (Pos('master', IDFDownloadVersion) > 0) then begin
+    Result := GetIDFVersionFromHeaderFile();
+  end else begin
+    Result := GetShortVersion(IDFDownloadVersion);
+  end;
+end;
+
+{ Get IDF version string in combination with Python version. }
+{ Result e.g.: idf4.1_py38 }
+function GetIDFPythonEnvironmentVersion():String;
+begin
+  Result := 'idf' + GetIDFShortVersion() + '_py' + GetShortVersion(PythonVersion);
+end;
+
+function GetPythonVirtualEnvPath(): String;
+var
+  PythonVirtualEnvPath: String;
+begin
+  { The links should contain reference to Python vitual env }
+  PythonVirtualEnvPath := ExpandConstant('{app}\python_env\') + GetIDFPythonEnvironmentVersion() + '_env\Scripts';
+  Log('Path to Python in virtual env: ' + PythonVirtualEnvPath);
+
+  { Fallback in case of not existing environment. }
+  if (not FileExists(PythonVirtualEnvPath + '\python.exe')) then begin
+    PythonVirtualEnvPath := PythonPath;
+    Log('python.exe not found, reverting to:' + PythonPath);
+  end;
+  Result := PythonVirtualEnvPath;
+end;
+
+procedure SaveIdfConfiguration(FilePath: String);
+var
+    Content: String;
+    IdfId: String;
+    IdfPathWithForwardSlashes: String;
+    IdfVersion: String;
+begin
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''))
+  IdfId := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
+  IdfVersion := GetIDFVersionFromHeaderFile();
+
+  Content := '{' + #13#10;
+  Content := Content + '  "$schema": "http://json-schema.org/schema#",' + #13#10;
+  Content := Content + '  "$id": "http://dl.espressif.com/dl/schemas/esp_idf",' + #13#10;
+  Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
+  Content := Content + '  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",' + #13#10;
+  Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitExecutablePath) + '",' + #13#10;
+  Content := Content + '  "idfToolsPath": "' + GetPathWithForwardSlashes(ExpandConstant('{app}')) + '",' + #13#10;
+  Content := Content + '  "idfSelectedId": "' + IdfId + '",' + #13#10;
+  Content := Content + '  "idfInstalled": {' + #13#10;
+  Content := Content + '    "' + IdfId + '": {' + #13#10;
+  Content := Content + '      "version": "' + IdfVersion + '",' + #13#10;
+  Content := Content + '      "path": "' + IdfPathWithForwardSlashes + '",' + #13#10;
+  Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"' + #13#10;
+  Content := Content + '    }' + #13#10;
+  Content := Content + '  }' + #13#10;
+  Content := Content + '}' + #13#10;
+
+
+  Log('Writing ESP-IDF configuration to file ' + FilePath);
+  Log(Content);
+  if (SaveStringToFile(FilePath, Content, False)) then begin
+    Log('Configuration stored.');
+  end else begin
+     MsgBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
+              + 'Please check the file access and retry the installation.',
+              mbInformation, MB_OK);
+    Log('Unable to write configuration!');
+  end;
 end;

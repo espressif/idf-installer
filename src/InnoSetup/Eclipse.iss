@@ -12,48 +12,6 @@ begin
   Result := GetEclipsePath('eclipse.exe');
 end;
 
-procedure SaveEclipseConfiguration();
-var
-    FilePath: String;
-    Content: String;
-    IdfId: String;
-    IdfPathWithForwardSlashes: String;
-    IdfVersion: String;
-begin
-  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''))
-  IdfId := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
-  IdfVersion := GetIDFVersionFromHeaderFile();
-
-  Content := '{' + #13#10;
-  Content := Content + '  "$schema": "http://json-schema.org/schema#",' + #13#10;
-  Content := Content + '  "$id": "http://dl.espressif.com/dl/schemas/esp_idf",' + #13#10;
-  Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
-  Content := Content + '  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",' + #13#10;
-  Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitExecutablePath) + '",' + #13#10;
-  Content := Content + '  "idfToolsPath": "' + GetPathWithForwardSlashes(ExpandConstant('{app}')) + '",' + #13#10;
-  Content := Content + '  "idfSelectedId": "' + IdfId + '",' + #13#10;
-  Content := Content + '  "idfInstalled": {' + #13#10;
-  Content := Content + '    "' + IdfId + '": {' + #13#10;
-  Content := Content + '      "version": "' + IdfVersion + '",' + #13#10;
-  Content := Content + '      "path": "' + IdfPathWithForwardSlashes + '",' + #13#10;
-  Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"' + #13#10;
-  Content := Content + '    }' + #13#10;
-  Content := Content + '  }' + #13#10;
-  Content := Content + '}' + #13#10;
-
-  FilePath := GetEclipsePath('esp_idf.json');
-  Log('Writing Eclipse configuration to file ' + FilePath);
-  Log(Content);
-  if (SaveStringToFile(FilePath, Content, False)) then begin
-    Log('Configuration stored.');
-  end else begin
-     MsgBox('Unable to write Eclipse configuration to ' + FilePath + #13#10
-              + 'Please check the file access and retry the installation.',
-              mbInformation, MB_OK);
-    Log('Unable to write configuration!');
-  end;
-end;
-
 procedure CreateIDFEclipseShortcut(LnkString: String);
 var
   Destination: String;

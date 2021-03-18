@@ -132,48 +132,6 @@ begin
   InstallIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), GetEclipsePath(''));
 end;
 
-procedure CreateCommandPromptLauncherFile();
-var
-  Content: String;
-  FileName: String;
-begin
-  Content := '@echo off' + #13#10;
-  Content := Content + 'set PYTHONPATH=' + #13#10;
-  Content := Content + 'set PYTHONHOME=' + #13#10;
-  Content := Content + 'set PYTHONNOUSERSITE=True' + #13#10;
-  Content := Content + 'set "PATH='
-  Content := Content + GitPath + ';';
-  Content := Content + GetPythonVirtualEnvPath() + ';';
-  Content := Content + '%PATH%"' + #13#10;
-  Content := Content + 'export.bat' + #13#10;
-
-  FileName := GetIDFPath('idf_cmd_init.bat');
-  if not (SaveStringToFile(FileName, Content, False)) then begin
-    Log('Unable to update the file.')
-  end;
-end;
-
-procedure CreatePowerShellLauncherFile();
-var
-  Content: String;
-  FileName: String;
-begin
-  Content := '';
-  Content := Content + '$env:PYTHONPATH=""' + #13#10;
-  Content := Content + '$env:PYTHONHOME=""' + #13#10;
-  Content := Content + '$env:PYTHONNOUSERSITE="True"' + #13#10;
-  Content := Content + '$env:PATH="'
-  Content := Content + GitPath + ';';
-  Content := Content + GetPythonVirtualEnvPath() + ';';
-  Content := Content + '$env:PATH"' + #13#10;
-  Content := Content + '.\export.ps1' + #13#10;
-
-  FileName := GetIDFPath('Initialize-Idf.ps1');
-  if not (SaveStringToFile(FileName, Content, False)) then begin
-    Log('Unable to update the file.')
-  end;
-end;
-
 <event('CurStepChanged')>
 procedure PostInstallSteps(CurStep: TSetupStep);
 var
@@ -207,14 +165,7 @@ begin
     end;
 
     IDFToolsSetup();
-
-    if (WizardIsComponentSelected('{#COMPONENT_CMD}')) then begin
-      CreateCommandPromptLauncherFile();
-    end;
-
-    if (WizardIsComponentSelected('{#COMPONENT_POWERSHELL}')) then begin
-      CreatePowerShellLauncherFile();
-    end;
+    SaveIdfConfiguration(ExpandConstant('{app}\esp_idf.json'));
 
     if (WizardIsComponentSelected('{#COMPONENT_CMD_STARTMENU}')) then begin
       CreateIDFCommandPromptShortcut('{autostartmenu}\Programs\ESP-IDF');
@@ -233,7 +184,7 @@ begin
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
-      SaveEclipseConfiguration();
+      SaveIdfConfiguration(GetEclipsePath('esp_idf.json'));
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin
