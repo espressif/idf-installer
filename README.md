@@ -25,7 +25,7 @@ Windows Installer `esp-idf-tools-setup` provides the following command-line para
 * ``/IDFVERSIONSURL=[URL]`` - Use URL to download list of IDF versions. Default: https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 * ``/LOG=[PATH]`` - Store installation log file in specific directory. Default: empty.
 * ``/OFFLINE=[yes|no]`` - Execute installation of Python packages by PIP in offline mode. The same result can be achieved by setting the environment variable PIP_NO_INDEX. Default: no.
-* ``/USEEMBEDDEDGIT=[yes|no]`` - Use Embedded Git got the installation. Set to ``no`` to enable Git selection screen. Default: yes.
+* ``/USEEMBEDDEDGIT=[yes|no]`` - Use Embedded Git for the installation. Set to ``no`` to enable Git selection screen. Default: yes.
 * ``/USEEMBEDDEDPYTHON=[yes|no]`` - Use Embedded Python version for the installation. Set to ``no`` to allow Python selection screen in the installer. Default: yes.
 * ``/PYTHONNOUSERSITE=[yes|no]`` - Set PYTHONNOUSERSITE variable before launching any Python command to avoid loading Python packages from AppData\Roaming. Default: yes.
 * ``/PYTHONWHEELSURL=[URL]`` - Specify URLs to PyPi repositories for resolving binary Python Wheel dependencies. The same result can be achieved by setting the environment variable PIP_EXTRA_INDEX_URL. Default: https://dl.espressif.com/pypi
