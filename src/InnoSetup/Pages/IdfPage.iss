@@ -36,7 +36,16 @@ begin
   IDFSelectionDownloadIndex := Page.Add('Download ESP-IDF')
   IDFSelectionCustomPathIndex := Page.Add('Use an existing ESP-IDF directory');
 
-  Page.SelectedValueIndex := 0;
+  if (IDFUseExisting) then begin
+    Page.SelectedValueIndex := 1;
+
+    { IDF directory specified from command line. }
+    if (IDFDirectory <> '') then begin
+      ChoicePageSetInputText(Page, IDFDirectory);
+    end;
+  end else begin
+    Page.SelectedValueIndex := 0;
+  end;
   IDFPageUpdateInput();
 end;
 
@@ -69,14 +78,14 @@ begin
 
     if not DirExists(IDFPath) then
     begin
-      MsgBox('Directory doesn''t exist: ' + IDFPath + #13#10 +
+      MessageBox('Directory doesn''t exist: ' + IDFPath + #13#10 +
              'Please choose an existing ESP-IDF directory', mbError, MB_OK);
       exit;
     end;
 
     if Pos(' ', IDFPath) <> 0 then
     begin
-      MsgBox('ESP-IDF build system does not support spaces in paths.' + #13#10
+      MessageBox('ESP-IDF build system does not support spaces in paths.' + #13#10
              'Please choose a different directory.', mbError, MB_OK);
       exit;
     end;
@@ -84,7 +93,7 @@ begin
     IDFPyPath := IDFPath + '\tools\idf.py';
     if not FileExists(IDFPyPath) then
     begin
-      MsgBox(NotSupportedMsg +
+      MessageBox(NotSupportedMsg +
              'Can not find idf.py in ' + IDFPath + '\tools', mbError, MB_OK);
       exit;
     end;
@@ -92,7 +101,7 @@ begin
     RequirementsPath := IDFPath + '\requirements.txt';
     if not FileExists(RequirementsPath) then
     begin
-      MsgBox(NotSupportedMsg +
+      MessageBox(NotSupportedMsg +
              'Can not find requirements.txt in ' + IDFPath, mbError, MB_OK);
       exit;
     end;

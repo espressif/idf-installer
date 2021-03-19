@@ -136,11 +136,11 @@ begin
     Log('--------');
     if CmdlineInstallCancel then
     begin
-      MsgBox('Installation has been cancelled.', mbError, MB_OK);
+      MessageBox('Installation has been cancelled.', mbError, MB_OK);
       Result := False;
     end else if ExitCode <> 0 then
     begin
-      MsgBox('Installation has failed with exit code ' + IntToStr(ExitCode), mbError, MB_OK);
+      MessageBox('Installation has failed with exit code ' + IntToStr(ExitCode), mbError, MB_OK);
       Result := False;
     end else begin
       Result := True;

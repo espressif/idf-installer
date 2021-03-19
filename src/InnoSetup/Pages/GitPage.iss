@@ -231,14 +231,14 @@ begin
     GitExecutablePath := GitPath + '\git.exe';
     if not FileExists(GitExecutablePath) then
     begin
-      MsgBox('Can not find git.exe in ' + GitPath, mbError, MB_OK);
+      MessageBox('Can not find git.exe in ' + GitPath, mbError, MB_OK);
       Result := False;
       exit;
     end;
 
     if not GetVersionOfGitExe(GitExecutablePath, Version, ErrStr) then
     begin
-      MsgBox('Can not determine version of git.exe.' + #13#10
+      MessageBox('Can not determine version of git.exe.' + #13#10
              + 'Please check that this copy of git works from cmd.exe.', mbError, MB_OK);
       Result := False;
       exit;
@@ -246,7 +246,7 @@ begin
     Log('Version of ' + GitExecutablePath + ' is ' + Version);
     if not GitVersionSupported(Version) then
     begin
-      MsgBox('Selected git version (' + Version + ') is not supported.', mbError, MB_OK);
+      MessageBox('Selected git version (' + Version + ') is not supported.', mbError, MB_OK);
       Result := False;
       exit;
     end;

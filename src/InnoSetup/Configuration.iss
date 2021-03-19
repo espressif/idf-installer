@@ -67,6 +67,7 @@ begin
     IsGitResetAllowed := GetConfigurationBoolean('GITRESET', 'yes');
     GitRepository := GetConfigurationString('GITREPO', 'https://github.com/espressif/esp-idf.git');
     IDFDirectory := GetConfigurationString('IDFDIR', '');
+    IDFUseExisting := GetConfigurationBoolean('IDFUSEEXISTING', 'no');
     IDFVersion := GetConfigurationString('IDFVERSION', '');
     IDFVersionUrl := GetConfigurationString('IDFVERSIONSURL', 'https://dl.espressif.com/dl/esp-idf/idf_versions.txt');
     IsOfflineMode := GetConfigurationBoolean('OFFLINE', '{#OFFLINE}');
@@ -209,6 +210,18 @@ begin
   Result := PythonVirtualEnvPath;
 end;
 
+{ Wrap MsgBox function and hide message box in silent mode, otherwise it blocks silent installation. }
+function MessageBox(const Text: String; const Typ: TMsgBoxType; const Buttons: Integer): Integer;
+begin
+  if (WizardSilent()) then begin
+    Result := 0;
+    Log('Silenced messagebox: ' + Text);
+    Log('Returning value: 0');
+    Exit;
+  end;
+  Result := MsgBox(Text, Typ, Buttons);
+end;
+
 procedure SaveIdfEclipseConfiguration(FilePath: String);
 var
     Content: String;
@@ -243,7 +256,7 @@ begin
   if (SaveStringToFile(FilePath, Content, False)) then begin
     Log('Configuration stored.');
   end else begin
-     MsgBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
+     MessageBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
               + 'Please check the file access and retry the installation.',
               mbInformation, MB_OK);
     Log('Unable to write configuration!');
@@ -283,7 +296,7 @@ begin
     if (SaveStringToFile(FilePath, Content, False)) then begin
       Log('Configuration stored.');
     end else begin
-      MsgBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
+      MessageBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
                 + 'Please check the file access and retry the installation.',
                 mbInformation, MB_OK);
       Log('Unable to write configuration!');

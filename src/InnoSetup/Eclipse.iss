@@ -33,7 +33,7 @@ begin
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MsgBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
+    MessageBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;

@@ -65,7 +65,7 @@ end;
 
 procedure AbortInstallation(Message: String);
 begin
-  MsgBox(Message, mbError, MB_OK);
+  MessageBox(Message, mbError, MB_OK);
   Abort();
 end;
 

@@ -255,7 +255,7 @@ begin
     begin
       if not DirIsEmpty(IDFPath) then
       begin
-        MsgBox('Destination directory exists and is not empty: ' + IDFPath, mbError, MB_OK);
+        MessageBox('Destination directory exists and is not empty: ' + IDFPath, mbError, MB_OK);
         RaiseException('Failed to copy ESP-IDF')
       end;
     end;

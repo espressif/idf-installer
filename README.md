@@ -21,6 +21,7 @@ Windows Installer `esp-idf-tools-setup` provides the following command-line para
 * ``/GITRESET=[yes|no]`` - Enable/Disable git reset of repository during installation. Default: yes.
 * ``/HELP`` - Display command line options provided by Inno Setup installer.
 * ``/IDFDIR=[PATH]`` - Path to directory where it will be installed. Default: ``{userdesktop}\esp-idf}``
+* ``/IDFUSEEXISTING=[yes|no]`` - Indicates whether installer should be initialized in update mode of existing IDF. Default: no.
 * ``/IDFVERSION=[v4.3|v4.1|master]`` - Use specific IDF version. E.g. v4.1, v4.2, master. Default: empty, pick the first version in the list.
 * ``/IDFVERSIONSURL=[URL]`` - Use URL to download list of IDF versions. Default: https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 * ``/LOG=[PATH]`` - Store installation log file in specific directory. Default: empty.
@@ -256,7 +257,7 @@ $env:IDF_VERSION="v4.2"; docker-compose.exe run idf-setup-offline-test
 $env:IDF_VERSION="release/v4.2"; docker-compose.exe run idf-setup-offline-test
 ```
 
-The installation log is not displayed immediately on the screen. It's stored in the file and it's displayed when the installation finishes. The glitch of Inno Setup is that in case of failed installation it won't terminate and it keeps hanging.
+The installation log is not displayed immediately on the screen. It's stored in the file and it's displayed when the installation finishes.
 
 Recommendation: Use Visual Studio Code with Docker plugin to work with container.
 The log file is then accessible under Docker - Containers - Container - Files - Temp - install.txt - right click - Open.

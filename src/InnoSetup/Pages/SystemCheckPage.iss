@@ -415,7 +415,7 @@ begin
   end;
 
   if (SystemCheckState = SYSTEM_CHECK_STATE_RUNNING) then begin
-    if (MsgBox(CustomMessage('SystemCheckNotCompleteConsent'), mbConfirmation, MB_YESNO) = IDYES) then begin
+    if (MessageBox(CustomMessage('SystemCheckNotCompleteConsent'), mbConfirmation, MB_YESNO) = IDYES) then begin
       SystemCheckState := SYSTEM_CHECK_STATE_STOPPED;
       Result := True;
       Exit;
@@ -589,7 +589,7 @@ var
   FixIndex: Integer;
   AreFixesApplied: Boolean;
 begin
-  if (MsgBox(CustomMessage('SystemCheckApplyFixesConsent'), mbConfirmation, MB_YESNO) = IDNO) then begin
+  if (MessageBox(CustomMessage('SystemCheckApplyFixesConsent'), mbConfirmation, MB_YESNO) = IDNO) then begin
     Exit;
   end;
 

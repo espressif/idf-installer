@@ -140,8 +140,8 @@ Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
 Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.
 Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json" ;Flags: skipifsourcedoesntexist
-Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{code:GetIDFPath}";
-Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{code:GetIDFPath}";
+Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
+Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
 Source: "{#BUILD}\tools\idf-eclipse\*"; DestDir: "\\?\{app}\tools\idf-eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;

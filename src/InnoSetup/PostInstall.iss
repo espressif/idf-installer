@@ -21,7 +21,7 @@ begin
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
-  Command := '/k ""' + GetIDFPath('idf_cmd_init.bat') + '"';
+  Command := '/k ""' + ExpandConstant('{app}\idf_cmd_init.bat') + '"';
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
@@ -32,7 +32,7 @@ begin
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MsgBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
+    MessageBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;
@@ -47,7 +47,7 @@ begin
   Destination := GetLinkDestination(LinkString, 'PowerShell');
   Description := '{#IDFPsShortcutDescription}';
 
-  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""' + GetIDFPath('Initialize-Idf.ps1') + '"" ') + '"';
+  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}/Initialize-Idf.ps1"" ') + '"';
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
@@ -58,7 +58,7 @@ begin
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MsgBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
+    MessageBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;
@@ -193,7 +193,7 @@ begin
 
   except
     SetupAborted := True;
-    if MsgBox('Installation log has been created, it may contain more information about the problem.' + #13#10
+    if MessageBox('Installation log has been created, it may contain more information about the problem.' + #13#10
               + 'Display the installation log now?', mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDYES then
     begin
       ShellExec('', 'notepad.exe', ExpandConstant('{log}'), ExpandConstant('{tmp}'), SW_SHOW, ewNoWait, Err);

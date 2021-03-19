@@ -139,14 +139,14 @@ begin
   IDFPath := ChoicePageGetInputText(Page);
   if DirExists(IDFPath) and not DirIsEmpty(IDFPath) then
   begin
-    MsgBox('Directory already exists and is not empty:' + #13#10 +
+    MessageBox('Directory already exists and is not empty:' + #13#10 +
            IDFPath + #13#10 + 'Please choose a different directory.', mbError, MB_OK);
     exit;
   end;
 
   if Pos(' ', IDFPath) <> 0 then
   begin
-    MsgBox('ESP-IDF build system does not support spaces in paths.' + #13#10
+    MessageBox('ESP-IDF build system does not support spaces in paths.' + #13#10
            'Please choose a different directory.', mbError, MB_OK);
     exit;
   end;
@@ -164,7 +164,7 @@ begin
   if ((IDFDownloadVersion = 'v4.2') or (IDFDownloadVersion = 'v4.0.2') or
     (IDFDownloadVersion = 'v3.3.4')) then begin
     if (not IsDirNameValid(IDFPath)) then begin
-      MsgBox('The installation of selected version of IDF is not supported on path with special characters.' + #13#10
+      MessageBox('The installation of selected version of IDF is not supported on path with special characters.' + #13#10
             'Please choose a different directory.', mbError, MB_OK);
       exit;
     end;

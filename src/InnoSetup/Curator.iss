@@ -24,7 +24,7 @@ function WebBrowserGetOleObject: Variant;
 procedure OnWebBrowserEvent(EventCode: Integer; URL: WideString); 
 begin
   {if EventCode = EVENT_DOCUMENT_COMPLETE then
-    MsgBox('Navigation completed. ' + URL, mbInformation, MB_OK);}
+    MessageBox('Navigation completed. ' + URL, mbInformation, MB_OK);}
 end;
 
 procedure InitializeWizard;
