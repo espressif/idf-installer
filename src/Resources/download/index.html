@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://use.fontawesome.com/0d786601d8.js"></script>
+        <style type="text/css">
+            body, h1, h2 {
+                font-family: Roboto,ff-tisa-web-pro,Arial,sans-serif;
+                font-weight: 100;
+            }
+            .download-button{
+                color:white;
+                margin:20px 0 5px;
+                
+                font-size:1rem;
+                width:240px;
+                background-color:#0066BB;
+                cursor: pointer;
+                border: none;
+                text-align: center;
+            }
+            .download-form {
+                width: 100%;
+            }
+            #section-download {
+                margin-left: auto;
+                margin-right: auto;
+                width: 40%;
+            }
+            .section-hidden {
+                display: none;
+            }
+            tr:nth-child(odd) {background: #CCC}
+            .link {
+                cursor: pointer;
+                color: darkblue;
+                text-decoration: underline;
+            }
+            button {
+                width: 100%;
+                border: none;
+                background-color:#0066BB;
+                color:white;
+                cursor: pointer;
+                padding:10px 0;
+            }
+        </style>
+        <script type="text/javascript">
+            function showReleases() {
+                let section = document.getElementById("section-all-releases");
+                section.className = "";
+                let info = document.getElementById("info-show-releases");
+                info.className = "section-hidden";
+            }
+        </script>
+    </head>
+    <body>
+        <h1>ESP-IDF Windows Installer Download</h1>
+        <h2>Open Source Integrated Development Framework for ESP32</h2>
+        <div id="section-download">
+            <div class="download-button">
+                <form class="download-form" method="get" action="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.6.exe">
+                    <button>
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div>Online installer</div>
+                        <div>Windows 7, 8, 10</div>
+                        <div>Size: 2.1 MB</div>
+                    </button>
+                </form>
+            </div>
+            <div class="download-button">
+                <form method="get" action="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.6.exe">
+                    <button>
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div>Offline installer</div>
+                        <div>Windows 7, 8, 10</div>
+                        <div>Size: 1.2 GB</div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <h2>Want new features sooner?</h2>
+            <div>Get <a href="https://github.com/espressif/idf-installer">Beta version</a>.</div>
+        </div>
+
+        <div>
+            <h2>Need older release?</h2>
+            <div id="info-show-releases">See of <span class="link" onclick="showReleases();">all available downloads</span>.</div>
+        </div>
+        <div id="section-all-releases" class="section-hidden">
+            <table>
+                <thead>
+                <tr>
+                <th>ESP-IDF Tools Installer</th>
+                <th>Online</th>
+                <th>Offline</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td>2.7 (Beta)</td>
+                <td><a href="https://github.com/espressif/idf-installer/releases">Download</a></td>
+                <td></td>
+                </tr>
+                <tr>
+                <td>2.6 - 2021-03-09</td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.6.exe" rel="nofollow">Download</a> 2.1 MB <a href="https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml"><img src="https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml/badge.svg" alt="test-online-installer" style="max-width:100%;"></a></td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.6.exe" rel="nofollow">Download</a> 1.2 GB with ESP-IDF 4.2, 4.1.1, Eclipse + IDF Plugin v2.0.0 <a href="https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml"><img src="https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml/badge.svg" alt="test-offline-installer" style="max-width:100%;"></a></td>
+                </tr>
+                <tr>
+                <td>2.5 - 2021-02-09</td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.5.exe" rel="nofollow">Download</a> 19 MB</td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.5.exe" rel="nofollow">Download</a> 793 MB with ESP-IDF 4.2, 4.1.1</td>
+                </tr>
+                <tr>
+                <td>2.4 - 2021-02-09</td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.4.exe" rel="nofollow">Download</a> 19 MB</td>
+                <td></td>
+                </tr>
+                <tr>
+                <td>2.3 - 2020-05-28</td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.3.exe" rel="nofollow">Download</a> 336 MB</td>
+                <td></td>
+                </tr>
+                <tr>
+                <td>2.2 - 2020-05-28</td>
+                <td><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.2.exe" rel="nofollow">Download</a> 390 MB</td>
+                <td></td>
+                </tr>
+                </tbody>
+                </table>
+        </div>
+    </body>
+</html>
