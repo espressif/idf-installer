@@ -8,23 +8,28 @@
                 font-family: Roboto,ff-tisa-web-pro,Arial,sans-serif;
                 font-weight: 100;
             }
+            .text-center {
+                text-align: center;
+            }
             .download-button{
                 color:white;
-                margin:20px 0 5px;
+                margin-right: 1em;
+                margin-left: 1em;
+                margin-bottom: 2em;
                 font-size:1rem;
-                width:240px;
+                min-width:12em;
                 background-color:#0066BB;
                 cursor: pointer;
                 border: none;
                 text-align: center;
+                display: inline-block;
             }
             .download-form {
                 width: 100%;
             }
             #section-download {
-                margin-left: auto;
-                margin-right: auto;
-                width: 40%;
+                margin: auto;
+                width: 20%;
             }
             #section-all-releases {
                 width: 100%;
@@ -44,6 +49,9 @@
                 color:white;
                 cursor: pointer;
                 padding:10px 0;
+            }
+            .button-offline {
+                background-color:#003388;
             }
             .list-row-headings {
                 font-family: SourceSansProBold,Arial,sans-serif;
@@ -91,6 +99,11 @@
             .menu {
                 padding: 0;
             }
+            .swimlane {
+                margin-bottom: 2rem;
+                background-color: #f5f5f5;
+                padding: 2em;
+            }
         </style>
         <script type="text/javascript">
             function showReleases() {
@@ -102,8 +115,8 @@
         </script>
     </head>
     <body>
-        <h1>ESP-IDF Windows Installer Download</h1>
-        <h2>Open Source Integrated Development Framework for ESP32</h2>
+        <h1 class="text-center">ESP-IDF Windows Installer Download</h1>
+        <h2 class="text-center">Open Source Integrated Development Framework for ESP32</h2>
         <div id="section-download">
             <div class="download-button">
                 <form class="download-form" method="get" action="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.6.exe">
@@ -117,7 +130,7 @@
             </div>
             <div class="download-button">
                 <form method="get" action="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.6.exe">
-                    <button>
+                    <button class="button-offline">
                         <i class="fa fa-download" aria-hidden="true"></i>
                         <div>Offline installer</div>
                         <div>Windows 7, 8, 10</div>
@@ -127,14 +140,14 @@
             </div>
         </div>
 
-        <div>
-            <h2>Want new features sooner?</h2>
-            <div>Get <a href="https://github.com/espressif/idf-installer/releases">Beta version</a>.</div>
+        <div class="swimlane">
+            <h2 class="text-center">Want new features sooner?</h2>
+            <div class="text-center">Get <a href="https://github.com/espressif/idf-installer/releases">Beta version</a>.</div>
         </div>
 
         <div>
-            <h2>Looking for a specific release?</h2>
-            <div id="info-show-releases">See of <span class="link" onclick="showReleases();">all available downloads</span>.</div>
+            <h2 class="text-center">Looking for a specific release?</h2>
+            <div id="info-show-releases" class="text-center">See of <span class="link" onclick="showReleases();">all available downloads</span>.</div>
         </div>
         <div id="section-all-releases" class="section-hidden">
             <div class="list-row-headings">
