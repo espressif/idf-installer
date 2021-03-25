@@ -362,49 +362,6 @@ begin
   FindPythonVersionsFromKey(HKEY_LOCAL_MACHINE, 'Software\Wow6432Node\Python');
 end;
 
-
-{ Get Boolean for UI to determine whether it make sense to register exceptions to Defender. }
-function GetWindowsDefenderStatus(): Boolean;
-var
-  bHasWD: Boolean;
-  szWDPath: String;
-  listPSModulePath: TStringList;
-  ResultCode: Integer;
-  x: Integer;
-begin
-  Log('Checking PSMODULEPATH for Windows Defender module');
-
-  listPSModulePath := TStringList.Create;
-  listPSModulePath.Delimiter := ';';
-  listPSModulePath.StrictDelimiter := True;
-  listPSModulePath.DelimitedText := GetEnv('PsModulePath');
-
-  for x:=0 to (listPSModulePath.Count-1) do
-  begin
-    szWDPath := listPSModulePath[x] + '\Defender'
-    bHasWD := DirExists(szWDPath);
-    if bHasWD then
-    begin
-      break;
-    end
-  end;
-
-  if not bHasWD then begin
-    Result := False;
-    Exit;
-  end;
-
-  Log('Checking Windows Services Defender is enabled: (Get-MpComputerStatus).AntivirusEnabled');
-  ResultCode := SystemCheckExec('powershell -ExecutionPolicy Bypass "if((Get-MpComputerStatus).AntivirusEnabled) { Exit 0 } else { Exit 1 }"', ExpandConstant('{tmp}'));
-  if (ResultCode <> 0)  then begin
-    Log('Result code: ' + IntToStr(ResultCode));
-    Result := False;
-    Exit;
-  end;
-
-  Result := True;
-end;
-
 { Process user request to stop system checks. }
 function SystemCheckStopRequest():Boolean;
 begin
@@ -500,6 +457,20 @@ begin
   SystemLog(#13#10 + CustomMessage('SystemCheckRemedyApplyFixInfo'));
 end;
 
+function GetAntivirusName():String;
+begin
+  Result := ExecuteProcess(ExpandConstant('{tmp}\curator.exe ') + 'antivirus --property displayName');
+end;
+
+procedure SystemCheckAntivirus();
+var
+  AntivirusName: String;
+begin
+  AntivirusName := GetAntivirusName();
+  IsWindowsDefenderEnabled := (AntivirusName = 'Windows Defender');
+  SystemLogTitle('Detected antivirus: ' + GetAntivirusName());
+end;
+
 { Execute system check }
 procedure ExecuteSystemCheck();
 begin
@@ -529,13 +500,7 @@ begin
   end;
 
   if (SystemCheckState <> SYSTEM_CHECK_STATE_STOPPED) then begin
-    SystemLogTitle(CustomMessage('SystemCheckForDefender') + ' ');
-    IsWindowsDefenderEnabled := GetWindowsDefenderStatus();
-    if (IsWindowsDefenderEnabled) then begin
-      SystemLog(' [' + CustomMessage('SystemCheckResultFound') + ']');
-    end else begin
-      SystemLog(' [' + CustomMessage('SystemCheckResultNotFound') + ']');
-    end;
+    SystemCheckAntivirus();
   end else begin
     { User cancelled the check, let's enable Defender script so that use can decide to disable it. }
     IsWindowsDefenderEnabled := True;
@@ -626,6 +591,8 @@ end;
 <event('InitializeWizard')>
 procedure CreateSystemCheckPage();
 begin
+  ExtractTemporaryFile('curator.exe');
+
   { Initialize data structure for Python }
   InstalledPythonVersions := TStringList.Create();
   InstalledPythonDisplayNames := TStringList.Create();

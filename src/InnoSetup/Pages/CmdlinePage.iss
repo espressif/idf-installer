@@ -64,6 +64,40 @@ begin
 
 end;
 
+function ExecuteProcess(Command:String):String;
+var
+  Buffer: String;
+  ExitCode: Integer;
+  Handle: Longword;
+  LogTextAnsi: AnsiString;
+  Res: Integer;
+begin
+    Buffer := '';
+    ExitCode := -1;
+    Log('Executing: ' + Command);
+    Handle := ProcStart(Command, ExpandConstant('{tmp}'))
+    if Handle = 0 then
+    begin
+      Log('ProcStart failed');
+      Result := Buffer;
+      Exit;
+    end;
+    while (ExitCode = -1) and not CmdlineInstallCancel do
+    begin
+      ExitCode := ProcGetExitCode(Handle);
+      SetLength(LogTextAnsi, 4096);
+      Res := ProcGetOutput(Handle, LogTextAnsi, 4096)
+      if Res > 0 then
+      begin
+        SetLength(LogTextAnsi, Res);
+        Buffer := Buffer + String(LogTextAnsi);
+      end;
+      Sleep(10);
+    end;
+    ProcEnd(Handle);
+    Result := Buffer;
+end;
+
 { ------------------------------ The actual command line install page ------------------------------ }
 
 procedure OnCmdlineInstallCancel(Sender: TObject);
@@ -81,7 +115,6 @@ var
   LogText, LeftOver: String;
   Memo: TNewMemo;
   PrevCancelButtonOnClick: TNotifyEvent;
-
 begin
   CmdlineInstallPage := CreateOutputProgressPage('', '')
   CmdlineInstallPage.Caption := caption;
