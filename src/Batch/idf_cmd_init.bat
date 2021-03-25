@@ -15,11 +15,11 @@ set /p IDF_PYTHON_DIR=<"%IDF_PATH%"\out2.txt
 set /p IDF_GIT_DIR=<"%IDF_PATH%"\out.txt
 
 set PREFIX=%IDF_PYTHON_DIR%\python.exe %IDF_PATH%
-DOSKEY idf.py=%PREFIX%\tools\idf.py
-DOSKEY esptool.py=%PREFIX%\components\esptool_py\esptool\esptool.py
-DOSKEY espefuse.py=%PREFIX%\components\esptool_py\esptool\espefuse.py
-DOSKEY otatool.py=%PREFIX%\components\app_update\otatool.py
-DOSKEY parttool.py=%PREFIX%\components\partition_table\parttool.py
+DOSKEY idf.py=%PREFIX%\tools\idf.py "$*"
+DOSKEY esptool.py=%PREFIX%\components\esptool_py\esptool\esptool.py "$*"
+DOSKEY espefuse.py=%PREFIX%\components\esptool_py\esptool\espefuse.py "$*"
+DOSKEY otatool.py=%PREFIX%\components\app_update\otatool.py "$*"
+DOSKEY parttool.py=%PREFIX%\components\partition_table\parttool.py "$*"
 
 :: Clear PYTHONPATH as it may contain libraries of other Python versions
 if not "%PYTHONPATH%"=="" (
