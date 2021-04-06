@@ -5,8 +5,8 @@
 # It does the same thing as "export.ps1" in IDF v4.1.
 
 $IDF_PATH=(Get-Location).Path
-$IdfGitDir=&$env:IDF_TOOLS_PATH/curator.exe get --property gitPath
-$IdfPythonDir=&$env:IDF_TOOLS_PATH/curator.exe get --property python --idf-path "$IDF_PATH\"
+$IdfGitDir=&$env:IDF_TOOLS_PATH/curator.exe config get --property gitPath
+$IdfPythonDir=&$env:IDF_TOOLS_PATH/curator.exe config get --property python --idf-path "$IDF_PATH\"
 
 $isEspIdfRoot = (Test-Path "$IDF_PATH/tools/idf.py")
 if (-not $isEspIdfRoot) {

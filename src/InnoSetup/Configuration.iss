@@ -303,7 +303,7 @@ begin
     end;
   end;
 
-  Command := 'add';
+  Command := 'config add';
   Command := Command + ' --idf-version "' + IdfVersion + '"';
   Command := Command + ' --idf-path "' + IdfPathWithForwardSlashes + '"';
   Command := Command + ' --python "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"';
