@@ -84,6 +84,9 @@
 #define COMPONENT_CMD = 'ide/cmd'
 #define COMPONENT_CMD_DESKTOP = 'ide/cmd/desktop'
 #define COMPONENT_CMD_STARTMENU = 'ide/cmd/startmenu'
+#define COMPONENT_DRIVER = "driver"
+#define COMPONENT_DRIVER_FTDI = "driver/ftdi"
+#define COMPONENT_DRIVER_SILABS = "driver/silabs"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 
@@ -175,6 +178,9 @@ Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: "Start Menu shortcut"; T
 Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
 Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
+Name: "{#COMPONENT_DRIVER}"; Description: "Drivers - Requires elevation of privileges"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_FTDI}"; Description: "FTDI Chip - Virtual COM Port for USB (WROVER, WROOM)"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_SILABS}"; Description: "Silicon Labs - Virtual COM Port for USB CP210x (ESP boards)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Flags: fixed
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub";
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
@@ -214,7 +220,7 @@ Type: filesandordirs; Name: "{app}\python_env"
 
 [Run]
 Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: "Installing Git"; Check: GitInstallRequired
-Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Eclipse Environment"; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
+Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec unchecked; Description: "Run ESP-IDF Eclipse Environment"; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
 ;Filename: "{autodesktop}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP}"
 ;Filename: "{autodesktop}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP}"
 
@@ -244,6 +250,7 @@ Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH
 #include "Pages/IdfPage.iss"
 #include "Pages/GitPage.iss"
 #include "Pages/PythonPage.iss"
+#include "Curator.iss"
 #include "Pages/SystemCheckPage.iss"
 #include "Pages/IdfDownloadPage.iss"
 #include "Environment.iss"

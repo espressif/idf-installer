@@ -125,6 +125,24 @@ begin
   PrepareIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), '{#ECLIPSE_DOWNLOADURL}');
 end;
 
+procedure InstallSelectedDrivers();
+var
+  DriverList: String;
+begin
+  DriverList := '';
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_FTDI}')) then begin
+    DriverList := DriverList + ' --ftdi'
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_SILABS}')) then begin
+    DriverList := DriverList + ' --silabs'
+  end;
+
+  if (Length(DriverList) > 0) then begin
+    InstallDrivers(DriverList);
+  end;
+end;
+
 <event('NextButtonClick')>
 function PreInstallSteps(CurPageID: Integer): Boolean;
 var
@@ -134,6 +152,8 @@ begin
   if CurPageID <> wpReady then begin
     Exit;
   end;
+
+  InstallSelectedDrivers();
 
   ForceDirectories(ExpandConstant('{app}\dist'));
 
