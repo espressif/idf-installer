@@ -78,7 +78,7 @@ function PrepareIdfCurator {
     PrepareIdfPackage -BasePath build\$InstallerType\lib `
         -FilePath curator.exe `
         -DistZip idf-curator.zip `
-        -DownloadUrl https://github.com/georgik/idf-curator/releases/download/v0.0.15/idf-curator.zip
+        -DownloadUrl https://github.com/georgik/idf-curator/releases/download/v0.0.16/idf-curator.zip
 }
 
 function PrepareIdfGit {
