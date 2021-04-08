@@ -14,7 +14,7 @@ on:
       installer_url:
         description: 'Installer URL'
         required: true
-        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.7-beta-13/esp-idf-tools-setup-online-2.7-beta-13.exe'
+        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.7-beta-14/esp-idf-tools-setup-online-2.7-beta-14.exe'
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true

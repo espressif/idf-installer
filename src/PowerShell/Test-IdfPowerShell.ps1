@@ -32,7 +32,7 @@ if (-Not(Test-Path $LinkPath -PathType Leaf)) {
 }
 
 $Shortcut = $WSShell.CreateShortcut($LinkPath)
-$Command =  '. ' + $Shortcut.Arguments -replace '""', '"'
+$Command =  '. ' + $Shortcut.Arguments
 $Command = $Command -replace " -ExecutionPolicy Bypass -NoExit -File", ""
 $Command
 Invoke-Expression -Command $Command
