@@ -30,7 +30,7 @@ Invoke-Expression -Command $Command
 
 cd examples\get-started\blink\
 # Run several commands to test functionality of installed environment
-idf.py version
+idf.py --version
 idf.py build
 idf.py all --help
 
