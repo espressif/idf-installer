@@ -17,6 +17,9 @@ jobs:
       - name: Run installer
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs"
         shell: pwsh
+      - name: Refresh environment after installation
+        run: RefreshEnv.cmd
+        shell: pwsh
       - name: Build blink
         run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "4.4"
         shell: pwsh

@@ -5,6 +5,12 @@
 # It does the same thing as "export.ps1" in IDF v4.1.
 
 $IDF_PATH=(Get-Location).Path
+
+if ($null -eq $env:IDF_TOOLS_PATH) {
+    $env:IDF_TOOLS_PATH="$env:USERPROFILE\.espressif"
+    "IDF_TOOLS_PATH not set. Setting to $env:IDF_TOOLS_PATH"
+}
+
 $IdfGitDir=&$env:IDF_TOOLS_PATH/curator.exe config get --property gitPath
 $IdfPythonDir=&$env:IDF_TOOLS_PATH/curator.exe config get --property python --idf-path "$IDF_PATH\"
 

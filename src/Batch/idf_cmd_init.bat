@@ -8,11 +8,18 @@
 
 set IDF_PATH=%CD%
 
-%IDF_TOOLS_PATH%/curator.exe config get --property python --idf-path %IDF_PATH%\>"%IDF_PATH%"\out2.txt
-set /p IDF_PYTHON_DIR=<"%IDF_PATH%"\out2.txt
+if "%IDF_TOOLS_PATH%"=="" (
+    set IDF_TOOLS_PATH=%USERPROFILE%/.espressif
+    echo IDF_TOOLS_PATH not set. Setting to %IDF_TOOLS_PATH%
+)
 
-%IDF_TOOLS_PATH%/curator.exe config get --property gitPath>"%IDF_PATH%"\out.txt
-set /p IDF_GIT_DIR=<"%IDF_PATH%"\out.txt
+set TEMP_IDF_PYTHON_PATH="%TEMP%"\idf-python-path.txt
+%IDF_TOOLS_PATH%/curator.exe config get --property python --idf-path %IDF_PATH%\>"%TEMP_IDF_PYTHON_PATH%"
+set /p IDF_PYTHON_DIR=<"%TEMP_IDF_PYTHON_PATH%"
+
+set TEMP_IDF_GIT_PATH="%TEMP%"\idf-git-path.txt
+%IDF_TOOLS_PATH%/curator.exe config get --property gitPath>"%TEMP_IDF_GIT_PATH%"
+set /p IDF_GIT_DIR=<"%TEMP_IDF_GIT_PATH%"
 
 set PREFIX=%IDF_PYTHON_DIR%\python.exe %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
