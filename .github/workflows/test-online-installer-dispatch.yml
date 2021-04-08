@@ -33,6 +33,12 @@ jobs:
       - name: Run installer
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "${{ github.event.inputs.idf_version }}" -Components "${{ github.event.inputs.components }}"
         shell: pwsh
-      - name: Build blink
+      - name: Refresh environment after installation
+        run: RefreshEnv.cmd
+        shell: pwsh
+      - name: Build blink in CMD
         run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "${{ github.event.inputs.idf_short_version }}"
+        shell: pwsh
+      - name: Build blink in PowerShell
+        run: ./src/PowerShell/Test-IdfPowerShell.ps1 -IdfShortVersion "${{ github.event.inputs.idf_short_version }}"
         shell: pwsh
