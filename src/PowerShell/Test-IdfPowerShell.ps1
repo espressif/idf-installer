@@ -22,7 +22,14 @@ $env:PYTHONPATH="C:\Users\ContainerAdministrator\Desktop\esp-idf\tools\"
 Start-Sleep -s 5
 
 $WSShell = New-Object -comObject WScript.Shell
-$Shortcut = $WSShell.CreateShortcut('C:\Users\ContainerAdministrator\Desktop\ESP-IDF PowerShell.lnk')
+$LinkPath = "C:/Users/runneradmin/Desktop/ESP-IDF ${IdfShortVersion} PowerShell.lnk"
+
+if (-Not(Test-Path $LinkPath -PathType Leaf)) {
+    "$LinkPath does not exist"
+    Exit 1
+}
+
+$Shortcut = $WSShell.CreateShortcut($LinkPath)
 $Command =  '. ' + $Shortcut.Arguments -replace '""', '"'
 $Command = $Command -replace " -ExecutionPolicy Bypass -NoExit -File", ""
 $Command
