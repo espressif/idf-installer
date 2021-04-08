@@ -14,7 +14,7 @@ on:
       installer_url:
         description: 'Installer URL'
         required: true
-        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.7-beta-14/esp-idf-tools-setup-online-2.7-beta-14.exe'
+        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.7-beta-15/esp-idf-tools-setup-online-2.7-beta-15.exe'
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true
@@ -32,9 +32,6 @@ jobs:
         shell: pwsh
       - name: Run installer
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "${{ github.event.inputs.idf_version }}" -Components "${{ github.event.inputs.components }}"
-        shell: pwsh
-      - name: Refresh environment after installation
-        run: RefreshEnv.cmd
         shell: pwsh
       - name: Build blink in CMD
         run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "${{ github.event.inputs.idf_short_version }}" -IdfPath "C:/Users/runneradmin/Desktop/esp-idf"
