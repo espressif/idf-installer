@@ -3,6 +3,16 @@ param (
     [string]$IdfPath = "C:\Users\ContainerAdministrator\Desktop\esp-idf"
 )
 
+# Stop if any command fails
+$ErrorActionPreference = "Stop"
+$PSDefaultParameterValues['*:ErrorAction']='Stop'
+function ThrowOnNativeFailure {
+    if (-not $?)
+    {
+        throw 'Native Failure'
+    }
+}
+
 $env:PATH+=";${PythonPath}"
 Set-Location "${IdfPath}"
 $env:PYTHONPATH="C:\Users\ContainerAdministrator\Desktop\esp-idf\tools\"
@@ -19,7 +29,10 @@ $Command
 Invoke-Expression -Command $Command
 
 cd examples\get-started\blink\
+# Run several commands to test functionality of installed environment
+idf.py version
 idf.py build
+idf.py all --help
 
 # Check whether the repository is clean
 $GitChanges=(git status -s).Lenght
