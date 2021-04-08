@@ -1,6 +1,10 @@
+[CmdletBinding()]
 param (
-    [string]$PythonPath = "C:\Python38\",
-    [string]$IdfPath = "C:\Users\ContainerAdministrator\Desktop\esp-idf"
+    [Parameter()]
+    [String]
+    $IdfPath = "C:/Users/runneradmin/Desktop/esp-idf",
+    [String]
+    $IdfShortVersion = "4.2"
 )
 
 # Stop if any command fails
@@ -13,9 +17,7 @@ function ThrowOnNativeFailure {
     }
 }
 
-$env:PATH+=";${PythonPath}"
 Set-Location "${IdfPath}"
-$env:PYTHONPATH="C:\Users\ContainerAdministrator\Desktop\esp-idf\tools\"
 
 # Timeout is necessary to fix the problem when installer is writing some final files
 # it seems that installer exits, but locks were not released yet
