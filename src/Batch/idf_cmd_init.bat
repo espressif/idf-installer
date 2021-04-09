@@ -8,18 +8,26 @@
 
 set IDF_PATH=%CD%
 
-%IDF_TOOLS_PATH%/curator.exe get --property python --idf-path %IDF_PATH%\>"%IDF_PATH%"\out2.txt
-set /p IDF_PYTHON_DIR=<"%IDF_PATH%"\out2.txt
+if "%IDF_TOOLS_PATH%" == "" (
+    set IDF_TOOLS_PATH=%~dp0
+    echo IDF_TOOLS_PATH not set. Setting to %~dp0
+)
 
-%IDF_TOOLS_PATH%/curator.exe get --property gitPath>"%IDF_PATH%"\out.txt
-set /p IDF_GIT_DIR=<"%IDF_PATH%"\out.txt
+set PATH=%IDF_TOOLS_PATH%;%PATH%
+set TEMP_IDF_PYTHON_PATH="%TEMP%\idf-python-path.txt"
+curator.exe config get --property python --idf-path %IDF_PATH%\>%TEMP_IDF_PYTHON_PATH%
+set /P IDF_PYTHON_DIR=<%TEMP_IDF_PYTHON_PATH%
+
+set TEMP_IDF_GIT_PATH="%TEMP%\idf-git-path.txt"
+curator.exe config get --property gitPath>%TEMP_IDF_GIT_PATH%
+set /P IDF_GIT_DIR=<%TEMP_IDF_GIT_PATH%
 
 set PREFIX=%IDF_PYTHON_DIR%\python.exe %IDF_PATH%
-DOSKEY idf.py=%PREFIX%\tools\idf.py "$*"
-DOSKEY esptool.py=%PREFIX%\components\esptool_py\esptool\esptool.py "$*"
-DOSKEY espefuse.py=%PREFIX%\components\esptool_py\esptool\espefuse.py "$*"
-DOSKEY otatool.py=%PREFIX%\components\app_update\otatool.py "$*"
-DOSKEY parttool.py=%PREFIX%\components\partition_table\parttool.py "$*"
+DOSKEY idf.py=%PREFIX%\tools\idf.py $*
+DOSKEY esptool.py=%PREFIX%\components\esptool_py\esptool\esptool.py $*
+DOSKEY espefuse.py=%PREFIX%\components\esptool_py\esptool\espefuse.py $*
+DOSKEY otatool.py=%PREFIX%\components\app_update\otatool.py $*
+DOSKEY parttool.py=%PREFIX%\components\partition_table\parttool.py $*
 
 :: Clear PYTHONPATH as it may contain libraries of other Python versions
 if not "%PYTHONPATH%"=="" (

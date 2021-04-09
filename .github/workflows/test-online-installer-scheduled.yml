@@ -12,10 +12,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Download Installer
-        run:  Invoke-WebRequest https://github.com/espressif/idf-installer/releases/download/online-2.6-beta-36/esp-idf-tools-setup-online-2.6-beta-36.exe -OutFile installer.exe
+        run:  Invoke-WebRequest https://github.com/espressif/idf-installer/releases/download/online-2.7-beta-13/esp-idf-tools-setup-online-2.7-beta-13.exe -OutFile installer.exe
         shell: pwsh
       - name: Run installer
-        run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/powershell/desktop,ide/cmd/desktop"
+        run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs"
+        shell: pwsh
+      - name: Refresh environment after installation
+        run: RefreshEnv.cmd
         shell: pwsh
       - name: Build blink
         run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "4.4"

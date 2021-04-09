@@ -457,11 +457,6 @@ begin
   SystemLog(#13#10 + CustomMessage('SystemCheckRemedyApplyFixInfo'));
 end;
 
-function GetAntivirusName():String;
-begin
-  Result := ExecuteProcess(ExpandConstant('{tmp}\curator.exe ') + 'antivirus --property displayName');
-end;
-
 procedure SystemCheckAntivirus();
 var
   AntivirusName: String;

@@ -47,7 +47,7 @@ begin
   Destination := GetLinkDestination(LinkString, 'PowerShell');
   Description := '{#IDFPsShortcutDescription}';
 
-  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File ""{app}/Initialize-Idf.ps1"" ') + '"';
+  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File "{app}/Initialize-Idf.ps1"');
   Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
