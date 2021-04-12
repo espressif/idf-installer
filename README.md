@@ -1,6 +1,15 @@
 # ESP-IDF Tools Installer for Windows
 
 ## Download
+
+ESP-IDF Tools Installer for Windows download page:
+
+### Video with installation of ESP-IDF
+
+[![How to install the ESP-IDF Toolchain on Windows](https://img.youtube.com/vi/byVPAfodTyY/0.jpg)](https://youtu.be/byVPAfodTyY)
+
+### Table with downloads
+
 | ESP-IDF Tools Installer | Online | Offline |
 | ----------------------- | ------ | ------- |
 | 2.8 (Beta) | [Download](https://github.com/espressif/idf-installer/releases) | |
