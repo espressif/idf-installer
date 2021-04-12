@@ -2,7 +2,7 @@
 
 ## Download
 
-ESP-IDF Tools Installer for Windows download page:
+ESP-IDF Tools Installer for Windows download page: https://dl.espressif.com/dl/esp-idf/
 
 ### Video with installation of ESP-IDF
 
