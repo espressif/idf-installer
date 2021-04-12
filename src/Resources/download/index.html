@@ -108,6 +108,25 @@
                 margin-bottom: 2rem;
                 text-align: center;
             }
+            .footer {
+                padding: 2em 0;
+                width: 100%;
+                color: white;
+                background-color: #333;
+                position: absolute;
+                left: 0;
+                margin-top: 2em;
+            }
+            .footer a {
+                color:white;
+            }
+            .footer a:visited {
+                color: lightyellow;
+            }
+            .footer-item {
+                padding-left: 1em;
+                padding-right: 1em;
+            }
         </style>
         <script type="text/javascript">
             function showReleases() {
@@ -144,7 +163,8 @@
             </div>
         </div>
         <div class="instructions">
-            Installation instructions are available in <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html">ESP-IDF documentation</a>.
+            Installation instructions: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html">ESP-IDF documentation</a>
+            and <a href="https://www.youtube.com/watch?v=byVPAfodTyY">Espressif Systems Youtube channel</a>.
         </div>
 
 
@@ -207,6 +227,14 @@
 
             </ol>
 
+        </div>
+        <div class="footer text-center">
+            <span class="footer-item">
+                <a href="https://github.com/espressif/idf-installer/issues">ESP-IDF Windows Installer Support</a>
+            </span>
+            <span class="footer-item">
+                <a href="https://github.com/espressif/esp-idf">ESP-IDF GitHub</a>
+            </span>
         </div>
     </body>
 </html>
