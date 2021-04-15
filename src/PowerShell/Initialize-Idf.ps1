@@ -13,8 +13,8 @@ if ($null -eq $env:IDF_TOOLS_PATH) {
 
 $env:PATH="$env:IDF_TOOLS_PATH;$env:PATH"
 
-$IdfGitDir=curator.exe config get --property gitPath
-$IdfPythonDir=curator.exe config get --property python --idf-path "$IDF_PATH\"
+$IdfGitDir=idf-env config get --property gitPath
+$IdfPythonDir=idf-env config get --property python --idf-path "$IDF_PATH\"
 
 $isEspIdfRoot = (Test-Path "$IDF_PATH/tools/idf.py")
 if (-not $isEspIdfRoot) {

@@ -308,12 +308,12 @@ begin
   Command := Command + ' --idf-path "' + IdfPathWithForwardSlashes + '"';
   Command := Command + ' --python "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"';
 
-  Log(ExpandConstant('{app}\curator.exe') + ' ' + Command);
-  if Exec(ExpandConstant('{app}\curator.exe'), Command, '', SW_SHOW,
+  Log(ExpandConstant('{app}\{#IDF_ENV}') + ' ' + Command);
+  if Exec(ExpandConstant('{app}\{#IDF_ENV}'), Command, '', SW_SHOW,
      ewWaitUntilTerminated, ResultCode) then begin
-     Log('Curator success');
+     Log('{#IDF_ENV} success');
   end else begin
-    Log('Curator failed');
+    Log('{#IDF_ENV} failed');
   end;
 
 end;

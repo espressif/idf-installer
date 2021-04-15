@@ -74,11 +74,11 @@ function PrepareIdf7za {
         -DownloadUrl https://dl.espressif.com/dl/idf-7za/idf-7za-19.0.zip
 }
 
-function PrepareIdfCurator {
+function PrepareIdfEnv {
     PrepareIdfPackage -BasePath build\$InstallerType\lib `
-        -FilePath curator.exe `
-        -DistZip idf-curator.zip `
-        -DownloadUrl https://github.com/georgik/idf-curator/releases/download/v0.0.16/idf-curator.zip
+        -FilePath idf-env.exe `
+        -DistZip idf-env.zip `
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.0.0/idf-env.zip
 }
 
 function PrepareIdfGit {
@@ -264,7 +264,7 @@ if (-Not(Test-Path build/$InstallerType/lib -PathType Container)) {
 }
 PrepareIdfCmdlinerunner
 PrepareIdf7za
-PrepareIdfCurator
+PrepareIdfEnv
 
 if ('offline' -eq $InstallerType) {
     $IsccParameters += '/DOFFLINE=yes'

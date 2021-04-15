@@ -5,7 +5,6 @@
 
 var
   IDFDownloadPage: TInputOptionWizardPage;
-  IDFDownloadAvailableVersions: TArrayOfString;
 
 function GetSuggestedIDFDirectory(): String;
 var

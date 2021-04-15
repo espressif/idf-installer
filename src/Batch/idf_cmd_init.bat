@@ -15,11 +15,11 @@ if "%IDF_TOOLS_PATH%" == "" (
 
 set PATH=%IDF_TOOLS_PATH%;%PATH%
 set TEMP_IDF_PYTHON_PATH="%TEMP%\idf-python-path.txt"
-curator.exe config get --property python --idf-path %IDF_PATH%\>%TEMP_IDF_PYTHON_PATH%
+idf-env config get --property python --idf-path %IDF_PATH%\>%TEMP_IDF_PYTHON_PATH%
 set /P IDF_PYTHON_DIR=<%TEMP_IDF_PYTHON_PATH%
 
 set TEMP_IDF_GIT_PATH="%TEMP%\idf-git-path.txt"
-curator.exe config get --property gitPath>%TEMP_IDF_GIT_PATH%
+idf-env config get --property gitPath>%TEMP_IDF_GIT_PATH%
 set /P IDF_GIT_DIR=<%TEMP_IDF_GIT_PATH%
 
 set PREFIX=%IDF_PYTHON_DIR%\python.exe %IDF_PATH%

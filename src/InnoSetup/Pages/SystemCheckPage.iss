@@ -586,7 +586,7 @@ end;
 <event('InitializeWizard')>
 procedure CreateSystemCheckPage();
 begin
-  ExtractTemporaryFile('curator.exe');
+  ExtractTemporaryFile('{#IDF_ENV}');
 
   { Initialize data structure for Python }
   InstalledPythonVersions := TStringList.Create();
