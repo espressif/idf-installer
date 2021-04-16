@@ -245,7 +245,7 @@ begin
       NeedToClone := True;
     end;
 
-    CmdLine := ExpandConstant('{tmp}\7za.exe x -o' + ExpandConstant('{tmp}') + ' -r -aoa "' + IDFZIPFileName + '"');
+    CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + ExpandConstant('{tmp}') + '" -r -aoa "' + IDFZIPFileName + '"');
     IDFTempPath := ExpandConstant('{tmp}\esp-idf-') + IDFZIPFileVersion;
     Log('Extracting ESP-IDF reference repository: ' + CmdLine);
     Log('Reference repository path: ' + IDFTempPath);
