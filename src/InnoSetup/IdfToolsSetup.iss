@@ -61,6 +61,9 @@
   #define PYTHONWHEELSVERSION = '3.8-2021-01-21'
 #endif
 
+; Tool for managing ESP-IDF environments
+#define IDF_ENV = 'idf-env.exe'
+
 ; Build time variable which determines location of sources for the installer.
 ; OFFLINE mentioned above is runtime variable which allows to switch way how installer operates
 #ifndef INSTALLERBUILDTYPE
@@ -138,7 +141,7 @@ Source: "{#BUILD}\lib\cmdlinerunner.dll"; Flags: dontcopy
 ;Source: "..\..\lib\WebBrowser.dll"; Flags: dontcopy
 ;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy
 Source: "{#BUILD}\lib\7za.exe"; Flags: dontcopy
-Source: "{#BUILD}\lib\curator.exe"; DestDir: "{app}"; DestName: "curator.exe"
+Source: "{#BUILD}\lib\{#IDF_ENV}"; DestDir: "{app}"; DestName: "{#IDF_ENV}"
 Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
 Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.
@@ -244,16 +247,14 @@ Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH
 #include "Configuration.iss"
 #include "Utils.iss"
 
-
 #include "Pages/ChoicePage.iss"
 #include "Pages/CmdlinePage.iss"
 #include "Pages/IdfPage.iss"
 #include "Pages/GitPage.iss"
 #include "Pages/PythonPage.iss"
-#include "Curator.iss"
+#include "Environment.iss"
 #include "Pages/SystemCheckPage.iss"
 #include "Pages/IdfDownloadPage.iss"
-#include "Environment.iss"
 #include "Eclipse.iss"
 #include "Summary.iss"
 #include "PreInstall.iss"

@@ -248,14 +248,10 @@ The testing script is stored in docker-compose.yml. The test performs full silen
 Commands for testing of `online` and `offline` installer with support for cache of dist and releases:
 
 ```
-$env:IDF_VERSION="v4.1"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="v4.0.2"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="v3.3.4"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="release/v4.2"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="release/v4.1"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="release/v4.0"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="release/v3.3"; docker-compose.exe run idf-setup-test
-$env:IDF_VERSION="master"; docker-compose.exe run idf-setup-test
+cd src\Docker
+$env:IDF_VERSION="v4.1"; docker-compose.exe run idf-setup-online-test
+$env:IDF_VERSION="release/v4.2"; docker-compose.exe run idf-setup-online-test
+$env:IDF_VERSION="master"; docker-compose.exe run idf-setup-online-test
 ```
 
 Command for testing `offline` type of installer which contains everything but kitchen sink.:

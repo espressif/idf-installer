@@ -6,6 +6,32 @@
 
 var
   IDFZIPFileVersion, IDFZIPFileName: String;
+  IDFDownloadAvailableVersions: TArrayOfString;
+
+{ Get path to IdfEnv process for managing installed instances of ESP-IDF. }
+function GetIdfEnvCommand(Command: String):String;
+begin
+  Result := ExpandConstant('{tmp}\{#IDF_ENV} ') + Command;
+end;
+
+function ExecIdfEnv(Parameters: String):String;
+var
+  Command: String;
+begin
+  Command := GetIdfEnvCommand(Parameters);
+  Result := ExecuteProcess(Command);
+  Log('Result: ' + Result);
+end;
+
+function GetAntivirusName():String;
+begin
+  Result := ExecIdfEnv('antivirus get --property displayName');
+end;
+
+function InstallDrivers(DriverList: String):String;
+begin
+  Result := ExecIdfEnv('driver install ' + DriverList)
+end;
 
 function GetIDFZIPFileVersion(Version: String): String;
 var
@@ -219,7 +245,7 @@ begin
       NeedToClone := True;
     end;
 
-    CmdLine := ExpandConstant('{tmp}\7za.exe x -o' + ExpandConstant('{tmp}') + ' -r -aoa "' + IDFZIPFileName + '"');
+    CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + ExpandConstant('{tmp}') + '" -r -aoa "' + IDFZIPFileName + '"');
     IDFTempPath := ExpandConstant('{tmp}\esp-idf-') + IDFZIPFileVersion;
     Log('Extracting ESP-IDF reference repository: ' + CmdLine);
     Log('Reference repository path: ' + IDFTempPath);

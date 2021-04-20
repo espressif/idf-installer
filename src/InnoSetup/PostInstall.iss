@@ -82,7 +82,7 @@ begin
     Exit;
   end;
 
-  CmdLine := ExpandConstant('{tmp}\7za.exe x -o{app}\tools\idf-python\' + PythonVersion + '\ -r -aoa "' + PythonDistZip + '"');
+  CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o{app}\tools\idf-python\' + PythonVersion + '\" -r -aoa "' + PythonDistZip + '"');
   DoCmdlineInstall('Extracting Python Interpreter', 'Using Embedded Python', CmdLine);
 end;
 
@@ -105,7 +105,7 @@ begin
     Exit;
   end;
 
-  CmdLine := ExpandConstant('{tmp}\7za.exe x -o{app}\tools\idf-git\{#GITVERSION}\ -r -aoa "' + GitDistZip + '"');
+  CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o{app}\tools\idf-git\{#GITVERSION}\" -r -aoa "' + GitDistZip + '"');
   DoCmdlineInstall('Extracting Git', 'Using Embedded Git', CmdLine);
 end;
 
@@ -119,7 +119,7 @@ begin
     Exit;
   end;
 
-  CmdLine := ExpandConstant('{tmp}\7za.exe x -o' + Destination + ' -r -aoa "' + DistZip + '"');
+  CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + Destination + '" -r -aoa "' + DistZip + '"');
   DoCmdlineInstall('Extracting...', 'Extracting...', CmdLine);
 end;
 
