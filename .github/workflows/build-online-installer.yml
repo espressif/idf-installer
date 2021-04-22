@@ -3,7 +3,7 @@ name: build-online-installer
 on:
   push:
     tags:
-    - online-*
+      - online-*
 
 jobs:
   build-online-installer:
@@ -39,7 +39,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
+      - name: Upload Release Asset To Github
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -49,4 +49,11 @@ jobs:
           asset_path: ./build/esp-idf-tools-setup-online-signed.exe
           asset_name: esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
           asset_content_type: application/octet-stream
-
+      - name: Upload Release Asset To dl.espressif.com
+        id: upload-release-asset-espressif
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        shell: pwsh
+        run: aws s3 cp --acl=public-read ./build/esp-idf-tools-setup-online-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
