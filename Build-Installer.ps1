@@ -60,6 +60,25 @@ function PrepareIdfPackage {
     Remove-Item -Path $FullDistZipPath
 }
 
+function PrepareIdfFile {
+    param (
+        [Parameter()]
+        [String]
+        $BasePath,
+        [String]
+        $FilePath,
+        [String]
+        $DownloadUrl
+    )
+    $FullFilePath = Join-Path -Path $BasePath -ChildPath $FilePath
+    if (Test-Path -Path $FullFilePath -PathType Leaf) {
+        "$FullFilePath found."
+        return
+    }
+
+    Invoke-WebRequest -O $FullFilePath $DownloadUrl
+}
+
 function PrepareIdfCmdlinerunner {
     PrepareIdfPackage -BasePath build\$InstallerType\lib `
         -FilePath cmdlinerunner.dll `
@@ -75,10 +94,9 @@ function PrepareIdf7za {
 }
 
 function PrepareIdfEnv {
-    PrepareIdfPackage -BasePath build\$InstallerType\lib `
+    PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DistZip idf-env.zip `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.0.0/idf-env.zip
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.0/idf-env.exe
 }
 
 function PrepareIdfGit {
