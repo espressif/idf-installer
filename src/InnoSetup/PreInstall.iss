@@ -138,6 +138,10 @@ begin
     DriverList := DriverList + ' --silabs'
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_ESPRESSIF}')) then begin
+    DriverList := DriverList + ' --espressif'
+  end;
+
   if (Length(DriverList) > 0) then begin
     InstallDrivers(DriverList);
   end;

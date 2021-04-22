@@ -5,7 +5,7 @@
 #include <idp.iss>
 
 #define MyAppName "ESP-IDF Tools"
-#define MyAppVersion "2.7"
+#define MyAppVersion "2.8"
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
@@ -90,6 +90,7 @@
 #define COMPONENT_DRIVER = "driver"
 #define COMPONENT_DRIVER_FTDI = "driver/ftdi"
 #define COMPONENT_DRIVER_SILABS = "driver/silabs"
+#define COMPONENT_DRIVER_ESPRESSIF = "driver/espressif"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 
@@ -182,6 +183,7 @@ Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: che
 Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
 Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
 Name: "{#COMPONENT_DRIVER}"; Description: "Drivers - Requires elevation of privileges"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: "Espressif - WinUSB support for JTAG (ESP32-C3)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: "FTDI Chip - Virtual COM Port for USB (WROVER, WROOM)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: "Silicon Labs - Virtual COM Port for USB CP210x (ESP boards)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Flags: fixed
