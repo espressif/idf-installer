@@ -14,11 +14,11 @@ on:
       installer_url:
         description: 'Installer URL'
         required: true
-        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.8-beta-01/esp-idf-tools-setup-online-2.8-beta-01.exe'
+        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.8-beta-02/esp-idf-tools-setup-online-2.8-beta-02.exe'
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true
-        default: ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs,driver/espressif
+        default: ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs
 
 jobs:
   check-requirements:
