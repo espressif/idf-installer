@@ -134,3 +134,27 @@ begin
     @OnIDFSelectionChange,
     @OnIDFPageValidate);
 end;
+
+{ Validate screen with Tools after ESP-IDF selection. }
+{ Tools directory should not be under a directory with ESP-IDF source code, }
+{ because git reset on source code repository will erase tools. }
+<event('NextButtonClick')>
+function ToolsLocationPageValidate(CurPageID: Integer): Boolean;
+var
+  ToolsDir: String;
+  IDFDir: String;
+  Msg: string;
+begin
+  Result := True;
+  if CurPageID = wpSelectDir then
+  begin
+    ToolsDir := WizardForm.DirEdit.Text;
+    IDFDir := GetIDFPath('');
+    Log('Checking location of ToolsDir ' + ToolsDir + ' is not a subdirectory of ' + IDFDir);
+    if Pos(IDFDir, ToolsDir) = 1 then
+    begin
+      MessageBox('Tools should not be located under ESP-IDF source code directory selected on the previous page. Please select a different location for Tools directory.', mbError, MB_OK);
+      Result := False;
+    end;
+  end;
+end;
