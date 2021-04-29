@@ -96,7 +96,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.2/idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.4.0/idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -206,6 +206,10 @@ function FindSignTool {
         return $SignTool
     }
     $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\x86\signtool.exe"
+    if (Test-Path -Path $SignTool -PathType Leaf) {
+        return $SignTool
+    }
+    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.19041.0\x64\signtool.exe"
     if (Test-Path -Path $SignTool -PathType Leaf) {
         return $SignTool
     }
