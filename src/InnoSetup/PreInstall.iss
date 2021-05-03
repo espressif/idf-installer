@@ -157,7 +157,9 @@ begin
     Exit;
   end;
 
-  InstallSelectedDrivers();
+  if not (IsOfflineMode) then begin
+    InstallSelectedDrivers();
+  end;
 
   ForceDirectories(ExpandConstant('{app}\dist'));
 

@@ -96,7 +96,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.4.0/idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.4.1/idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -125,6 +125,10 @@ function PrepareIdfEclipse {
         -FilePath eclipse.exe `
         -DistZip idf-eclipse-2021-04-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-04-win64.zip
+}
+
+function PrepareIdfDriver {
+    build\$InstallerType\lib\idf-env.exe driver download --espressif --ftdi --silabs
 }
 
 function PrepareOfflineBranches {
@@ -295,6 +299,7 @@ if ('offline' -eq $InstallerType) {
         New-Item build/$InstallerType/tools -Type Directory
     }
 
+    PrepareIdfDriver
     PrepareIdfGit
     PrepareIdfPython
     PrepareIdfPythonWheels
