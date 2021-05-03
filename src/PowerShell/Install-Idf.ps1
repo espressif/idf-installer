@@ -6,12 +6,24 @@ param (
     [String]
     $IdfVersion = "v4.2",
     [String]
-    $Components = "ide/powershell,ide/cmd"
+    $Components = "ide/powershell,ide/cmd",
+    # Allows testing installation with specific Temp directory.
+    # Some environments contains path with spaces and special characters.
+    [String]
+    $TmpDirectory = $null
 )
+
+if ($null -ne $TmpDirectory) {
+    $env:TMP = $TmpDirectory
+    if (!( Test-Path -Path $env:TMP -PathType Container )) {
+        New-Item $env:TMP -Type Directory
+    }
+}
 
 "Configuration:"
 "* Installer = $Installer"
 "* IdfVersion = $IdfVersion"
+"* env:TMP = $env:TMP"
 
 $Directory = (Get-Location).Path
 $LogFile = Join-Path -Path $Directory -ChildPath out.txt

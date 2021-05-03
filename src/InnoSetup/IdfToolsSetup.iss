@@ -25,7 +25,7 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
-#define ECLIPSE_VERSION "2021-03"
+#define ECLIPSE_VERSION "2021-04"
 #define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
 #define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
 
@@ -163,9 +163,8 @@ Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-w
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
-; Helper PowerShell scripts for managing exceptions in Windows Defender
-Source: "..\PowerShell\Register-WindowsDefenderExclusions.ps1"; DestDir: "{app}\dist";
-Source: "..\PowerShell\Unregister-WindowsDefenderExclusions.ps1"; DestDir: "{app}\dist";
+
+Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 [Types]
 Name: "full"; Description: "Full installation"
@@ -233,12 +232,12 @@ Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser pos
 ;Filename: "{group}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Check: IsCmdInstalled
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
 ; Please, keep this in mind when making changes to the item's description - WD checkbox is to be disabled on systems without the Windows Defender installed
-Filename: "powershell"; Parameters: "-ExecutionPolicy ByPass -File ""{app}\dist\Register-WindowsDefenderExclusions.ps1"" -AddExclPath ""{app}\*.exe"""; Flags: postinstall shellexec runhidden; Description: "{cm:OptimizationWindowsDefender}"; Check: GetIsWindowsDefenderEnabled
+Filename: "{app}\idf-env.exe"; Parameters: "antivirus exclusion add --all"; Flags: postinstall shellexec runhidden; Description: "{cm:OptimizationWindowsDefender}"; Check: GetIsWindowsDefenderEnabled
 
 
 [UninstallRun]
-Filename: "powershell.exe"; \
-  Parameters: "-ExecutionPolicy Bypass -File ""{app}\dist\Unregister-WindowsDefenderExclusions.ps1"" -RmExclPath ""{app}"""; \
+Filename: "{app}\idf-env.exe"; \
+  Parameters: "antivirus exclusion remove --all"; \
   WorkingDir: {app}; Flags: runhidden
 
 [Registry]

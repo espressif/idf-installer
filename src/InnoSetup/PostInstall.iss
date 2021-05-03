@@ -142,7 +142,9 @@ begin
 
   ExtractTemporaryFile('7za.exe');
 
-  if (not IsOfflineMode) then begin
+  if (IsOfflineMode) then begin
+    InstallSelectedDrivers();
+  end else begin
     InstallEmbeddedPython();
     InstallEmbeddedGit();
     InstallEclipse();

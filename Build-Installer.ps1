@@ -96,7 +96,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.0/idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.4.1/idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -121,10 +121,14 @@ function PrepareIdfPythonWheels {
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-03 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-04 `
         -FilePath eclipse.exe `
-        -DistZip idf-eclipse-2021-03-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-03-win64.zip
+        -DistZip idf-eclipse-2021-04-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-04-win64.zip
+}
+
+function PrepareIdfDriver {
+    &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs
 }
 
 function PrepareOfflineBranches {
@@ -206,6 +210,10 @@ function FindSignTool {
         return $SignTool
     }
     $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\x86\signtool.exe"
+    if (Test-Path -Path $SignTool -PathType Leaf) {
+        return $SignTool
+    }
+    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.19041.0\x64\signtool.exe"
     if (Test-Path -Path $SignTool -PathType Leaf) {
         return $SignTool
     }
@@ -291,6 +299,7 @@ if ('offline' -eq $InstallerType) {
         New-Item build/$InstallerType/tools -Type Directory
     }
 
+    PrepareIdfDriver
     PrepareIdfGit
     PrepareIdfPython
     PrepareIdfPythonWheels
