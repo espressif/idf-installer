@@ -164,6 +164,8 @@ Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
 
+Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Flags: recursesubdirs skipifsourcedoesntexist;
+
 [Types]
 Name: "full"; Description: "Full installation"
 Name: "minimal"; Description: "Minimal installation"
