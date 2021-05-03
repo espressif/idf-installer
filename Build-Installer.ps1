@@ -128,7 +128,7 @@ function PrepareIdfEclipse {
 }
 
 function PrepareIdfDriver {
-    build\$InstallerType\lib\idf-env.exe driver download --espressif --ftdi --silabs
+    &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs
 }
 
 function PrepareOfflineBranches {
