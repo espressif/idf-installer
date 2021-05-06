@@ -90,6 +90,12 @@ begin
       exit;
     end;
 
+    if (Length(IDFPath) > 90) then begin
+      MessageBox(CustomMessage('ErrorTooLongIdfPath'), mbError, MB_OK);
+      Result := False;
+      exit;
+    end;
+
     IDFPyPath := IDFPath + '\tools\idf.py';
     if not FileExists(IDFPyPath) then
     begin
@@ -149,6 +155,13 @@ begin
   if CurPageID = wpSelectDir then
   begin
     ToolsDir := WizardForm.DirEdit.Text;
+
+    if (Length(ToolsDir) > 90) then begin
+      MessageBox(CustomMessage('ErrorTooLongToolsPath'), mbError, MB_OK);
+      Result := False;
+      exit;
+    end;
+
     IDFDir := GetIDFPath('');
     Log('Checking location of ToolsDir ' + ToolsDir + ' is not a subdirectory of ' + IDFDir);
     if Pos(IDFDir, ToolsDir) = 1 then
