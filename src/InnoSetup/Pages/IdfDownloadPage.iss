@@ -150,6 +150,12 @@ begin
     exit;
   end;
 
+  if (Length(IDFPath) > 90) then begin
+    MessageBox(CustomMessage('ErrorTooLongIdfPath'), mbError, MB_OK);
+    Result := False;
+    exit;
+  end;
+
   IDFDownloadPath := IDFPath;
 
   { Use parameter /IDFVERSION=x to override selection in the box. }

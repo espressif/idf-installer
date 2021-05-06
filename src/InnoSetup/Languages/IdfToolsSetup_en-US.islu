@@ -48,3 +48,4 @@ CreateShortcutCMD=CMD - Create shortcut for the ESP-IDF Tools:
 OptimizationTitle=Optimization:
 OptimizationWindowsDefender=Register the ESP-IDF Tools executables as Windows Defender exclusions. The registration might improve compilation time by about 30%. The installer deployed the files on the operating system and antivirus software scanned them. The registration of exclusions requires the elevation of privileges. The exclusions can be added/removed by idf-env tool. More details: https://github.com/espressif/idf-env.
 OptimizationDownloadMirror=Use Espressif download server instead of downloading tool packages from GitHub.
+ErrorTooLongIdfPath=Length of the path to ESP-IDF exceeds 90 characters. Too long path might cause problem to some build tools. Please choose shorter path.
