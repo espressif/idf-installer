@@ -21,6 +21,12 @@
                 },
                 "python": {
                     "type": "string"
+                },
+                "targets": {
+                    "type": "array",
+                        "items": {
+                            "type": "string"
+                       }
                 }
             }
         }
