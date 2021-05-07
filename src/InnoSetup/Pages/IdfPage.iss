@@ -149,7 +149,6 @@ function ToolsLocationPageValidate(CurPageID: Integer): Boolean;
 var
   ToolsDir: String;
   IDFDir: String;
-  Msg: string;
 begin
   Result := True;
   if CurPageID = wpSelectDir then
