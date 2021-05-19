@@ -13,6 +13,12 @@ if "%IDF_TOOLS_PATH%" == "" (
     echo IDF_TOOLS_PATH not set. Setting to %~dp0
 )
 
+if exist "echo" (
+    echo "File 'echo' was detected in the current directory. The file can cause problems with 'echo.' in batch scripts."
+    echo "Renaming the file to 'echo.old'"
+    move "echo" "echo.old"
+)
+
 set PATH=%IDF_TOOLS_PATH%;%PATH%
 set TEMP_IDF_PYTHON_PATH="%TEMP%\idf-python-path.txt"
 idf-env config get --property python --idf-path %IDF_PATH%\>%TEMP_IDF_PYTHON_PATH%
