@@ -26,6 +26,27 @@ begin
   Result := ExpandConstant(LinkString) + '\{#IDF_SHORTCUT_PREFIX} ' + GetIDFShortVersion() + ' ' + Title + '.lnk';
 end;
 
+procedure CreateIDFWindowsTerminalShortcut();
+var
+  Command: String;
+  IdfPathWithForwardSlashes: String;
+  ResultCode: Integer;
+begin
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''));
+
+  Command := 'launcher add --shell powershell --to windows-terminal';
+  Command := Command + ' --title "ESP-IDF ' + GetIDFVersionFromHeaderFile() + '"';
+  Command := Command + ' --idf-path "' + IdfPathWithForwardSlashes + '"';
+
+  Log(ExpandConstant('{app}\{#IDF_ENV}') + ' ' + Command);
+  if Exec(ExpandConstant('{app}\{#IDF_ENV}'), Command, '', SW_SHOW,
+     ewWaitUntilTerminated, ResultCode) then begin
+     Log('{#IDF_ENV} success');
+  end else begin
+    Log('{#IDF_ENV} failed');
+  end;
+end;
+
 procedure CreateIDFCommandPromptShortcut(LinkString: String);
 var
   Description: String;
@@ -183,6 +204,10 @@ begin
 
     IDFToolsSetup();
     SaveIdfConfiguration(ExpandConstant('{app}\esp_idf.json'));
+
+    if (WizardIsComponentSelected('{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}')) then begin
+      CreateIDFWindowsTerminalShortcut();
+    end;
 
     if (WizardIsComponentSelected('{#COMPONENT_CMD_STARTMENU}')) then begin
       CreateIDFCommandPromptShortcut('{autostartmenu}\Programs\ESP-IDF');
