@@ -92,6 +92,11 @@
 #define COMPONENT_DRIVER_FTDI = "driver/ftdi"
 #define COMPONENT_DRIVER_SILABS = "driver/silabs"
 #define COMPONENT_DRIVER_ESPRESSIF = "driver/espressif"
+#define COMPONENT_TARGET = "target"
+#define COMPONENT_TARGET_ESP32 = "target/esp32"
+#define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
+#define COMPONENT_TARGET_ESP32_S3 = "target/esp32s3"
+#define COMPONENT_TARGET_ESP32_S2 = "target/esp32s2"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 
@@ -187,21 +192,16 @@ Name: "{#COMPONENT_DRIVER}"; Description: "Drivers - Requires elevation of privi
 Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: "Espressif - WinUSB support for JTAG (ESP32-C3)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: "FTDI Chip - Virtual COM Port for USB (WROVER, WROOM)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: "Silicon Labs - Virtual COM Port for USB CP210x (ESP boards)"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET}"; Description: "Targets - more details at https://products.espressif.com/"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32}"; Description: "ESP32 - Xtensa"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: "ESP32-C3 - RISC-V"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: "ESP32-S3 - Xtensa"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: "ESP32-S2 - Xtensa"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Flags: fixed
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub";
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
-
-
-;Name: "idf"; Description: "ESP-IDF"; Types: full
-;Name: "idf\tools"; Description: "Chip"; Types: full
-;Name: "idf\tools\chip_esp32"; Description: "ESP32"; Types: full
-;Name: "idf\tools\chip_esp32\esp_idf_v4_2"; Description: "ESP-IDF v4.2"; Types: full
-;Name: "idf\tools\chip_esp32\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
-;Name: "idf\tools\chip_esp8266"; Description: "ESP32"; Types: full
-;Name: "idf\tools\chip_esp8266\esp_idf_v3_3_4"; Description: "ESP-IDF v3.3.4"; Types: full
-;Name: "idf\tools\chip_esp8266\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\dist"
