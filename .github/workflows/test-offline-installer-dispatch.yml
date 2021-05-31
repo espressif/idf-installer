@@ -18,7 +18,7 @@ on:
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true
-        default: ide/powershell/desktop,ide/cmd/desktop
+        default: ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop
 
 jobs:
   check-requirements:
