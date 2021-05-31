@@ -95,8 +95,9 @@
 #define COMPONENT_TARGET = "target"
 #define COMPONENT_TARGET_ESP32 = "target/esp32"
 #define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
-#define COMPONENT_TARGET_ESP32_S3 = "target/esp32s3"
-#define COMPONENT_TARGET_ESP32_S2 = "target/esp32s2"
+#define COMPONENT_TARGET_ESP32_S = "target/esp32s"
+#define COMPONENT_TARGET_ESP32_S3 = "target/esp32s/s3"
+#define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 
@@ -192,11 +193,12 @@ Name: "{#COMPONENT_DRIVER}"; Description: "Drivers - Requires elevation of privi
 Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: "Espressif - WinUSB support for JTAG (ESP32-C3)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: "FTDI Chip - Virtual COM Port for USB (WROVER, WROOM)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: "Silicon Labs - Virtual COM Port for USB CP210x (ESP boards)"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET}"; Description: "Targets - more details at https://products.espressif.com/"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32}"; Description: "ESP32 - Xtensa"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: "ESP32-C3 - RISC-V"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: "ESP32-S3 - Xtensa"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: "ESP32-S2 - Xtensa"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET}"; Description: "Chip Targets - more details at https://products.espressif.com/"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32}"; Description: "ESP32"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: "ESP32-C3"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: "ESP32-S Series"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: "ESP32-S3"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: "ESP32-S2"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Flags: fixed
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub";
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
