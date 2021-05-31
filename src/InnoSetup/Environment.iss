@@ -357,6 +357,7 @@ var
   BundledIDFToolsPyPath: String;
   JSONArg: String;
   PythonVirtualEnvPath: String;
+  ResultCode: Integer;
 begin
   IDFPath := GetIDFPath('');
   IDFToolsPyPath := IDFPath + '\tools\idf_tools.py';
@@ -394,7 +395,16 @@ begin
   end;
 
   Log('idf_tools.py command: ' + IDFToolsPyCmd);
-  CmdLine := IDFToolsPyCmd + ' ' + GetSelectedIdfTargets() + ' install';
+
+  { Check the support for --targets command}
+  if Exec(IDFToolsPyCmd, '--targets= ', '', SW_SHOW,
+    ewWaitUntilTerminated, ResultCode) then begin
+    Log('Selection of targets: Supported');
+    CmdLine := IDFToolsPyCmd + ' ' + GetSelectedIdfTargets() + ' install';
+  end else begin
+    Log('Selection of targets: Not supported in this version idf_tools.py');
+    CmdLine := IDFToolsPyCmd + ' install';
+  end;
 
   Log('Installing tools:' + CmdLine);
   DoCmdlineInstall('Installing ESP-IDF tools', '', CmdLine);
