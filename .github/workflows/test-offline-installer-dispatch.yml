@@ -1,4 +1,4 @@
-name: test-offline-installer
+name: test-offline-installer-dispatch
 
 on:
   workflow_dispatch:
