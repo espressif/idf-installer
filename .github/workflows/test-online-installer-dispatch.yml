@@ -6,15 +6,15 @@ on:
       idf_version:
         description: 'IDF Version'
         required: true
-        default: 'v4.2.1'
+        default: 'v4.3'
       idf_short_version:
         description: 'IDF Version - only major and minor numbers without any "v" contained in name of desktop link'
         required: true
-        default: '4.2.1'
+        default: '4.3'
       installer_url:
         description: 'Installer URL'
         required: true
-        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.8-beta-06/esp-idf-tools-setup-online-2.8-beta-06.exe'
+        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.9/esp-idf-tools-setup-online-2.9.exe'
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true

@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Download Installer
-        run:  Invoke-WebRequest https://github.com/espressif/idf-installer/releases/download/online-2.8-beta-06/esp-idf-tools-setup-online-2.8-beta-06.exe -OutFile installer.exe
+        run:  Invoke-WebRequest https://github.com/espressif/idf-installer/releases/download/online-2.9/esp-idf-tools-setup-online-2.9.exe -OutFile installer.exe
         shell: pwsh
       - name: Run installer
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs"
