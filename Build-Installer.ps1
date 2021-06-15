@@ -114,7 +114,7 @@ function PrepareIdfPython {
 }
 
 function PrepareIdfPythonWheels {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\3.8-2021-01-21 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\3.8-2021-06-15 `
         -FilePath version.txt `
         -DistZip idf-python-wheels-3.8-2021-06-15-win64.zip `
         -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-3.8-2021-06-15-win64.zip
