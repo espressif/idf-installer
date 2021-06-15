@@ -4,7 +4,7 @@ param (
     [String]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2021-01-21',
+    $IdfPythonWheelsVersion = '3.8-2021-06-15',
     [String]
     $InstallerType = 'online',
     [String]
@@ -114,10 +114,10 @@ function PrepareIdfPython {
 }
 
 function PrepareIdfPythonWheels {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\3.8-2021-06-15 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion `
         -FilePath version.txt `
-        -DistZip idf-python-wheels-3.8-2021-06-15-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-3.8-2021-06-15-win64.zip
+        -DistZip idf-python-wheels-$IdfPythonWheelsVersion-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-$IdfPythonWheelsVersion-win64.zip
 }
 
 function PrepareIdfEclipse {
