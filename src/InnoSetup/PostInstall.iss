@@ -3,62 +3,98 @@
   SPDX-License-Identifier: Apache-2.0 }
 
 { ------------------------------ Start menu shortcut ------------------------------ }
+
+{ Store launcher paths so they can be invoked in post install phase declared in Run section. }
+var LauncherPathPowerShell: String;
+var LauncherPathCMD: String;
+
+{ Helper function to retrieve value from variable in Run section. }
+function GetLauncherPathPowerShell(Param: String):String;
+begin
+  Result := LauncherPathPowerShell;
+end;
+
+{ Helper function to retrieve value from variable in Run section. }
+function GetLauncherPathCMD(Param: String):String;
+begin
+  Result := LauncherPathCMD;
+end;
+
 { Get suffix of the text for link so that user can see multiple IDF installed. }
 function GetLinkDestination(LinkString: String; Title: String): String;
 begin
   Result := ExpandConstant(LinkString) + '\{#IDF_SHORTCUT_PREFIX} ' + GetIDFShortVersion() + ' ' + Title + '.lnk';
 end;
 
+procedure CreateIDFWindowsTerminalShortcut();
+var
+  Command: String;
+  IdfPathWithForwardSlashes: String;
+  ResultCode: Integer;
+begin
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''));
+
+  Command := 'launcher add --shell powershell --to windows-terminal';
+  Command := Command + ' --title "ESP-IDF ' + GetIDFVersionFromHeaderFile() + '"';
+  Command := Command + ' --idf-path "' + IdfPathWithForwardSlashes + '"';
+
+  Log(ExpandConstant('{app}\{#IDF_ENV}') + ' ' + Command);
+  if Exec(ExpandConstant('{app}\{#IDF_ENV}'), Command, '', SW_SHOW,
+     ewWaitUntilTerminated, ResultCode) then begin
+     Log('{#IDF_ENV} success');
+  end else begin
+    Log('{#IDF_ENV} failed');
+  end;
+end;
+
 procedure CreateIDFCommandPromptShortcut(LinkString: String);
 var
-  Destination: String;
   Description: String;
   Command: String;
 begin
   ForceDirectories(ExpandConstant(LinkString));
-  Destination := GetLinkDestination(LinkString, 'CMD');
+  LauncherPathCMD := GetLinkDestination(LinkString, 'CMD');
   Description := '{#IDFCmdExeShortcutDescription}';
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
   Command := '/k ""' + ExpandConstant('{app}\idf_cmd_init.bat') + '"';
-  Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
+  Log('CreateShellLink Destination=' + LauncherPathCMD + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
-      Destination,
+      LauncherPathCMD,
       Description,
       'cmd.exe',
       Command,
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MessageBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
+    MessageBox('Failed to create the shortcut: ' + LauncherPathCMD, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;
 
 procedure CreateIDFPowershellShortcut(LinkString: String);
 var
-  Destination: String;
   Description: String;
   Command: String;
 begin
   ForceDirectories(ExpandConstant(LinkString));
-  Destination := GetLinkDestination(LinkString, 'PowerShell');
+  LauncherPathPowerShell := GetLinkDestination(LinkString, 'PowerShell');
   Description := '{#IDFPsShortcutDescription}';
 
   Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File "{app}/Initialize-Idf.ps1"');
-  Log('CreateShellLink Destination=' + Destination + ' Description=' + Description + ' Command=' + Command)
+  Log('CreateShellLink Destination=' + LauncherPathPowerShell + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
-      Destination,
+      LauncherPathPowerShell,
       Description,
       'powershell.exe',
       Command,
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MessageBox('Failed to create the shortcut: ' + Destination, mbError, MB_OK);
+    MessageBox('Failed to create the shortcut: ' + LauncherPathPowerShell, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;
@@ -168,6 +204,10 @@ begin
 
     IDFToolsSetup();
     SaveIdfConfiguration(ExpandConstant('{app}\esp_idf.json'));
+
+    if (WizardIsComponentSelected('{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}')) then begin
+      CreateIDFWindowsTerminalShortcut();
+    end;
 
     if (WizardIsComponentSelected('{#COMPONENT_CMD_STARTMENU}')) then begin
       CreateIDFCommandPromptShortcut('{autostartmenu}\Programs\ESP-IDF');

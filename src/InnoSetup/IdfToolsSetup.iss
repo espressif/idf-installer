@@ -5,7 +5,7 @@
 #include <idp.iss>
 
 #define MyAppName "ESP-IDF Tools"
-#define MyAppVersion "2.8"
+#define MyAppVersion "2.9"
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
@@ -58,7 +58,7 @@
   #define OFFLINE = 'no';
 #endif
 #ifndef PYTHONWHEELSVERSION
-  #define PYTHONWHEELSVERSION = '3.8-2021-01-21'
+  #define PYTHONWHEELSVERSION = '3.8-2021-06-15'
 #endif
 
 ; Tool for managing ESP-IDF environments
@@ -82,6 +82,7 @@
 #define COMPONENT_ECLIPSE = 'ide/eclipse'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
+#define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
 #define COMPONENT_POWERSHELL_DESKTOP = 'ide/powershell/desktop'
 #define COMPONENT_POWERSHELL_STARTMENU = 'ide/powershell/startmenu'
 #define COMPONENT_CMD = 'ide/cmd'
@@ -176,6 +177,7 @@ Name: "ide"; Description: "IDE support"; Types: full custom; Flags: fixed
 Name: "{#COMPONENT_ECLIPSE}"; Description: "Eclipse"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: "Desktop shortcut"; Types: full custom
 Name: "{#COMPONENT_POWERSHELL}"; Description: "PowerShell"; Types: full custom; Flags: checkablealone
+Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: "Windows Terminal Dropdown Menu"; Types: full custom
 Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: "Desktop shortcut"; Types: full custom minimal
 Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
 Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: checkablealone
@@ -192,7 +194,6 @@ Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressi
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
 
 
-;Name: "ide\eclipse\openjdk"; Description: "OpenJDK"; Types: full
 ;Name: "idf"; Description: "ESP-IDF"; Types: full
 ;Name: "idf\tools"; Description: "Chip"; Types: full
 ;Name: "idf\tools\chip_esp32"; Description: "ESP32"; Types: full
@@ -225,11 +226,9 @@ Type: filesandordirs; Name: "{app}\python_env"
 [Run]
 Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: "Installing Git"; Check: GitInstallRequired
 Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec unchecked; Description: "Run ESP-IDF Eclipse Environment"; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
-;Filename: "{autodesktop}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP}"
-;Filename: "{autodesktop}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP}"
+Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"
+Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}";
 
-;Filename: "{group}\{#IDFPsShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF PowerShell Environment"; Check: IsPowerShellInstalled
-;Filename: "{group}\{#IDFCmdExeShortcutFile}"; Flags: postinstall shellexec unchecked; Description: "Run ESP-IDF Command Prompt Environment"; Check: IsCmdInstalled
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
 ; Please, keep this in mind when making changes to the item's description - WD checkbox is to be disabled on systems without the Windows Defender installed
 Filename: "{app}\idf-env.exe"; Parameters: "antivirus exclusion add --all"; Flags: postinstall shellexec runhidden; Description: "{cm:OptimizationWindowsDefender}"; Check: GetIsWindowsDefenderEnabled
