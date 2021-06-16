@@ -317,6 +317,37 @@ begin
   end;
 end;
 
+{ Get list of selected IDF targets as a command line option for IDF installer. }
+{ Result: '--targets=esp32,esp32-c3'}
+function GetSelectedIdfTargets(): String;
+var
+  Targets: String;
+begin
+  Targets := '';
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32}')) then begin
+      Targets := Targets + 'esp32,';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C3}')) then begin
+      Targets := Targets + 'esp32-c3,';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S3}')) then begin
+      Targets := Targets + 'esp32-s3,';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S2}')) then begin
+      Targets := Targets + 'esp32-s2,';
+  end;
+
+  if (Length(Targets) > 1) then begin
+    Result := '--targets=' + Copy(Targets, 1, Length(Targets) - 1);
+  end else begin
+    Result := '';
+  end;
+end;
+
 procedure IDFToolsSetup();
 var
   CmdLine: String;
@@ -326,6 +357,7 @@ var
   BundledIDFToolsPyPath: String;
   JSONArg: String;
   PythonVirtualEnvPath: String;
+  ResultCode: Integer;
 begin
   IDFPath := GetIDFPath('');
   IDFToolsPyPath := IDFPath + '\tools\idf_tools.py';
@@ -363,7 +395,16 @@ begin
   end;
 
   Log('idf_tools.py command: ' + IDFToolsPyCmd);
-  CmdLine := IDFToolsPyCmd + ' install';
+
+  { Check the support for --targets command}
+  if Exec(IDFToolsPyCmd, '--targets= ', '', SW_SHOW,
+    ewWaitUntilTerminated, ResultCode) then begin
+    Log('Selection of targets: Supported');
+    CmdLine := IDFToolsPyCmd + ' ' + GetSelectedIdfTargets() + ' install';
+  end else begin
+    Log('Selection of targets: Not supported in this version idf_tools.py');
+    CmdLine := IDFToolsPyCmd + ' install';
+  end;
 
   Log('Installing tools:' + CmdLine);
   DoCmdlineInstall('Installing ESP-IDF tools', '', CmdLine);
