@@ -15,7 +15,7 @@ jobs:
         run:  Invoke-WebRequest https://github.com/espressif/idf-installer/releases/download/online-2.9/esp-idf-tools-setup-online-2.9.exe -OutFile installer.exe
         shell: pwsh
       - name: Run installer
-        run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs"
+        run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs" -TmpDirectory "$env:TMP/Ň i"
         shell: pwsh
       - name: Build blink
         run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "4.4"  -IdfPath "C:/Users/runneradmin/Desktop/esp-idf"

@@ -10,10 +10,10 @@ param (
     # Allows testing installation with specific Temp directory.
     # Some environments contains path with spaces and special characters.
     [String]
-    $TmpDirectory = $null
+    $TmpDirectory = $env:TMP
 )
 
-if ($null -ne $TmpDirectory) {
+if ($env:TMP -ne $TmpDirectory) {
     $env:TMP = $TmpDirectory
     if (!( Test-Path -Path $env:TMP -PathType Container )) {
         New-Item $env:TMP -Type Directory
