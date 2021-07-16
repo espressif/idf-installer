@@ -1,10 +1,18 @@
-# This script is called from a Windows shortcut, with
-# the working directory set to an ESP-IDF directory.
-# Its purpose is to support using the "IDF Tools Directory" method of
-# installation for ESP-IDF versions older than IDF v4.1.
-# It does the same thing as "export.ps1" in IDF v4.1.
+# This script is called from a Windows shortcut and Windows Terminal launcher fragments.
+# The script determines location of Git, Python and ESP-IDF.
+# Similar result can be achieved by running export.ps1 from ESP-IDF directory.
 
-$IDF_PATH=(Get-Location).Path
+# How the script determines the location of ESP-IDF:
+# 1. try to use IdfId parameter to query configuration managed by idf-env
+# 2. try to use environment variable IDF_PATH to query configuration managed by idf-env
+# 3. try to use local working directory to query configuration managed by idf-env
+
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [String]
+    $IdfId=""
+)
 
 if ($null -eq $env:IDF_TOOLS_PATH) {
     $env:IDF_TOOLS_PATH="$PSScriptRoot"
@@ -13,16 +21,30 @@ if ($null -eq $env:IDF_TOOLS_PATH) {
 
 $env:PATH="$env:IDF_TOOLS_PATH;$env:PATH"
 
-$IdfGitDir=idf-env config get --property gitPath
-$IdfPythonDir=idf-env config get --property python --idf-path "$IDF_PATH\"
+$IdfGit=idf-env config get --property gitPath
+
+if ("" -eq $IdfId) {
+    if ($null -eq $env:IDF_PATH) {
+        $IDF_PATH=(Get-Location).Path
+    } else {
+        $IDF_PATH=$env:IDF_PATH
+    }
+    $PythonCommand=idf-env config get --property python --idf-path "$IDF_PATH\"
+} else {
+    $PythonCommand=idf-env config get --property python --idf-id ${IdfId}
+    $IDF_PATH=idf-env config get --property path --idf-id ${IdfId}
+}
 
 $isEspIdfRoot = (Test-Path "$IDF_PATH/tools/idf.py")
 if (-not $isEspIdfRoot) {
-    Write-Output "Usage: Initialize-IDF.ps1 ^<Python directory^> ^<Git directory^>"
-    Write-Output "This script must be invoked from ESP-IDF directory."
+    "Unable to find ESP-IDF on following path: $IDF_PATH"
+    "Recommendations:"
+    "  #1: Run ESP-IDF Tools Windows installer and select an existing installation of ESP-IDF to repair the configuration."
+    "  #2: Set working directory to root of ESP-IDF and launch this script."
+    "  #3: Other option: Set environment variable IDF_PATH pointing to the directory with ESP-IDF."
+    Exit 1
 }
 
-$PythonCommand="$IdfPythonDir\python.exe"
 function idf.py { &$PythonCommand "$IDF_PATH\tools\idf.py" $args }
 function esptool.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\esptool.py" $args }
 function espefuse.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\espefuse.py" $args }
@@ -48,15 +70,15 @@ if ($null -eq $env:PYTHONNOUSERSITE) {
 }
 
 # Strip quotes
-$IdfGitDir = $IdfGitDir.Trim("`"")
-$IdfPythonDir = $IdfPythonDir.Trim("`"")
+$IdfGitDir = (Get-Item $IdfGit).Directory.FullName
+$IdfPythonDir = (Get-Item $PythonCommand).Directory.FullName
 
 # Add Python and Git paths to PATH
 $env:PATH = "$IdfGitDir;$IdfPythonDir;$env:PATH"
-Write-Output "Using Python in $IdfPythonDir"
-python.exe --version
-Write-Output "Using Git in $IdfGitDir"
-git.exe --version
+"Using Python in $IdfPythonDir"
+&$PythonCommand --version
+"Using Git in $IdfGitDir"
+&$IdfGit --version
 
 # Check if this is a recent enough copy of ESP-IDF.
 # If so, use export.ps1 provided there.
@@ -65,13 +87,13 @@ if ($isExport){
     . $IDF_PATH/export.ps1
 }
 else {
-    Write-Output "IDF version does not include export.ps1. Using the fallback version."
+    "IDF version does not include export.ps1. Using the fallback version."
 
     if ((Test-Path "$IDF_PATH/tools/tools.json")){
         $IDF_TOOLS_JSON_PATH = "$IDF_PATH/tools/tools.json"
     }
     else{
-        Write-Output "IDF version does not include tools/tools.json. Using the fallback version."
+        "IDF version does not include tools/tools.json. Using the fallback version."
         $IDF_TOOLS_JSON_PATH = "$PSScriptRoot/tools_fallback.json"
     }
 
@@ -79,14 +101,14 @@ else {
         $IDF_TOOLS_PY_PATH = "$IDF_PATH/tools/idf_tools.py"
     }
     else{
-        Write-Output "IDF version does not include tools/idf_tools.py. Using the fallback version."
+        "IDF version does not include tools/idf_tools.py. Using the fallback version."
         $IDF_TOOLS_PY_PATH = "$PSScriptRoot/idf_tools_fallback.py"
     }
 
-    Write-Output "Setting IDF_PATH: $IDF_PATH"
+    "Setting IDF_PATH: $IDF_PATH"
     $env:IDF_PATH = $IDF_PATH
 
-    Write-Output "Adding ESP-IDF tools to PATH..."
+    "Adding ESP-IDF tools to PATH..."
     $OLD_PATH = $env:Path.split(";") | Select-Object -Unique # array without duplicates
     # using idf_tools.py to get $envars_array to set
     $envars_raw = (python.exe "$IDF_TOOLS_PY_PATH" --tools-json "$IDF_TOOLS_JSON_PATH" export --format key-value)
@@ -116,20 +138,20 @@ else {
     $NEW_PATH = $env:Path.split(";") | Select-Object -Unique # array without duplicates
     $dif_Path = Compare-Object -ReferenceObject $OLD_PATH -DifferenceObject $NEW_PATH -PassThru
     if ($dif_Path -ne $null) {
-        Write-Output $dif_Path
+        $dif_Path
     }
     else {
-        Write-Output "No directories added to PATH:"
-        Write-Output $OLD_PATH
+        "No directories added to PATH:"
+        $OLD_PATH
     }
 
 
-    Write-Output "Checking if Python packages are up to date..."
+   "Checking if Python packages are up to date..."
 
     Start-Process -Wait -NoNewWindow -FilePath "python" -Args "`"$IDF_PATH/tools/check_python_dependencies.py`""
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } # if error
 
-    Write-Output "
+    "
 Done! You can now compile ESP-IDF projects.
 Go to the project directory and run:
     idf.py build
