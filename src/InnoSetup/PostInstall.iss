@@ -58,7 +58,7 @@ begin
 
   { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
     will be removed by cmd.exe; each argument needs to be surrounded by quotes as well. }
-  Command := '/k ""' + ExpandConstant('{app}\idf_cmd_init.bat') + '"';
+  Command := '/k ""' + ExpandConstant('{app}\idf_cmd_init.bat') + '" ' + GetIdfId() + '"';
   Log('CreateShellLink Destination=' + LauncherPathCMD + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(
@@ -83,7 +83,7 @@ begin
   LauncherPathPowerShell := GetLinkDestination(LinkString, 'PowerShell');
   Description := '{#IDFPsShortcutDescription}';
 
-  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File "{app}/Initialize-Idf.ps1"');
+  Command := ExpandConstant('-ExecutionPolicy Bypass -NoExit -File "{app}/Initialize-Idf.ps1" -IdfId ' + GetIdfId() );
   Log('CreateShellLink Destination=' + LauncherPathPowerShell + ' Description=' + Description + ' Command=' + Command)
   try
     CreateShellLink(

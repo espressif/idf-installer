@@ -222,6 +222,14 @@ begin
   Result := MsgBox(Text, Typ, Buttons);
 end;
 
+function GetIdfId():String;
+var
+  IdfPathWithForwardSlashes: String;
+begin
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''))
+  Result := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
+end;
+
 procedure SaveIdfEclipseConfiguration(FilePath: String);
 var
     Content: String;
@@ -230,7 +238,7 @@ var
     IdfVersion: String;
 begin
   IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''))
-  IdfId := 'esp-idf-' + GetMD5OfString(IdfPathWithForwardSlashes);
+  IdfId := GetIdfId();
   IdfVersion := GetIDFVersionFromHeaderFile();
 
   Content := '{' + #13#10;
