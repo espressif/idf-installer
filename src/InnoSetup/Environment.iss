@@ -358,6 +358,7 @@ var
   JSONArg: String;
   PythonVirtualEnvPath: String;
   ResultCode: Integer;
+  TargetSupportTestCommand: String;
 begin
   IDFPath := GetIDFPath('');
   IDFToolsPyPath := IDFPath + '\tools\idf_tools.py';
@@ -380,6 +381,9 @@ begin
     JSONArg := ExpandConstant('--tools "{app}\tools_fallback.json"');
   end;
 
+  { Check the support for --targets command}
+  TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
+
   { IDFPath not quoted, as it can not contain spaces }
   IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + JSONArg;
 
@@ -396,11 +400,13 @@ begin
 
   Log('idf_tools.py command: ' + IDFToolsPyCmd);
 
-  { Check the support for --targets command}
-  if Exec(IDFToolsPyCmd, '--targets= ', '', SW_SHOW,
-    ewWaitUntilTerminated, ResultCode) then begin
+
+  Log('Selection of targets testing command: ' + PythonExecutablePath + ' ' + TargetSupportTestCommand);
+  Exec(PythonExecutablePath, TargetSupportTestCommand, '', SW_SHOW,
+    ewWaitUntilTerminated, ResultCode);
+  if (ResultCode = 1) then begin
     Log('Selection of targets: Supported');
-    CmdLine := IDFToolsPyCmd + ' ' + GetSelectedIdfTargets() + ' install';
+    CmdLine := IDFToolsPyCmd + ' install ' + GetSelectedIdfTargets();
   end else begin
     Log('Selection of targets: Not supported in this version idf_tools.py');
     CmdLine := IDFToolsPyCmd + ' install';
