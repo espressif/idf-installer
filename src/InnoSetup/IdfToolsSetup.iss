@@ -5,7 +5,7 @@
 #include <idp.iss>
 
 #define MyAppName "ESP-IDF Tools"
-#define MyAppVersion "2.9"
+#define MyAppVersion "2.10"
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
@@ -58,7 +58,7 @@
   #define OFFLINE = 'no';
 #endif
 #ifndef PYTHONWHEELSVERSION
-  #define PYTHONWHEELSVERSION = '3.8-2021-01-21'
+  #define PYTHONWHEELSVERSION = '3.8-2021-06-15'
 #endif
 
 ; Tool for managing ESP-IDF environments
@@ -190,7 +190,7 @@ Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: che
 Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
 Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
 Name: "{#COMPONENT_DRIVER}"; Description: "Drivers - Requires elevation of privileges"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: "Espressif - WinUSB support for JTAG (ESP32-C3)"; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: "Espressif - WinUSB support for JTAG (ESP32-C3/S3)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: "FTDI Chip - Virtual COM Port for USB (WROVER, WROOM)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: "Silicon Labs - Virtual COM Port for USB CP210x (ESP boards)"; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET}"; Description: "Chip Targets - more details at https://products.espressif.com/"; Types: full; Flags: checkablealone

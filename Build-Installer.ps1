@@ -4,7 +4,7 @@ param (
     [String]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2021-01-21',
+    $IdfPythonWheelsVersion = '3.8-2021-06-15',
     [String]
     $InstallerType = 'online',
     [String]
@@ -96,7 +96,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.7.0/win64.idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.2.1.0/win64.idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -114,10 +114,10 @@ function PrepareIdfPython {
 }
 
 function PrepareIdfPythonWheels {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\3.8-2021-01-21 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion `
         -FilePath version.txt `
-        -DistZip idf-python-wheels-3.8-2021-01-21-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-3.8-2021-01-21-win64.zip
+        -DistZip idf-python-wheels-$IdfPythonWheelsVersion-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-$IdfPythonWheelsVersion-win64.zip
 }
 
 function PrepareIdfEclipse {
@@ -138,7 +138,7 @@ function PrepareOfflineBranches {
         git -C "$BundleDir" fetch
     } else {
         "Performing full clone."
-        git clone -q --shallow-since=2020-01-01 --jobs 8 --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
+        git clone -q --shallow-since=2020-06-01 --jobs 8 --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
 
         # Remove hidden attribute from .git. Inno Setup is not able to read it.
         attrib "$BundleDir\.git" -s -h
