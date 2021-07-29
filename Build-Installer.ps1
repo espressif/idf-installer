@@ -121,10 +121,10 @@ function PrepareIdfPythonWheels {
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-04 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-07 `
         -FilePath eclipse.exe `
         -DistZip idf-eclipse-2021-04-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-04-win64.zip
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-07-win64.zip
 }
 
 function PrepareIdfDriver {

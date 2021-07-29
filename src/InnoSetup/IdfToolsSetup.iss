@@ -25,7 +25,7 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
-#define ECLIPSE_VERSION "2021-04"
+#define ECLIPSE_VERSION "2021-07"
 #define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
 #define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
 
@@ -204,6 +204,16 @@ Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressi
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
+
+
+;Name: "idf"; Description: "ESP-IDF"; Types: full
+;Name: "idf\tools"; Description: "Chip"; Types: full
+;Name: "idf\tools\chip_esp32"; Description: "ESP32"; Types: full
+;Name: "idf\tools\chip_esp32\esp_idf_v4_2"; Description: "ESP-IDF v4.2"; Types: full
+;Name: "idf\tools\chip_esp32\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
+;Name: "idf\tools\chip_esp8266"; Description: "ESP32"; Types: full
+;Name: "idf\tools\chip_esp8266\esp_idf_v3_3_4"; Description: "ESP-IDF v3.3.4"; Types: full
+;Name: "idf\tools\chip_esp8266\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\dist"
