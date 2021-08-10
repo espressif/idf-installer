@@ -4,7 +4,7 @@ param (
     [String]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2021-06-15',
+    $IdfPythonWheelsVersion = '3.8-2021-08-10',
     [String]
     $InstallerType = 'online',
     [String]
@@ -96,7 +96,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.1.7.0/win64.idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.2.1.0/win64.idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -117,14 +117,14 @@ function PrepareIdfPythonWheels {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion `
         -FilePath version.txt `
         -DistZip idf-python-wheels-$IdfPythonWheelsVersion-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-python-wheels/idf-python-wheels-$IdfPythonWheelsVersion-win64.zip
+        -DownloadUrl https://github.com/espressif/idf-python-wheels/releases/download/v${IdfPythonWheelsVersion}/idf-python-wheels-3.8-win64.zip
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-04 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-07 `
         -FilePath eclipse.exe `
         -DistZip idf-eclipse-2021-04-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-04-win64.zip
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-07-win64.zip
 }
 
 function PrepareIdfDriver {
