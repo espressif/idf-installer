@@ -146,6 +146,12 @@ function PrepareOfflineBranches {
         # Fix repo mode
         git -C "$BundleDir" config --local core.fileMode false
         git -C "$BundleDir" submodule foreach --recursive git config --local core.fileMode false
+
+        # Fix autocrlf - if autocrlf is not set from global gitconfig the files in unzipped repo
+        # are marked as dirty
+        git -C "$BundleDir" config --local core.autocrlf true
+        git -C "$BundleDir" submodule foreach --recursive git config --local core.autocrlf true
+
         # Allow deleting directories by git clean --force
         # Required when switching between versions which does not have a module present in current branch
         git -C "$BundleDir" config --local clean.requireForce false
