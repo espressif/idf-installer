@@ -420,7 +420,7 @@ begin
   DoCmdlineInstall('Checking Python virtualenv support', '', CmdLine);
 
   PythonVirtualEnvPath := ExpandConstant('{app}\python_env\')  + GetIDFPythonEnvironmentVersion() + '_env';
-  CmdLine := PythonExecutablePath + ' -m virtualenv "' + PythonVirtualEnvPath + '" -p ' + '"' + PythonExecutablePath + '"';
+  CmdLine := PythonExecutablePath + ' -m virtualenv "' + PythonVirtualEnvPath + '" -p ' + '"' + PythonExecutablePath + '" --seeder pip';
   if (DirExists(PythonVirtualEnvPath)) then begin
     Log('ESP-IDF Python Virtual environment exists, refreshing the environment: ' + CmdLine);
   end else begin
