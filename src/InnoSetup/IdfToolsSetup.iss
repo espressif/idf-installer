@@ -138,7 +138,14 @@ OutputDir=..\..\build\
 TimeStampsInUTC=yes
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-US.islu"
+; Language codes (requires conversion to hex): https://docs.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a
+; Localization files must be saved with BOM header UTF-8
+; Chinese Simplified is not part of official Inno Setup. The file originates from:
+; https://github.com/jrsoftware/issrc/blob/main/Files/Languages/Unofficial/ChineseSimplified.isl
+Name: "chinese"; MessagesFile: "Languages/ChineseSimplified.isl,Languages/IdfToolsSetup_zh-CN.isl"
+Name: "czech"; MessagesFile: "compiler:Languages/Czech.isl,Languages/IdfToolsSetup_cs-CZ.isl"
+Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-US.isl"
+Name: "slovak"; MessagesFile: "compiler:Languages/Slovak.isl,Languages/IdfToolsSetup_sk-SK.isl"
 
 [Dirs]
 Name: "{app}\dist"
