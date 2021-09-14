@@ -294,3 +294,17 @@ Use the following command to copy the installer to Hyper-V machine with the name
   - `export CERTCHAIN=certchain.pem`
 
 * Run `sign_installer.sh` script. This will ask for the `key.pem` password and produce the signed installer in the Output directory. If you plan to run the script multiple times, you may also set `KEYPASSWORD` environment variable to the `key.pem` password, to avoid the prompt.
+
+
+## Contributing L10N
+
+Localization messages for the installer are stored in [src/InnoSetup/Languages](tree/main/src/InnoSetup/Languages).
+
+Adding new localization: 
+- create issue on [GitHub](issues)
+- register new language in src/InnoSetup/IdfToolsSetup.iss
+
+Files can be converted to XLIFF using Translate Toolkit - ini2po and po2xliff.
+
+File format is INI in UTF-8 with BOM header. Without BOM header the localization is not correctly displayed. Use VS Code to save the file with BOM header.
+
