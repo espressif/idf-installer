@@ -409,7 +409,6 @@ procedure VerifyRootCertificates();
 var
   ResultCode: Integer;
   Command: String;
-  OutFile: String;
 begin
   SystemLogTitle(CustomMessage('SystemCheckRootCertificates') + ' ');
 

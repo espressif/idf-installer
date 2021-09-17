@@ -33,8 +33,8 @@ begin
   if Page.CheckListBox.Items.Count > 0 then
     exit;
 
-  IDFSelectionDownloadIndex := Page.Add('Download ESP-IDF')
-  IDFSelectionCustomPathIndex := Page.Add('Use an existing ESP-IDF directory');
+  IDFSelectionDownloadIndex := Page.Add(CustomMessage('DownloadEspIdf'))
+  IDFSelectionCustomPathIndex := Page.Add(CustomMessage('UsingExistingEspIdfDirectory'));
 
   if (IDFUseExisting) then begin
     Page.SelectedValueIndex := 1;

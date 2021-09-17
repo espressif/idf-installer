@@ -134,3 +134,5 @@ DownloadGitForWindows=Will download and install Git for Windows
 UsingExistingEspIdf=Using existing ESP-IDF copy:
 InstallingNewEspIdf=Will install ESP-IDF
 EspIdfToolsDirectory=IDF tools directory (IDF_TOOLS_PATH):
+DownloadEspIdf=Download ESP-IDF
+UsingExistingEspIdfDirectory=Use an existing ESP-IDF directory

@@ -134,3 +134,5 @@ DownloadGitForWindows=Stáhne a nainstaluje se Git pro Windows
 UsingExistingEspIdf=Použití existující kopie ESP-IDF:
 InstallingNewEspIdf=Nainstaluje ESP-IDF
 EspIdfToolsDirectory=Složka s nástroji IDF (IDF_TOOLS_PATH):
+DownloadEspIdf=Stáhnout ESP-IDF
+UsingExistingEspIdfDirectory=Použít složku s existující instalací ESP-IDF
