@@ -2,7 +2,6 @@
 ; SPDX-License-Identifier: Apache-2.0
 
 [LangOptions]
-LanguageName=Simplified Chinese
 LanguageID=$0804
 
 [CustomMessages]

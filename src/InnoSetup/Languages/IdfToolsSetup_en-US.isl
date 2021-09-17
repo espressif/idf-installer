@@ -2,7 +2,6 @@
 ; SPDX-License-Identifier: Apache-2.0
 
 [LangOptions]
-LanguageName=English
 LanguageID=$0409
 
 [CustomMessages]

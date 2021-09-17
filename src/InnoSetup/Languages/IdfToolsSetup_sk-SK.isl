@@ -3,7 +3,6 @@
 
 [LangOptions]
 LanguageID=$041b
-LanguageCodePage=1250
 
 [CustomMessages]
 PreInstallationCheckTitle=Kontrola systému pred inštaláciou
