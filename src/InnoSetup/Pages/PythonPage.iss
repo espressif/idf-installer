@@ -175,8 +175,9 @@ procedure CreatePythonPage();
 begin
   PythonPage := ChoicePageCreate(
     wpLicense,
-    'Python choice', 'Please choose Python version',
-    'Available Python versions',
+    CustomMessage('PythonVersionChoice'),
+    CustomMessage('PythonVersionChoiceDetail'),
+    CustomMessage('AvailablePythonVersions'),
     '',
     False,
     @OnPythonPagePrepare,

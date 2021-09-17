@@ -169,11 +169,11 @@ begin
     Log('--------');
     if CmdlineInstallCancel then
     begin
-      MessageBox('Installation has been cancelled.', mbError, MB_OK);
+      MessageBox(CustomMessage('InstallationCancelled'), mbError, MB_OK);
       Result := False;
     end else if ExitCode <> 0 then
     begin
-      MessageBox('Installation has failed with exit code ' + IntToStr(ExitCode), mbError, MB_OK);
+      MessageBox(CustomMessage('InstallationFailed') + ' ' + IntToStr(ExitCode), mbError, MB_OK);
       Result := False;
     end else begin
       Result := True;
@@ -183,5 +183,5 @@ begin
     WizardForm.CancelButton.OnClick := PrevCancelButtonOnClick;
   end;
   if not Result then
-    RaiseException('Installation has failed at step: ' + caption);
+    RaiseException(CustomMessage('InstallationFailedAtStep') + ' ' + caption);
 end;

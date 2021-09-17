@@ -107,9 +107,9 @@ var
   CmdLine: String;
 begin
   CmdLine := GitExecutablePath + ' -C ' + Path + ' repack -d -a'
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Re-packing the repository', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('RepackingRepository'), CmdLine);
   CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach git repack -d -a'
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Re-packing the submodules', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('RepackingRepository'), CmdLine);
 
   FindFileRecursive(Path + '\.git', 'alternates', @RemoveAlternatesFile);
 end;
@@ -124,7 +124,7 @@ var
 begin
   CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule update --init --recursive';
   Log('Updating submodules: ' + CmdLine);
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Updating submodules', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingSubmodules'), CmdLine);
 end;
 
 {
@@ -138,11 +138,11 @@ var
 begin
   CmdLine := GitExecutablePath + ' -C ' + Path + ' config --local core.fileMode false';
   Log('Setting core.fileMode on repository: ' + CmdLine);
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Updating fileMode', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingFileMode'), CmdLine);
 
   Log('Setting core.fileMode on repository for submodules: ' + CmdLine);
   CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach --recursive git config --local core.fileMode false';
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Updating fileMode in submodules', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingFileModeInSubmodules'), CmdLine);
 end;
 
 { Run git reset --hard in the repo and in the submodules, to fix the newlines. }
@@ -157,11 +157,11 @@ begin
 
   CmdLine := GitExecutablePath + ' -C ' + Path + ' reset --hard';
   Log('Resetting the repository: ' + CmdLine);
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Updating newlines', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingNewLines'), CmdLine);
 
   Log('Resetting the submodules: ' + CmdLine);
   CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach git reset --hard';
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Updating newlines in submodules', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingNewLinesInSubmodules'), CmdLine);
 end;
 
 { Run git clean - clean leftovers after switching between tags }
@@ -177,7 +177,7 @@ begin
 
   CmdLine := GitExecutablePath + ' -C ' + Path + ' clean --force -d';
   Log('Resetting the repository: ' + CmdLine);
-  DoCmdlineInstall('Finishing ESP-IDF installation', 'Cleaning untracked directories', CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('CleaningUntrackedDirectories'), CmdLine);
 end;
 
 
@@ -190,7 +190,7 @@ var
 begin
   CmdLine := GitExecutablePath + ' -C ' + Path + ' checkout ' + BranchName;
   Log('Updating submodules: ' + CmdLine);
-  DoCmdlineInstall('Switching branch', 'Switching to branch', CmdLine);
+  DoCmdlineInstall(CustomMessage('SwitchBranch'), CustomMessage('SwitchBranch'), CmdLine);
 
   GitUpdateSubmodules(Path);
   GitResetHard(Path);
@@ -249,7 +249,7 @@ begin
     IDFTempPath := ExpandConstant('{tmp}\esp-idf-') + IDFZIPFileVersion;
     Log('Extracting ESP-IDF reference repository: ' + CmdLine);
     Log('Reference repository path: ' + IDFTempPath);
-    DoCmdlineInstall('Extracting ESP-IDF', 'Setting up reference repository', CmdLine);
+    DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('SettingUpReferenceRepository'), CmdLine);
   end else begin
     { IDFZIPFileName is not set, meaning that we will rely on 'git clone'. }
     NeedToClone := True;
@@ -269,7 +269,7 @@ begin
 
     CmdLine := CmdLine + ' ' + GitRepository +' ' + IDFPath;
     Log('Cloning IDF: ' + CmdLine);
-    DoCmdlineInstall('Downloading ESP-IDF', 'Using git to clone ESP-IDF repository', CmdLine);
+    DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
 
     if IDFTempPath <> '' then
       GitRepoDissociate(IDFPath);
@@ -293,7 +293,7 @@ begin
     }
 
     CmdLine := ExpandConstant('cmd.exe /c ""xcopy" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
-    DoCmdlineInstall('Extracting ESP-IDF', 'Copying ESP-IDF into the destination directory', CmdLine);
+    DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('CopyingEspIdf'), CmdLine);
 
     GitRepoFixFileMode(IDFPath);
     GitResetHard(IDFPath);
@@ -413,11 +413,11 @@ begin
   end;
 
   Log('Installing tools:' + CmdLine);
-  DoCmdlineInstall('Installing ESP-IDF tools', '', CmdLine);
+  DoCmdlineInstall(CustomMessage('InstallingEspIdfTools'), '', CmdLine);
 
   CmdLine := PythonExecutablePath + ' -m virtualenv --version';
   Log('Checking Python virtualenv support:' + CmdLine)
-  DoCmdlineInstall('Checking Python virtualenv support', '', CmdLine);
+  DoCmdlineInstall(CustomMessage('CheckingPythonVirtualEnvSupport'), '', CmdLine);
 
   PythonVirtualEnvPath := ExpandConstant('{app}\python_env\')  + GetIDFPythonEnvironmentVersion() + '_env';
   CmdLine := PythonExecutablePath + ' -m virtualenv "' + PythonVirtualEnvPath + '" -p ' + '"' + PythonExecutablePath + '" --seeder pip';
@@ -426,10 +426,10 @@ begin
   end else begin
     Log('ESP-IDF Python Virtual environment does not exist, creating the environment: ' + CmdLine);
   end;
-  DoCmdlineInstall('Creating Python environment', '', CmdLine);
+  DoCmdlineInstall(CustomMessage('CreatingPythonVirtualEnv'), '', CmdLine);
 
   CmdLine := IDFToolsPyCmd + ' install-python-env';
   Log('Installing Python environment:' + CmdLine);
-  DoCmdlineInstall('Installing Python environment', '', CmdLine);
+  DoCmdlineInstall(CustomMessage('InstallingPythonVirtualEnv'), '', CmdLine);
 end;
 

@@ -12,7 +12,9 @@ param (
     [Boolean]
     $SignInstaller = $true,
     [String]
-    $SetupCompiler = 'iscc'
+    $SetupCompiler = 'iscc',
+    [String]
+    $IdfEnvVersion = '1.2.3.0'
 )
 
 # Stop on error
@@ -76,6 +78,7 @@ function PrepareIdfFile {
         return
     }
 
+    "Downloading: $DownloadUrl"
     Invoke-WebRequest -O $FullFilePath $DownloadUrl
 }
 
@@ -96,7 +99,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.2.2.0/win64.idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v${IdfEnvVersion}/win64.idf-env.exe
 }
 
 function PrepareIdfGit {

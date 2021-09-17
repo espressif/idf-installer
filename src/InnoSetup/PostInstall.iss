@@ -69,7 +69,7 @@ begin
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MessageBox('Failed to create the shortcut: ' + LauncherPathCMD, mbError, MB_OK);
+    MessageBox(CustomMessage('FailedToCreateShortcut') + ' ' + LauncherPathCMD, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;
@@ -94,7 +94,7 @@ begin
       GetIDFPath(''),
       '', 0, SW_SHOWNORMAL);
   except
-    MessageBox('Failed to create the shortcut: ' + LauncherPathPowerShell, mbError, MB_OK);
+    MessageBox(CustomMessage('FailedToCreateShortcut') + ' ' + LauncherPathPowerShell, mbError, MB_OK);
     RaiseException('Failed to create the shortcut');
   end;
 end;
@@ -119,7 +119,7 @@ begin
   end;
 
   CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o{app}\tools\idf-python\' + PythonVersion + '\" -r -aoa "' + PythonDistZip + '"');
-  DoCmdlineInstall('Extracting Python Interpreter', 'Using Embedded Python', CmdLine);
+  DoCmdlineInstall(CustomMessage('ExtractingPython'), CustomMessage('UsingEmbeddedPython'), CmdLine);
 end;
 
 procedure InstallEmbeddedGit();
@@ -142,7 +142,7 @@ begin
   end;
 
   CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o{app}\tools\idf-git\{#GITVERSION}\" -r -aoa "' + GitDistZip + '"');
-  DoCmdlineInstall('Extracting Git', 'Using Embedded Git', CmdLine);
+  DoCmdlineInstall(CustomMessage('ExtractingGit'), CustomMessage('UsingEmbeddedGit'), CmdLine);
 end;
 
 procedure InstallIdfPackage(FilePath:String; DistZip:String; Destination:String);
@@ -156,7 +156,7 @@ begin
   end;
 
   CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + Destination + '" -r -aoa "' + DistZip + '"');
-  DoCmdlineInstall('Extracting...', 'Extracting...', CmdLine);
+  DoCmdlineInstall(CustomMessage('Extracting'), CustomMessage('Extracting'), CmdLine);
 end;
 
 procedure InstallEclipse();
@@ -235,8 +235,8 @@ begin
 
   except
     SetupAborted := True;
-    if MessageBox('Installation log has been created, it may contain more information about the problem.' + #13#10
-              + 'Display the installation log now?', mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDYES then
+    if MessageBox(CustomMessage('InstallationLogCreated') + #13#10
+              + CustomMessage('DisplayInstallationLog'), mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDYES then
     begin
       ShellExec('', 'notepad.exe', ExpandConstant('{log}'), ExpandConstant('{tmp}'), SW_SHOW, ewNoWait, Err);
     end;

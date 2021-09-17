@@ -147,6 +147,13 @@ begin
   end;
 end;
 
+function InstallRust():String;
+begin
+  if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    Result := ExecIdfEnv('rust install')
+  end;
+end;
+
 <event('NextButtonClick')>
 function PreInstallSteps(CurPageID: Integer): Boolean;
 var
@@ -159,6 +166,7 @@ begin
 
   if not (IsOfflineMode) then begin
     InstallSelectedDrivers();
+    InstallRust();
   end;
 
   ForceDirectories(ExpandConstant('{app}\dist'));
