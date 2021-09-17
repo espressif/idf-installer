@@ -78,15 +78,15 @@ begin
 
     if not DirExists(IDFPath) then
     begin
-      MessageBox('Directory doesn''t exist: ' + IDFPath + #13#10 +
-             'Please choose an existing ESP-IDF directory', mbError, MB_OK);
+      MessageBox(CustomMessage('DirectoryDoesNotExist') +' ' + IDFPath + #13#10 +
+             CustomMessage('ChooseExistingEspIdfDirectory'), mbError, MB_OK);
       exit;
     end;
 
     if Pos(' ', IDFPath) <> 0 then
     begin
-      MessageBox('ESP-IDF build system does not support spaces in paths.' + #13#10
-             'Please choose a different directory.', mbError, MB_OK);
+      MessageBox(CustomMessage('SpacesInPathNotSupported') + #13#10 +
+             CustomMessage('ChooseExistingEspIdfDirectory'), mbError, MB_OK);
       exit;
     end;
 
@@ -100,7 +100,7 @@ begin
     if not FileExists(IDFPyPath) then
     begin
       MessageBox(NotSupportedMsg +
-             'Can not find idf.py in ' + IDFPath + '\tools', mbError, MB_OK);
+             CustomMessage('UnableToFindIdfpy') + ' ' + IDFPath + '\tools', mbError, MB_OK);
       exit;
     end;
 
@@ -108,7 +108,7 @@ begin
     if not FileExists(RequirementsPath) then
     begin
       MessageBox(NotSupportedMsg +
-             'Can not find requirements.txt in ' + IDFPath, mbError, MB_OK);
+             CustomMessage('UnableToFindRequirementsTxt') + ' ' + IDFPath, mbError, MB_OK);
       exit;
     end;
 
@@ -132,9 +132,10 @@ procedure CreateIDFPage();
 begin
   IDFPage := ChoicePageCreate(
     wpLicense,
-    'Download or use ESP-IDF', 'Please choose ESP-IDF version to download, or use an existing ESP-IDF copy',
-    'Available ESP-IDF versions',
-    'Choose existing ESP-IDF directory',
+    CustomMessage('DownloadOrUseExistingEspIdf'),
+    CustomMessage('DownloadOrUseExistingEspIdfDetail'),
+    CustomMessage('AvailableEspIdfVersions'),
+    CustomMessage('ChooseExistingEspIdfDirectory'),
     True,
     @OnIDFPagePrepare,
     @OnIDFSelectionChange,
@@ -165,7 +166,7 @@ begin
     Log('Checking location of ToolsDir ' + ToolsDir + ' is not a subdirectory of ' + IDFDir);
     if Pos(IDFDir, ToolsDir) = 1 then
     begin
-      MessageBox('Tools should not be located under ESP-IDF source code directory selected on the previous page. Please select a different location for Tools directory.', mbError, MB_OK);
+      MessageBox(CustomMessage('EspIdfToolsShouldNotBeLocatedUnderSource'), mbError, MB_OK);
       Result := False;
     end;
   end;
