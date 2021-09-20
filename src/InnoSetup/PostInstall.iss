@@ -197,6 +197,8 @@ begin
       end;
     end;
 
+    InstallRust();
+
     if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}')) then
     begin
       SetEnvironmentVariable('IDF_GITHUB_ASSETS', 'dl.espressif.com/github_assets')
