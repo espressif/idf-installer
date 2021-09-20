@@ -135,3 +135,5 @@ InstallingNewEspIdf=Nainštaluje ESP-IDF
 EspIdfToolsDirectory=Zložka s nástrojmi IDF (IDF_TOOLS_PATH):
 DownloadEspIdf=Prevziať ESP-IDF
 UsingExistingEspIdfDirectory=Použiť zložku s existujúcou inštaláciou ESP-IDF
+InstallingDrivers=Inštalácia ovladačov
+InstallingRust=Inštalácia integrácie s Rust

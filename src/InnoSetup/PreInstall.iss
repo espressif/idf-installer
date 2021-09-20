@@ -147,10 +147,10 @@ begin
   end;
 end;
 
-function InstallRust():String;
+procedure InstallRust();
 begin
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
-    Result := ExecIdfEnv('rust install')
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand('rust install'));
   end;
 end;
 
@@ -166,7 +166,6 @@ begin
 
   if not (IsOfflineMode) then begin
     InstallSelectedDrivers();
-    InstallRust();
   end;
 
   ForceDirectories(ExpandConstant('{app}\dist'));

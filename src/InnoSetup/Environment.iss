@@ -28,9 +28,9 @@ begin
   Result := ExecIdfEnv('antivirus get --property displayName');
 end;
 
-function InstallDrivers(DriverList: String):String;
+procedure InstallDrivers(DriverList: String);
 begin
-  Result := ExecIdfEnv('driver install ' + DriverList)
+  DoCmdlineInstall(CustomMessage('InstallingDrivers'), CustomMessage('InstallingDrivers'), GetIdfEnvCommand('driver install ' + DriverList));
 end;
 
 function GetIDFZIPFileVersion(Version: String): String;
