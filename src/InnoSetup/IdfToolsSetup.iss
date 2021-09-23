@@ -25,9 +25,9 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
-#define ECLIPSE_VERSION "2021-07"
-#define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
-#define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
+#define ECLIPSE_VERSION "2021-06-R-win-iep220"
+#define ECLIPSE_INSTALLER "eclipse-cpp-" + ECLIPSE_VERSION + ".zip"
+#define ECLIPSE_DOWNLOADURL "https://s3.cn-north-1.amazonaws.com.cn/espdldata/dl/idf-eclipse/" + ECLIPSE_INSTALLER
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
