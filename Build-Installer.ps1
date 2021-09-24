@@ -124,10 +124,10 @@ function PrepareIdfPythonWheels {
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-06-R-win-iep220 `
-        -FilePath eclipse\eclipse.exe `
-        -DistZip idf-eclipse-2021-06-R-win-iep220.zip `
-        -DownloadUrl https://s3.cn-north-1.amazonaws.com.cn/espdldata/dl/idf-eclipse/eclipse-cpp-2021-06-R-win-iep220.zip
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-09 `
+        -FilePath eclipse.exe `
+        -DistZip idf-eclipse-2021-09-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-09-win64.zip
 }
 
 function PrepareIdfDriver {

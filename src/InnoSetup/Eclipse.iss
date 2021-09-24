@@ -4,7 +4,7 @@
 
 function GetEclipsePath(FileName:String): String;
 begin
-  Result := ExpandConstant('{app}\tools\idf-eclipse\{#ECLIPSE_VERSION}\eclipse\') + FileName;
+  Result := ExpandConstant('{app}\tools\idf-eclipse\{#ECLIPSE_VERSION}\') + FileName;
 end;
 
 function GetEclipseExePath():String;
