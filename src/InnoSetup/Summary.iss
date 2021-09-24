@@ -11,10 +11,10 @@ begin
 
   if (FileExists(PythonExecutablePath)) then
   begin
-    Result := Result + 'Using Python ' + PythonVersion + ':' + NewLine
+    Result := Result + CustomMessage('UsingPython') + ' ' + PythonVersion + ':' + NewLine
               + Space + PythonExecutablePath + NewLine + NewLine;
   end else begin
-    Result := Result + 'Using embedded Python ' + PythonVersion + NewLine + NewLine;
+    Result := Result + CustomMessage('UsingEmbeddedPython') + ' ' + PythonVersion + NewLine + NewLine;
   end;
 
   if (UseEmbeddedGit) then begin
@@ -22,25 +22,25 @@ begin
     GitPath := ExpandConstant('{app}\tools\idf-git\2.30.1\cmd\');
     GitExecutablePath := GitPath + 'git.exe';
 
-    Result := Result + 'Using Embedded Git ' + GitVersion + ':' + NewLine
+    Result := Result + CustomMessage('UsingEmbeddedGit') + ' ' + GitVersion + ':' + NewLine
             + Space + GitExecutablePath + NewLine + NewLine;
   end else if (GitUseExisting) then begin
-    Result := Result + 'Using Git ' + GitVersion + ':' + NewLine
+    Result := Result + CustomMessage('UsingGit') + ' ' + GitVersion + ':' + NewLine
               + Space + GitExecutablePath + NewLine + NewLine;
   end else begin
-    Result := Result + 'Will download and install Git for Windows ' + GitVersion + NewLine + NewLine;
+    Result := Result + CustomMessage('DownloadGitForWindows') + ' ' + GitVersion + NewLine + NewLine;
   end;
 
   if IDFUseExisting then
   begin
-    Result := Result + 'Using existing ESP-IDF copy: ' + NewLine
+    Result := Result + CustomMessage('UsingExistingEspIdf') + ' ' + NewLine
               + Space + IDFExistingPath + NewLine + NewLine;
   end else begin
-    Result := Result + 'Will install ESP-IDF ' + IDFDownloadVersion + ' into:' + NewLine
+    Result := Result + CustomMessage('InstallingNewEspIdf') + ' ' + IDFDownloadVersion + ' into:' + NewLine
               + Space + IDFDownloadPath + NewLine + NewLine;
   end;
 
-  Result := Result + 'IDF tools directory (IDF_TOOLS_PATH):' + NewLine +
+  Result := Result + CustomMessage('EspIdfToolsDirectory') + ' ' + NewLine +
             Space + ExpandConstant('{app}') + NewLine + NewLine;
 
   Log('Summary message: ' + NewLine + Result);

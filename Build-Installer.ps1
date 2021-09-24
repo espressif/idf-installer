@@ -12,7 +12,9 @@ param (
     [Boolean]
     $SignInstaller = $true,
     [String]
-    $SetupCompiler = 'iscc'
+    $SetupCompiler = 'iscc',
+    [String]
+    $IdfEnvVersion = '1.2.4.1'
 )
 
 # Stop on error
@@ -76,6 +78,7 @@ function PrepareIdfFile {
         return
     }
 
+    "Downloading: $DownloadUrl"
     Invoke-WebRequest -O $FullFilePath $DownloadUrl
 }
 
@@ -96,7 +99,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.2.2.0/win64.idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v${IdfEnvVersion}/win64.idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -121,10 +124,10 @@ function PrepareIdfPythonWheels {
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-07 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-06-R-win-iep220 `
         -FilePath eclipse.exe `
-        -DistZip idf-eclipse-2021-04-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-07-win64.zip
+        -DistZip idf-eclipse-2021-06-R-win-iep220.zip `
+        -DownloadUrl https://s3.cn-north-1.amazonaws.com.cn/espdldata/dl/idf-eclipse/eclipse-cpp-2021-06-R-win-iep220.zip
 }
 
 function PrepareIdfDriver {

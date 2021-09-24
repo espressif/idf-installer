@@ -409,7 +409,6 @@ procedure VerifyRootCertificates();
 var
   ResultCode: Integer;
   Command: String;
-  OutFile: String;
 begin
   SystemLogTitle(CustomMessage('SystemCheckRootCertificates') + ' ');
 
@@ -660,9 +659,9 @@ begin
   with ApplyFixesButton do
   begin
     Parent := WizardForm;
-    Left := WizardForm.ClientWidth - FullLogButton.Width;
+    Left := WizardForm.ClientWidth - FullLogButton.Width - ScaleX(25);
     Top := FullLogButton.Top;
-    Width := WizardForm.CancelButton.Width;
+    Width := WizardForm.CancelButton.Width + ScaleX(25);
     Height := WizardForm.CancelButton.Height;
     Caption := CustomMessage('SystemCheckApplyFixesButtonCaption');
     OnClick := @ApplyFixesButtonClick;

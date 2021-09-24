@@ -12,8 +12,9 @@ ESP-IDF Tools Installer for Windows download page: https://dl.espressif.com/dl/e
 
 | ESP-IDF Tools Installer | Online | Offline |
 | ----------------------- | ------ | ------- |
-| 2.11 (Beta)             | [Download](https://github.com/espressif/idf-installer/releases)       |         |
-| 2.10 - 2021-08-10 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.10.exe) 3.2 MB [![test-online-installer](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml) | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.10.exe) 1.6 GB with ESP-IDF 4.3, 4.2.2, Eclipse + IDF Plugin v2.1.0 [![test-offline-installer](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml) |
+| 2.12 (Beta)             | [Download](https://github.com/espressif/idf-installer/releases)       |         |
+| 2.11 - 2021-09-23 | [Download](https://github.com/espressif/idf-installer/releases/download/online-2.11/esp-idf-tools-setup-online-2.11.exe) 3.2 MB [![test-online-installer](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml) | [Download](https://github.com/espressif/idf-installer/releases/download/offline-2.11/esp-idf-tools-setup-offline-2.11.exe) 1.6 GB with ESP-IDF 4.3.1, 4.2.2, Eclipse + IDF Plugin v2.2.0 [![test-offline-installer](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml) |
+| 2.10 - 2021-08-10 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.10.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.10.exe) 1.6 GB with ESP-IDF 4.3, 4.2.2, Eclipse + IDF Plugin v2.1.0 |
 | 2.9 - 2021-06-15  | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.9.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.9.exe) 1.6 GB with ESP-IDF 4.3, 4.2.1, Eclipse + IDF Plugin v2.1.0 |
 | 2.8 - 2021-05-03 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.8.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.8.exe) 1.3 GB with ESP-IDF 4.2.1, 4.1.1, Eclipse + IDF Plugin v2.1.0 |
 | 2.7 - 2021-04-08 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.7.exe) 3.1 MB  | N/A |
@@ -294,3 +295,17 @@ Use the following command to copy the installer to Hyper-V machine with the name
   - `export CERTCHAIN=certchain.pem`
 
 * Run `sign_installer.sh` script. This will ask for the `key.pem` password and produce the signed installer in the Output directory. If you plan to run the script multiple times, you may also set `KEYPASSWORD` environment variable to the `key.pem` password, to avoid the prompt.
+
+
+## Contributing L10N
+
+Localization messages for the installer are stored in [src/InnoSetup/Languages](tree/main/src/InnoSetup/Languages).
+
+Adding new localization: 
+- create issue on [GitHub](issues)
+- register new language in src/InnoSetup/IdfToolsSetup.iss
+
+Files can be converted to XLIFF using Translate Toolkit - ini2po and po2xliff.
+
+File format is INI in UTF-8 with BOM header. Without BOM header the localization is not correctly displayed. Use VS Code to save the file with BOM header.
+

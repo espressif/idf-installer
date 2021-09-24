@@ -25,9 +25,9 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
-#define ECLIPSE_VERSION "2021-07"
-#define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
-#define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
+#define ECLIPSE_VERSION "2021-06-R-win-iep220"
+#define ECLIPSE_INSTALLER "eclipse-cpp-" + ECLIPSE_VERSION + ".zip"
+#define ECLIPSE_DOWNLOADURL "https://s3.cn-north-1.amazonaws.com.cn/espdldata/dl/idf-eclipse/" + ECLIPSE_INSTALLER
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
@@ -81,6 +81,7 @@
 #define COMPONENT_TOOLS_GIT = 'tools/git'
 #define COMPONENT_ECLIPSE = 'ide/eclipse'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
+#define COMPONENT_RUST = 'ide/rust'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
 #define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
 #define COMPONENT_POWERSHELL_DESKTOP = 'ide/powershell/desktop'
@@ -138,7 +139,16 @@ OutputDir=..\..\build\
 TimeStampsInUTC=yes
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-US.islu"
+; Language codes (requires conversion to hex): https://docs.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a
+; Localization files must be saved with BOM header UTF-8
+; Chinese Simplified is not part of official Inno Setup. The file originates from:
+Name: "brazilianportuguese"; MessagesFile: "compiler:Languages/BrazilianPortuguese.isl,Languages/IdfToolsSetup_pt-BR.isl"
+; https://github.com/jrsoftware/issrc/blob/main/Files/Languages/Unofficial/ChineseSimplified.isl
+Name: "chinese"; MessagesFile: "Languages/ChineseSimplified.isl,Languages/IdfToolsSetup_zh-CN.isl"
+Name: "czech"; MessagesFile: "compiler:Languages/Czech.isl,Languages/IdfToolsSetup_cs-CZ.isl"
+Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-US.isl"
+Name: "portuguese"; MessagesFile: "compiler:Languages/Portuguese.isl,Languages/IdfToolsSetup_pt-PT.isl"
+Name: "slovak"; MessagesFile: "compiler:Languages/Slovak.isl,Languages/IdfToolsSetup_sk-SK.isl"
 
 [Dirs]
 Name: "{app}\dist"
@@ -174,33 +184,34 @@ Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
 Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 [Types]
-Name: "full"; Description: "Full installation"
-Name: "minimal"; Description: "Minimal installation"
-Name: "custom"; Description: "Custom installation"; Flags: iscustom
+Name: "full"; Description: {cm:InstallationFull}
+Name: "minimal"; Description: {cm:InstallationMinimal}
+Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 
 [Components]
-Name: "ide"; Description: "IDE support"; Types: full custom; Flags: fixed
-Name: "{#COMPONENT_ECLIPSE}"; Description: "Eclipse"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: "Desktop shortcut"; Types: full custom
-Name: "{#COMPONENT_POWERSHELL}"; Description: "PowerShell"; Types: full custom; Flags: checkablealone
-Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: "Windows Terminal Dropdown Menu"; Types: full custom
-Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: "Desktop shortcut"; Types: full custom minimal
-Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
-Name: "{#COMPONENT_CMD}"; Description: "Command Prompt"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_CMD_DESKTOP}"; Description: "Desktop shortcut"; Types: full
-Name: "{#COMPONENT_CMD_STARTMENU}"; Description: "Start Menu shortcut"; Types: full
-Name: "{#COMPONENT_DRIVER}"; Description: "Drivers - Requires elevation of privileges"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: "Espressif - WinUSB support for JTAG (ESP32-C3/S3)"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_DRIVER_FTDI}"; Description: "FTDI Chip - Virtual COM Port for USB (WROVER, WROOM)"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_DRIVER_SILABS}"; Description: "Silicon Labs - Virtual COM Port for USB CP210x (ESP boards)"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET}"; Description: "Chip Targets - more details at https://products.espressif.com/"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32}"; Description: "ESP32"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: "ESP32-C3"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: "ESP32-S Series"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: "ESP32-S3"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: "ESP32-S2"; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_OPTIMIZATION}"; Description: "Optimization"; Flags: fixed
-Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: "Use Espressif download mirror instead of GitHub";
+Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
+Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
+Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
+Name: "{#COMPONENT_POWERSHELL}"; Description: {cm:ComponentPowerShell}; Types: full custom; Flags: checkablealone
+Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: {cm:ComponentPowerShellWindowsTerminal}; Types: full custom
+Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom minimal
+Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: {cm:ComponentStartMenuShortcut}; Types: full
+Name: "{#COMPONENT_CMD}"; Description: {cm:ComponentCommandPrompt}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_CMD_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full
+Name: "{#COMPONENT_CMD_STARTMENU}"; Description: {cm:ComponentStartMenuShortcut}; Types: full
+Name: "{#COMPONENT_DRIVER}"; Description: {cm:ComponentDrivers}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: {cm:ComponentDriverEspressif}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_FTDI}"; Description: {cm:ComponentDriverFtdi}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Flags: fixed
+Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload};
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
@@ -236,10 +247,10 @@ Type: filesandordirs; Name: "{app}\python_env"
 ;Name: UseMirror;  GroupDescription:"{cm:OptimizationTitle}"; Description: "{cm:OptimizationDownloadMirror}"; Flags: unchecked; Check: IsOnlineMode
 
 [Run]
-Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: "Installing Git"; Check: GitInstallRequired
-Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec unchecked; Description: "Run ESP-IDF Eclipse Environment"; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
-Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: "Run ESP-IDF PowerShell Environment"; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"
-Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: "Run ESP-IDF Command Prompt Environment"; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}";
+Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: {cm:RunInstallGit}; Check: GitInstallRequired
+Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec unchecked; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
+Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: {cm:RunPowerShell}; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"
+Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: {cm:RunCmd}; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}";
 
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
 ; Please, keep this in mind when making changes to the item's description - WD checkbox is to be disabled on systems without the Windows Defender installed

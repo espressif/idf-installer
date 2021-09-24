@@ -6,7 +6,7 @@ on:
       idf_version:
         description: 'IDF Version'
         required: true
-        default: 'v4.3'
+        default: 'v4.3.1'
       idf_short_version:
         description: 'IDF Version - only major and minor numbers without any "v" contained in name of desktop link'
         required: true
@@ -14,11 +14,11 @@ on:
       installer_url:
         description: 'Installer URL'
         required: true
-        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.10/esp-idf-tools-setup-online-2.10.exe'
+        default: 'https://github.com/espressif/idf-installer/releases/download/online-2.11/esp-idf-tools-setup-online-2.11.exe'
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true
-        default: ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs
+        default: ide/rust,ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs
 
 jobs:
   check-requirements:
