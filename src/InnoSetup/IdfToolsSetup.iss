@@ -139,6 +139,8 @@ OutputDir=..\..\build\
 TimeStampsInUTC=yes
 
 [Languages]
+; English must be first, because it's used as fallback language
+Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-US.isl"
 ; Language codes (requires conversion to hex): https://docs.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a
 ; Localization files must be saved with BOM header UTF-8
 ; Chinese Simplified is not part of official Inno Setup. The file originates from:
@@ -146,7 +148,6 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages/BrazilianPortugue
 ; https://github.com/jrsoftware/issrc/blob/main/Files/Languages/Unofficial/ChineseSimplified.isl
 Name: "chinese"; MessagesFile: "Languages/ChineseSimplified.isl,Languages/IdfToolsSetup_zh-CN.isl"
 Name: "czech"; MessagesFile: "compiler:Languages/Czech.isl,Languages/IdfToolsSetup_cs-CZ.isl"
-Name: "english"; MessagesFile: "compiler:Default.isl,Languages/IdfToolsSetup_en-US.isl"
 Name: "portuguese"; MessagesFile: "compiler:Languages/Portuguese.isl,Languages/IdfToolsSetup_pt-PT.isl"
 Name: "slovak"; MessagesFile: "compiler:Languages/Slovak.isl,Languages/IdfToolsSetup_sk-SK.isl"
 
@@ -168,7 +169,7 @@ Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
-Source: "{#BUILD}\tools\idf-eclipse\*"; DestDir: "\\?\{app}\tools\idf-eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "\\?\{#BUILD}\tools\idf-eclipse\*"; DestDir: "\\?\{app}\tools\idf-eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer

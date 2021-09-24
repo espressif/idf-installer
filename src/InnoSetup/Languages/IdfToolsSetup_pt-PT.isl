@@ -136,3 +136,5 @@ InstallingNewEspIdf=A instalar o ESP-IDF
 EspIdfToolsDirectory=Diretório do IDF tools (IDF_TOOLS_PATH):
 DownloadEspIdf=Descarregar o ESP-IDF
 UsingExistingEspIdfDirectory=Usar o diretório existente do ESP-IDF
+InstallingDrivers=Installing drivers
+InstallingRust=Installing Rust language
