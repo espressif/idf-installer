@@ -138,15 +138,15 @@ begin
   IDFPath := ChoicePageGetInputText(Page);
   if DirExists(IDFPath) and not DirIsEmpty(IDFPath) then
   begin
-    MessageBox('Directory already exists and is not empty:' + #13#10 +
-           IDFPath + #13#10 + 'Please choose a different directory.', mbError, MB_OK);
+    MessageBox(CustomMessage('DirectoryAlreadyExists') + #13#10 +
+           IDFPath + #13#10 + CustomMessage('ChooseDifferentDirectory'), mbError, MB_OK);
     exit;
   end;
 
   if Pos(' ', IDFPath) <> 0 then
   begin
-    MessageBox('ESP-IDF build system does not support spaces in paths.' + #13#10
-           'Please choose a different directory.', mbError, MB_OK);
+    MessageBox(CustomMessage('SpacesInPathNotSupported') + #13#10 +
+           CustomMessage('ChooseDifferentDirectory'), mbError, MB_OK);
     exit;
   end;
 
@@ -169,8 +169,8 @@ begin
   if ((IDFDownloadVersion = 'v4.2') or (IDFDownloadVersion = 'v4.0.2') or
     (IDFDownloadVersion = 'v3.3.4')) then begin
     if (not IsDirNameValid(IDFPath)) then begin
-      MessageBox('The installation of selected version of IDF is not supported on path with special characters.' + #13#10
-            'Please choose a different directory.', mbError, MB_OK);
+      MessageBox(CustomMessage('SpecialCharactersInPathNotSupported') + #13#10 +
+            CustomMessage('ChooseDifferentDirectory'), mbError, MB_OK);
       exit;
     end;
   end;
@@ -190,10 +190,10 @@ procedure CreateIDFDownloadPage();
 begin
   IDFDownloadPage := ChoicePageCreate(
     IDFPage.ID,
-    'Version of ESP-IDF', 'Please choose ESP-IDF version to install',
-    'For more information about ESP-IDF versions, see' + #13#10 +
-      'https://docs.espressif.com/projects/esp-idf/en/latest/versions.html',
-    'Choose a directory to install ESP-IDF to',
+    CustomMessage('EspIdfVersion'), CustomMessage('ChooseEspIdfVersion'),
+    CustomMessage('MoreInformation') + #13#10 +
+      CustomMessage('EspIdfVersionInformationUrl'),
+    CustomMessage('ChooseEspIdfDirectory'),
     True,
     @OnIDFDownloadPagePrepare,
     @OnIDFDownloadSelectionChange,

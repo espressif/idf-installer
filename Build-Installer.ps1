@@ -12,7 +12,9 @@ param (
     [Boolean]
     $SignInstaller = $true,
     [String]
-    $SetupCompiler = 'iscc'
+    $SetupCompiler = 'iscc',
+    [String]
+    $IdfEnvVersion = '1.2.4.1'
 )
 
 # Stop on error
@@ -76,6 +78,7 @@ function PrepareIdfFile {
         return
     }
 
+    "Downloading: $DownloadUrl"
     Invoke-WebRequest -O $FullFilePath $DownloadUrl
 }
 
@@ -96,7 +99,7 @@ function PrepareIdf7za {
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
-        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v1.2.1.0/win64.idf-env.exe
+        -DownloadUrl https://github.com/espressif/idf-env/releases/download/v${IdfEnvVersion}/win64.idf-env.exe
 }
 
 function PrepareIdfGit {
@@ -121,10 +124,10 @@ function PrepareIdfPythonWheels {
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-07 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-09 `
         -FilePath eclipse.exe `
-        -DistZip idf-eclipse-2021-04-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-07-win64.zip
+        -DistZip idf-eclipse-2021-09-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-09-win64.zip
 }
 
 function PrepareIdfDriver {
@@ -146,6 +149,12 @@ function PrepareOfflineBranches {
         # Fix repo mode
         git -C "$BundleDir" config --local core.fileMode false
         git -C "$BundleDir" submodule foreach --recursive git config --local core.fileMode false
+
+        # Fix autocrlf - if autocrlf is not set from global gitconfig the files in unzipped repo
+        # are marked as dirty
+        git -C "$BundleDir" config --local core.autocrlf true
+        git -C "$BundleDir" submodule foreach --recursive git config --local core.autocrlf true
+
         # Allow deleting directories by git clean --force
         # Required when switching between versions which does not have a module present in current branch
         git -C "$BundleDir" config --local clean.requireForce false

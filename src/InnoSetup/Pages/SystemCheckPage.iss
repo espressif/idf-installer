@@ -409,19 +409,32 @@ procedure VerifyRootCertificates();
 var
   ResultCode: Integer;
   Command: String;
-  OutFile: String;
 begin
   SystemLogTitle(CustomMessage('SystemCheckRootCertificates') + ' ');
 
-  { It's necessary to invoke PowerShell *BEFORE* Python. Invoke-Request will retrieve and add Root Certificate if necessary. }
+  { It's necessary to invoke reuqest to https server *BEFORE* Python. idf-env will retrieve and add Root Certificate if necessary. }
   { Without the certificate Python is failing to connect to https. }
   { Windows command to list current certificates: certlm.msc }
-  OutFile := ExpandConstant('{tmp}\check');
-  Command := 'powershell -ExecutionPolicy Bypass ';
-  Command := Command + 'Invoke-WebRequest -Uri "https://dl.espressif.com/dl/?system_check=win' + GetWindowsVersionString + '" -OutFile "' + OutFile + '-1.txt";';
-  Command := Command + 'Invoke-WebRequest -Uri "https://github.com/espressif" -OutFile "' + OutFile + '-2.txt";';
-  {Command := Command + 'Invoke-WebRequest -Uri "https://www.s3.amazonaws.com/" -OutFile "' + OutFile + '-3.txt";';}
+
+  Command := GetIdfEnvCommand('certificate verify --url https://dl.espressif.com/dl/?system_check=win' + GetWindowsVersionString);
   ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
+  if (ResultCode <> 0) then begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
+    SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
+    Exit;
+  end;
+
+  Command := GetIdfEnvCommand('certificate verify --url https://github.com/espressif');
+  ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
+    if (ResultCode <> 0) then begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
+    SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
+    Exit;
+  end;
+
+  Command := GetIdfEnvCommand('certificate verify --url https://www.s3.amazonaws.com/');
+  ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
+
   if (ResultCode <> 0) then begin
     SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
     SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
@@ -646,9 +659,9 @@ begin
   with ApplyFixesButton do
   begin
     Parent := WizardForm;
-    Left := WizardForm.ClientWidth - FullLogButton.Width;
+    Left := WizardForm.ClientWidth - FullLogButton.Width - ScaleX(25);
     Top := FullLogButton.Top;
-    Width := WizardForm.CancelButton.Width;
+    Width := WizardForm.CancelButton.Width + ScaleX(25);
     Height := WizardForm.CancelButton.Height;
     Caption := CustomMessage('SystemCheckApplyFixesButtonCaption');
     OnClick := @ApplyFixesButtonClick;

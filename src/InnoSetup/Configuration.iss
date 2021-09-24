@@ -264,8 +264,8 @@ begin
   if (SaveStringToFile(FilePath, Content, False)) then begin
     Log('Configuration stored.');
   end else begin
-     MessageBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
-              + 'Please check the file access and retry the installation.',
+     MessageBox(CustomMessage('UnableToWriteConfiguration') + ' ' + FilePath + #13#10
+              + CustomMessage('CheckPermissionToFile'),
               mbInformation, MB_OK);
     Log('Unable to write configuration!');
   end;
@@ -304,8 +304,8 @@ begin
     if (SaveStringToFile(FilePath, Content, False)) then begin
       Log('Configuration stored.');
     end else begin
-      MessageBox('Unable to write ESP-IDF configuration to ' + FilePath + #13#10
-                + 'Please check the file access and retry the installation.',
+      MessageBox(CustomMessage('UnableToWriteConfiguration') + ' ' + FilePath + #13#10
+                + CustomMessage('CheckPermissionToFile'),
                 mbInformation, MB_OK);
       Log('Unable to write configuration!');
     end;

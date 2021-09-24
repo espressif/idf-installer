@@ -147,6 +147,13 @@ begin
   end;
 end;
 
+procedure InstallRust();
+begin
+  if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand('rust install'));
+  end;
+end;
+
 <event('NextButtonClick')>
 function PreInstallSteps(CurPageID: Integer): Boolean;
 var
