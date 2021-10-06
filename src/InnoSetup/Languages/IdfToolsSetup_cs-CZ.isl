@@ -137,3 +137,7 @@ DownloadEspIdf=Stáhnout ESP-IDF
 UsingExistingEspIdfDirectory=Použít složku s existující instalací ESP-IDF
 InstallingDrivers=Instalace ovladačů
 InstallingRust=Instalace integrace s Rust
+SystemCheckToolsPathSpecialCharacter=Systémové kódování je nastaveno na 65001 a cesta k nástrojům obsahuje speciální znak. Z důvodu limitace v JRE není možno instalovat Eclipse na tuhle cestu. Vyberte umístění na cěstě bez speciálních znaků.
+SystemCheckTmpPathSpecialCharacter=Systémové kódování je nastaveno na 65001 a proměná prostředí TMP obsahuje speciální znak. Z důvodu limitace v JRE není možno spustit Eclipse pokud TMP obsahuje speciální znak. Nastavte proměnou TMP na cestu bez speciálních znaků a restartujte instalaci.
+SystemCheckActiveCodePage=Aktivní kódová stránka:
+SystemCheckUnableToDetermine=není možno určit
