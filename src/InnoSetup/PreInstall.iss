@@ -158,10 +158,40 @@ end;
 function PreInstallSteps(CurPageID: Integer): Boolean;
 var
   DestPath: String;
+  TmpPath: String;
+  UserProfile: String;
 begin
   Result := True;
   if CurPageID <> wpReady then begin
     Exit;
+  end;
+
+  { Validate Code Page and refuse to install Eclipse in case of tool path with special character or TMP set to special character. }
+  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
+    if (CodePage = '65001') then begin
+      if (not IsDirNameValid(ExpandConstant('{app}'))) then begin
+        Result := False;
+        MessageBox(CustomMessage('SystemCheckToolsPathSpecialCharacter'), mbError, MB_OK);
+        Exit;
+      end;
+
+      TmpPath := GetEnv('TMP');
+      if (not IsDirNameValid(TmpPath)) then begin
+        Result := False;
+        MessageBox(CustomMessage('SystemCheckTmpPathSpecialCharacter'), mbError, MB_OK);
+        Exit;
+      end;
+
+      { Try to expand USERPROFILE variable which might also contain special character. }
+      if (Pos('Users', TmpPath) > 0) then begin
+        UserProfile := GetEnv('USERPROFILE');
+        if (not IsDirNameValid(UserProfile)) then begin
+          Result := False;
+          MessageBox(CustomMessage('SystemCheckTmpPathSpecialCharacter'), mbError, MB_OK);
+          Exit;
+        end;
+      end;
+    end;
   end;
 
   if not (IsOfflineMode) then begin

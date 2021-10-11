@@ -137,3 +137,7 @@ DownloadEspIdf=Download ESP-IDF
 UsingExistingEspIdfDirectory=Use an existing ESP-IDF directory
 InstallingDrivers=Installing drivers
 InstallingRust=Installing Rust language
+SystemCheckToolsPathSpecialCharacter=System code page is set to 65001 and Tools path contains special character. It's not possible to install Eclipse on the path with a special character due to the limitation of JRE. Choose Tools location without special characters.
+SystemCheckTmpPathSpecialCharacter=System code page is set to 65001 and environment variable TMP contains special character. It's not possible to start Eclipse when TMP contains character due to the limitation of JRE. Set TMP variable to the path without special characters and restart the installation.
+SystemCheckActiveCodePage=Active code page:
+SystemCheckUnableToDetermine=unable to determine

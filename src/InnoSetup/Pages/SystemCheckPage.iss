@@ -470,6 +470,22 @@ begin
   SystemLog(#13#10 + CustomMessage('SystemCheckRemedyApplyFixInfo'));
 end;
 
+procedure SystemCheckEncoding();
+var
+  CodePageLine: String;
+  DelimiterIndex: Integer;
+begin
+  SystemLogTitle(CustomMessage('SystemCheckActiveCodePage') + ' ');
+  CodePageLine := ExecuteProcess('chcp.com');
+  DelimiterIndex := Pos(':', CodePageLine);
+  if (DelimiterIndex > 0) then begin
+    CodePage := Copy(CodePageLine, DelimiterIndex + 2, Length(CodePageLine) - DelimiterIndex - 3);
+    SystemLog(CodePage);
+  end else begin
+    SystemLog(CustomMessage('SystemCheckUnableToDetermine'));
+  end;
+end;
+
 procedure SystemCheckAntivirus();
 var
   AntivirusName: String;
@@ -492,6 +508,10 @@ begin
   StopSystemCheckButton.Enabled := True;
 
   VerifyLongPathsEnabled();
+
+  if (SystemCheckState <> SYSTEM_CHECK_STATE_STOPPED) then begin
+    SystemCheckEncoding();
+  end;
 
   if (not IsOfflineMode) then begin
     VerifyRootCertificates();
