@@ -308,6 +308,10 @@ if ('offline' -eq $InstallerType) {
         New-Item build/$InstallerType/tools -Type Directory
     }
 
+    if (-Not(Test-Path build/$InstallerType/dist -PathType Container)) {
+        New-Item build/$InstallerType/dist -Type Directory
+    }
+
     PrepareIdfDriver
     PrepareIdfGit
     PrepareIdfPython
