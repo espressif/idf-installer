@@ -309,3 +309,27 @@ Files can be converted to XLIFF using Translate Toolkit - ini2po and po2xliff.
 
 File format is INI in UTF-8 with BOM header. Without BOM header the localization is not correctly displayed. Use VS Code to save the file with BOM header.
 
+### Setting up translation environment
+
+```
+python -m pipenv shell
+pip install translate-toolkit iniparse
+```
+
+### Transforming file for translation
+
+```
+cp file.isl file.ini
+ini2po file.ini file.po
+po2xliff file.po file.xliff
+```
+
+### Processing handback
+
+```
+xliff2po file.xliff file.po
+po2ini -t file.ini file.po file.ini
+cp file.ini file.isl
+```
+
+- add BOM header using Save function in Visual Studio Code
