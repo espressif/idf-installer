@@ -150,6 +150,7 @@ Name: "chinese"; MessagesFile: "Languages/ChineseSimplified.isl,Languages/IdfToo
 Name: "czech"; MessagesFile: "compiler:Languages/Czech.isl,Languages/IdfToolsSetup_cs-CZ.isl"
 Name: "portuguese"; MessagesFile: "compiler:Languages/Portuguese.isl,Languages/IdfToolsSetup_pt-PT.isl"
 Name: "slovak"; MessagesFile: "compiler:Languages/Slovak.isl,Languages/IdfToolsSetup_sk-SK.isl"
+Name: "spanish"; MessagesFile: "compiler:Languages/Spanish.isl,Languages/IdfToolsSetup_es-ES.isl"
 
 [Dirs]
 Name: "{app}\dist"
