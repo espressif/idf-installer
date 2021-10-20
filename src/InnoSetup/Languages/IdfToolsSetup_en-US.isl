@@ -141,3 +141,4 @@ SystemCheckToolsPathSpecialCharacter=System code page is set to 65001 and Tools 
 SystemCheckTmpPathSpecialCharacter=System code page is set to 65001 and environment variable TMP contains special character. It's not possible to start Eclipse when TMP contains character due to the limitation of JRE. Set TMP variable to the path without special characters and restart the installation.
 SystemCheckActiveCodePage=Active code page:
 SystemCheckUnableToDetermine=unable to determine
+SystemVersionTooLow=Too old version of operating system. Please use supported version of Windows.
