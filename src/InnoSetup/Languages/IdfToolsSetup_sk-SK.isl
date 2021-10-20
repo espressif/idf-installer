@@ -142,3 +142,4 @@ SystemCheckTmpPathSpecialCharacter=Systémové kódovanie je nastavené na 65001
 SystemCheckActiveCodePage=Aktívna kódová stránka:
 SystemCheckUnableToDetermine=nie je možné určiť
 SystemVersionTooLow=Príliš stará verzia operačného systému. Použite podporovanú verziu Windows.
+WindowsVersion=Verzia Windows

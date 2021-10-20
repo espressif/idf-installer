@@ -474,8 +474,8 @@ procedure VerifySystemVersion();
 var
   Version: TWindowsVersion;
 begin
-  SystemLogTitle('Windows version:');
-  SystemLog(' ' + GetWindowsVersionString);
+  SystemLogTitle(CustomMessage('WindowsVersion'));
+  SystemLog(': ' + GetWindowsVersionString);
   GetWindowsVersionEx(Version);
   if (Version.Major < 10) then begin
     SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + '] ');

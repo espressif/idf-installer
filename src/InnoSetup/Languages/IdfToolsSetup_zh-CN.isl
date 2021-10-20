@@ -142,3 +142,4 @@ SystemCheckTmpPathSpecialCharacter=系统代码页面设置为 65001，环境变
 SystemCheckActiveCodePage=活动代码页：
 SystemCheckUnableToDetermine=无法确定
 SystemVersionTooLow=Too old version of operating system. Please use supported version of Windows.
+WindowsVersion=Windows version

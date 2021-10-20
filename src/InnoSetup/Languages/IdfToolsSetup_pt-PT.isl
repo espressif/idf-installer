@@ -143,3 +143,4 @@ SystemCheckTmpPathSpecialCharacter=System code page is set to 65001 and environm
 SystemCheckActiveCodePage=Active code page:
 SystemCheckUnableToDetermine=unable to determine
 SystemVersionTooLow=Too old version of operating system. Please use supported version of Windows.
+WindowsVersion=Windows version
