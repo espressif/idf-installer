@@ -141,3 +141,4 @@ SystemCheckToolsPathSpecialCharacter=系统代码页面设置为 65001，工具�
 SystemCheckTmpPathSpecialCharacter=系统代码页面设置为 65001，环境变量 TMP 包含特殊字符。由于 JRE 的限制，当 TMP 包含特殊字符时，Eclipse 无法运行。请将 TMP 变量放置于不包含特殊字符的路径，并重试安装。
 SystemCheckActiveCodePage=活动代码页：
 SystemCheckUnableToDetermine=无法确定
+SystemVersionTooLow=Too old version of operating system. Please use supported version of Windows.

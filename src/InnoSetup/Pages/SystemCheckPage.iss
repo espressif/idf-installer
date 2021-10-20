@@ -470,6 +470,21 @@ begin
   SystemLog(#13#10 + CustomMessage('SystemCheckRemedyApplyFixInfo'));
 end;
 
+procedure VerifySystemVersion();
+var
+  Version: TWindowsVersion;
+begin
+  SystemLogTitle('Windows version:');
+  SystemLog(' ' + GetWindowsVersionString);
+  GetWindowsVersionEx(Version);
+  if (Version.Major < 10) then begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + '] ');
+    SystemLog(CustomMessage('SystemVersionTooLow'));
+  end else begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultOk') + ']');
+  end;
+end;
+
 procedure SystemCheckEncoding();
 var
   CodePageLine: String;
@@ -507,6 +522,7 @@ begin
   SystemLogTitle(CustomMessage('SystemCheckStart'));
   StopSystemCheckButton.Enabled := True;
 
+  VerifySystemVersion();
   VerifyLongPathsEnabled();
 
   if (SystemCheckState <> SYSTEM_CHECK_STATE_STOPPED) then begin

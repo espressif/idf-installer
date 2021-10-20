@@ -141,3 +141,4 @@ SystemCheckToolsPathSpecialCharacter=Systémové kódovanie je nastavené na 650
 SystemCheckTmpPathSpecialCharacter=Systémové kódovanie je nastavené na 65001 a promenná prostredia TMP obsahuje špeciálny znak. Z dôvodu limitáce v JRE nie je možné spustit Eclipse pokiaľ TMP obsahuje špeciálny znak. Nastavte promennú TMP na cestu bez špeciálnych znakov a reštartujte inštaláciu.
 SystemCheckActiveCodePage=Aktívna kódová stránka:
 SystemCheckUnableToDetermine=nie je možné určiť
+SystemVersionTooLow=Príliš stará verzia operačného systému. Použite podporovanú verziu Windows.

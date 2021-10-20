@@ -138,3 +138,4 @@ DownloadEspIdf=Descargar ESP-IDF
 UsingExistingEspIdfDirectory=Usar un directorio existente de ESP-IDF
 InstallingDrivers=Instalando drivers
 InstallingRust=Instalando lenguaje Rust
+SystemVersionTooLow=Too old version of operating system. Please use supported version of Windows.
