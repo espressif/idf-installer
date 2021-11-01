@@ -18,8 +18,8 @@ jobs:
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "master" -Components "ide/rust,ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,driver/ftdi,driver/silabs" -TmpDirectory "$env:TMP/Ň i"
         shell: pwsh
       - name: Build blink
-        run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "4.4"  -IdfPath "C:/Users/runneradmin/Desktop/esp-idf"
+        run: ./src/PowerShell/Test-IdfCmd.ps1 -IdfShortVersion "5.0"  -IdfPath "C:/Users/runneradmin/Desktop/esp-idf"
         shell: pwsh
       - name: Build blink in PowerShell
-        run: ./src/PowerShell/Test-IdfPowerShell.ps1 -IdfShortVersion "4.4" -IdfPath "C:/Users/runneradmin/Desktop/esp-idf"
+        run: ./src/PowerShell/Test-IdfPowerShell.ps1 -IdfShortVersion "5.0" -IdfPath "C:/Users/runneradmin/Desktop/esp-idf"
         shell: pwsh
