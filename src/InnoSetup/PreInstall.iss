@@ -150,7 +150,7 @@ end;
 procedure InstallRust();
 begin
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
-    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand('rust install'));
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand('rust reinstall'));
   end;
 end;
 
