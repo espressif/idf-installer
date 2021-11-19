@@ -82,6 +82,10 @@ The tool is downloading and installing following drivers:
   - FTDI: https://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.28%20WHQL%20Certified.zip
   - Espressif JTAG: https://dl.espressif.com/dl/idf-driver/idf-driver-esp32-usb-jtag-2021-07-15.zip
 
+The recommended tool for adding libusb support to driver (e.g. debugging of Wroower kit):
+
+  - [UsbDriverTool]https://visualgdb.com/UsbDriverTool/
+
 ## Developer documentation
 
 This directory contains source files required to build the tools installer for Windows.
