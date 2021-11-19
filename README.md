@@ -70,6 +70,18 @@ Following parameters allows to select custom Python and custom location of Pytho
 esp-idf-tools-setup-x.x.exe /USEEMBEDDEDPYTHON=no /PYTHONWHEELSURL=https://pypi.org/simple/
 
 
+### Manual installation of drivers
+
+The installer takes care of driver installation.
+
+The installation is pefromed by [idf-env.exe driver install --espressif --ftdi --silabs](https://github.com/espressif/idf-env#quick-start-with-powershell).
+
+The tool is downloading and installing following drivers:
+
+  - Silabs: https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip
+  - FTDI: https://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.28%20WHQL%20Certified.zip
+  - Espressif JTAG: https://dl.espressif.com/dl/idf-driver/idf-driver-esp32-usb-jtag-2021-07-15.zip
+
 ## Developer documentation
 
 This directory contains source files required to build the tools installer for Windows.
