@@ -84,7 +84,7 @@ The tool is downloading and installing following drivers:
 
 The recommended tool for adding libusb support to driver (e.g. debugging of Wroower kit):
 
-  - [UsbDriverTool]https://visualgdb.com/UsbDriverTool/
+  - [UsbDriverTool](https://visualgdb.com/UsbDriverTool/)
 
 ## Developer documentation
 
