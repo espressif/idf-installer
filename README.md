@@ -12,8 +12,9 @@ ESP-IDF Tools Installer for Windows download page: https://dl.espressif.com/dl/e
 
 | ESP-IDF Tools Installer | Online | Offline |
 | ----------------------- | ------ | ------- |
-| 2.12 (Beta)             | [Download](https://github.com/espressif/idf-installer/releases)       |         |
-| 2.11 - 2021-09-23 | [Download](https://github.com/espressif/idf-installer/releases/download/online-2.11/esp-idf-tools-setup-online-2.11.exe) 3.2 MB [![test-online-installer](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml) | [Download](https://github.com/espressif/idf-installer/releases/download/offline-2.11/esp-idf-tools-setup-offline-2.11.exe) 1.7 GB with ESP-IDF 4.3.1, 4.2.2, Eclipse + IDF Plugin v2.2.0 [![test-offline-installer](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml) |
+| 2.13 (Beta)             | [Download](https://github.com/espressif/idf-installer/releases)       |         |
+| 2.12 - 2021-11-22 | [Download](https://github.com/espressif/idf-installer/releases/download/online-2.12/esp-idf-tools-setup-online-2.12.exe) 3.2 MB [![test-online-installer](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml) | [Download](https://github.com/espressif/idf-installer/releases/download/offline-2.21/esp-idf-tools-setup-offline-2.12.exe) 1.7 GB with ESP-IDF 4.3.1, 4.2.2, Eclipse + IDF Plugin v2.2.0 [![test-offline-installer](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml) |
+| 2.11 - 2021-09-23 | [Download](https://github.com/espressif/idf-installer/releases/download/online-2.11/esp-idf-tools-setup-online-2.11.exe) 3.2 MB | [Download](https://github.com/espressif/idf-installer/releases/download/offline-2.11/esp-idf-tools-setup-offline-2.11.exe) 1.7 GB with ESP-IDF 4.3.1, 4.2.2, Eclipse + IDF Plugin v2.2.0 |
 | 2.10 - 2021-08-10 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.10.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.10.exe) 1.6 GB with ESP-IDF 4.3, 4.2.2, Eclipse + IDF Plugin v2.1.0 |
 | 2.9 - 2021-06-15  | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.9.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.9.exe) 1.6 GB with ESP-IDF 4.3, 4.2.1, Eclipse + IDF Plugin v2.1.0 |
 | 2.8 - 2021-05-03 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.8.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.8.exe) 1.3 GB with ESP-IDF 4.2.1, 4.1.1, Eclipse + IDF Plugin v2.1.0 |
@@ -69,6 +70,22 @@ Following parameters allows to select custom Python and custom location of Pytho
 
 esp-idf-tools-setup-x.x.exe /USEEMBEDDEDPYTHON=no /PYTHONWHEELSURL=https://pypi.org/simple/
 
+
+### Manual installation of drivers
+
+The installer takes care of driver installation.
+
+The installation is pefromed by [idf-env.exe driver install --espressif --ftdi --silabs](https://github.com/espressif/idf-env#quick-start-with-powershell).
+
+The tool is downloading and installing following drivers:
+
+  - Silabs: https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip
+  - FTDI: https://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.28%20WHQL%20Certified.zip
+  - Espressif JTAG: https://dl.espressif.com/dl/idf-driver/idf-driver-esp32-usb-jtag-2021-07-15.zip
+
+The recommended tool for adding libusb support to driver (e.g. debugging of Wroower kit):
+
+  - [UsbDriverTool](https://visualgdb.com/UsbDriverTool/)
 
 ## Developer documentation
 
@@ -309,3 +326,27 @@ Files can be converted to XLIFF using Translate Toolkit - ini2po and po2xliff.
 
 File format is INI in UTF-8 with BOM header. Without BOM header the localization is not correctly displayed. Use VS Code to save the file with BOM header.
 
+### Setting up translation environment
+
+```
+python -m pipenv shell
+pip install translate-toolkit iniparse
+```
+
+### Transforming file for translation
+
+```
+cp file.isl file.ini
+ini2po file.ini file.po
+po2xliff file.po file.xliff
+```
+
+### Processing handback
+
+```
+xliff2po file.xliff file.po
+po2ini -t file.ini file.po file.ini
+cp file.ini file.isl
+```
+
+- add BOM header using Save function in Visual Studio Code

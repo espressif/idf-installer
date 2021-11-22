@@ -30,6 +30,7 @@ var
     PythonVersion:String;
     PythonPath:String;
     PythonExecutablePath: String;
+    CodePage: String;
 
 function GetConfigurationString(Key: String; Default: String):String;
 var Value: String;

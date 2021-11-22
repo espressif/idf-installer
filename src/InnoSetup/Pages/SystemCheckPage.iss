@@ -470,6 +470,37 @@ begin
   SystemLog(#13#10 + CustomMessage('SystemCheckRemedyApplyFixInfo'));
 end;
 
+procedure VerifySystemVersion();
+var
+  Version: TWindowsVersion;
+begin
+  SystemLogTitle(CustomMessage('WindowsVersion'));
+  SystemLog(': ' + GetWindowsVersionString);
+  GetWindowsVersionEx(Version);
+  if (Version.Major < 10) then begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + '] ');
+    SystemLog(CustomMessage('SystemVersionTooLow'));
+  end else begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultOk') + ']');
+  end;
+end;
+
+procedure SystemCheckEncoding();
+var
+  CodePageLine: String;
+  DelimiterIndex: Integer;
+begin
+  SystemLogTitle(CustomMessage('SystemCheckActiveCodePage') + ' ');
+  CodePageLine := ExecuteProcess('chcp.com');
+  DelimiterIndex := Pos(':', CodePageLine);
+  if (DelimiterIndex > 0) then begin
+    CodePage := Copy(CodePageLine, DelimiterIndex + 2, Length(CodePageLine) - DelimiterIndex - 3);
+    SystemLog(CodePage);
+  end else begin
+    SystemLog(CustomMessage('SystemCheckUnableToDetermine'));
+  end;
+end;
+
 procedure SystemCheckAntivirus();
 var
   AntivirusName: String;
@@ -491,7 +522,12 @@ begin
   SystemLogTitle(CustomMessage('SystemCheckStart'));
   StopSystemCheckButton.Enabled := True;
 
+  VerifySystemVersion();
   VerifyLongPathsEnabled();
+
+  if (SystemCheckState <> SYSTEM_CHECK_STATE_STOPPED) then begin
+    SystemCheckEncoding();
+  end;
 
   if (not IsOfflineMode) then begin
     VerifyRootCertificates();

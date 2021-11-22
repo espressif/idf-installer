@@ -14,11 +14,13 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.4.1'
+    $IdfEnvVersion = '1.2.10'
 )
 
 # Stop on error
 $ErrorActionPreference = "Stop"
+# Disable progress bar when downloading - speed up download - https://stackoverflow.com/questions/28682642/powershell-why-is-using-invoke-webrequest-much-slower-than-a-browser-download
+$ProgressPreference = 'SilentlyContinue'
 # Display logs correctly on GitHub Runner
 $ErrorView = 'NormalView'
 
@@ -306,6 +308,10 @@ if ('offline' -eq $InstallerType) {
 
     if (-Not(Test-Path build/$InstallerType/tools -PathType Container)) {
         New-Item build/$InstallerType/tools -Type Directory
+    }
+
+    if (-Not(Test-Path build/$InstallerType/dist -PathType Container)) {
+        New-Item build/$InstallerType/dist -Type Directory
     }
 
     PrepareIdfDriver

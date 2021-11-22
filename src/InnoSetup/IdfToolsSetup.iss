@@ -5,7 +5,7 @@
 #include <idp.iss>
 
 #define MyAppName "ESP-IDF Tools"
-#define MyAppVersion "2.11"
+#define MyAppVersion "2.12"
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
@@ -150,6 +150,7 @@ Name: "chinese"; MessagesFile: "Languages/ChineseSimplified.isl,Languages/IdfToo
 Name: "czech"; MessagesFile: "compiler:Languages/Czech.isl,Languages/IdfToolsSetup_cs-CZ.isl"
 Name: "portuguese"; MessagesFile: "compiler:Languages/Portuguese.isl,Languages/IdfToolsSetup_pt-PT.isl"
 Name: "slovak"; MessagesFile: "compiler:Languages/Slovak.isl,Languages/IdfToolsSetup_sk-SK.isl"
+Name: "spanish"; MessagesFile: "compiler:Languages/Spanish.isl,Languages/IdfToolsSetup_es-ES.isl"
 
 [Dirs]
 Name: "{app}\dist"
@@ -211,8 +212,8 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Flags: fixed
-Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload};
+Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Types: custom;
+Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: custom; Flags: checkablealone
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
