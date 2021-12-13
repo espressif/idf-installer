@@ -29,6 +29,7 @@ var
     GitVersion: String;
     GitSubmoduleUrl: String;
     GitUseMirror: Boolean;
+    GitDepth: String;
     PythonVersion:String;
     PythonPath:String;
     PythonExecutablePath: String;
@@ -72,6 +73,7 @@ begin
     IsGitCleanAllowed := GetConfigurationBoolean('GITCLEAN', 'yes');
     IsGitRecursive := GetConfigurationBoolean('GITRECURSIVE', 'yes');
     IsGitResetAllowed := GetConfigurationBoolean('GITRESET', 'yes');
+    GitDepth := GetConfigurationString('GITDEPTH', '');
     GitRepository := GetConfigurationString('GITREPO', 'https://github.com/espressif/esp-idf.git');
     GitSubmoduleUrl := GetConfigurationString('GITSUBMODULEURL', '');
     GitUseMirror := GetConfigurationBoolean('GITUSEMIRROR', 'no');

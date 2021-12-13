@@ -102,6 +102,7 @@
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 #define COMPONENT_OPTIMIZATION_GITEE_MIRROR = 'optimization/gitee_mirror'
+#define COMPONENT_OPTIMIZATION_GIT_SHALLOW = 'optimization/git_shallow'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -193,8 +194,8 @@ Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 
 [Components]
 Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
-Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
+Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_POWERSHELL}"; Description: {cm:ComponentPowerShell}; Types: full custom; Flags: checkablealone
 Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: {cm:ComponentPowerShellWindowsTerminal}; Types: full custom
@@ -216,6 +217,7 @@ Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; 
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Types: custom;
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}"; Description: {cm:ComponentOptimizationGiteeMirror}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}"; Description: {cm:ComponentOptimizationGitShallow}; Types: custom; Flags: checkablealone
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full

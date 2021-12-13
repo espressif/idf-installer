@@ -223,8 +223,11 @@ begin
 end;
 
 procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
+var
+  Command: String;
 begin
-  ExecIdfEnv('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '"');
+  Command := GetIdfEnvCommand('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '"')
+  DoCmdlineInstall(CustomMessage('UpdatingSubmodules'), CustomMessage('UpdatingSubmodules'), Command);
 end;
 
 procedure IDFDownloadInstall();
@@ -272,6 +275,14 @@ begin
     end;
 
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
+      GitDepth := '1';
+    end;
+
+    if (Length(GitDepth) > 0) then begin
+      CmdLine := CmdLine + ' --depth ' + GitDepth + ' ';
+    end;
 
     if (IsGitRecursive) then begin
       CmdLine := CmdLine + ' --recursive ';
