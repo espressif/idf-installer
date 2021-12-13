@@ -5,7 +5,7 @@
 #include <idp.iss>
 
 #define MyAppName "ESP-IDF Tools"
-#define MyAppVersion "2.12"
+#define MyAppVersion "2.13"
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
