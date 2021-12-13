@@ -433,11 +433,11 @@ begin
   { Without the certificate Python is failing to connect to https. }
   { Windows command to list current certificates: certlm.msc }
 
-  IsEspressifSiteReachable := VerifySiteCertificate('https://dl.espressif.com');
-  IsGithubSiteReachable := VerifySiteCertificate('https://github.com');
+  IsEspressifSiteReachable := VerifySiteCertificate('https://dl.espressif.com/dl/esp-idf');
+  IsGithubSiteReachable := VerifySiteCertificate('https://github.com/espressif/esp-idf');
   if not IsGithubSiteReachable then begin
-    SystemLog('Testing alternative mirror Gitee.com');
-    IsGiteeSiteReachable := VerifySiteCertificate('https://gitee.com');
+    SystemLog(' ' + CustomMessage('SystemCheckAlternativeMirror') + ' Gitee.com');
+    IsGiteeSiteReachable := VerifySiteCertificate('https://gitee.com/EspressifSystems/esp-idf');
   end;
   IsAmazonS3SiteReachable := VerifySiteCertificate('https://www.s3.amazonaws.com/');
 end;

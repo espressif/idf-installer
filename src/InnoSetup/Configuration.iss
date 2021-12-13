@@ -27,6 +27,8 @@ var
     GitPath:String;
     GitExecutablePath:String;
     GitVersion: String;
+    GitSubmoduleUrl: String;
+    GitUseMirror: Boolean;
     PythonVersion:String;
     PythonPath:String;
     PythonExecutablePath: String;
@@ -71,6 +73,8 @@ begin
     IsGitRecursive := GetConfigurationBoolean('GITRECURSIVE', 'yes');
     IsGitResetAllowed := GetConfigurationBoolean('GITRESET', 'yes');
     GitRepository := GetConfigurationString('GITREPO', 'https://github.com/espressif/esp-idf.git');
+    GitSubmoduleUrl := GetConfigurationString('GITSUBMODULEURL', '');
+    GitUseMirror := GetConfigurationBoolean('GITUSEMIRROR', 'no');
     IDFDirectory := GetConfigurationString('IDFDIR', '');
     IDFUseExisting := GetConfigurationBoolean('IDFUSEEXISTING', 'no');
     IDFVersion := GetConfigurationString('IDFVERSION', '');

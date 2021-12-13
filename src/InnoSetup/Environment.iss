@@ -222,6 +222,11 @@ begin
   GitSwitchBranch(IDFPath, IDFDownloadVersion);
 end;
 
+procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
+begin
+  ExecIdfEnv('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '"');
+end;
+
 procedure IDFDownloadInstall();
 var
   CmdLine: String;
@@ -258,6 +263,14 @@ begin
 
   if NeedToClone then
   begin
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}')) then begin
+        GitUseMirror := True;
+        IsGitRecursive := False;
+        GitRepository := 'https://gitee.com/EspressifSystems/esp-idf.git';
+        GitSubmoduleUrl := 'https://gitee.com/esp-submodules/';
+    end;
+
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
 
     if (IsGitRecursive) then begin
@@ -273,6 +286,10 @@ begin
 
     if IDFTempPath <> '' then
       GitRepoDissociate(IDFPath);
+
+    if (GitUseMirror) then begin
+      ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);
+    end;
 
   end else begin
 
