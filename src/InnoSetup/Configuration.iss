@@ -31,6 +31,10 @@ var
     PythonPath:String;
     PythonExecutablePath: String;
     CodePage: String;
+    IsEspressifSiteReachable: Boolean;
+    IsGithubSiteReachable: Boolean;
+    IsAmazonS3SiteReachable: Boolean;
+    IsGiteeSiteReachable: Boolean;
 
 function GetConfigurationString(Key: String; Default: String):String;
 var Value: String;

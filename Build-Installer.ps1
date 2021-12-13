@@ -2,10 +2,12 @@
 param (
     [Parameter()]
     [String]
+    [ValidateSet('none', 'lzma')]
     $Compression = 'lzma',
     [String]
     $IdfPythonWheelsVersion = '3.8-2021-08-10',
     [String]
+    [ValidateSet('online', 'offline')]
     $InstallerType = 'online',
     [String]
     $Python = 'python',
