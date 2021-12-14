@@ -281,7 +281,7 @@ begin
     end;
 
     if (Length(GitDepth) > 0) then begin
-      CmdLine := CmdLine + ' --depth ' + GitDepth + ' ';
+      CmdLine := CmdLine + ' --depth ' + GitDepth + ' --shallow-submodules ';
     end;
 
     if (IsGitRecursive) then begin
