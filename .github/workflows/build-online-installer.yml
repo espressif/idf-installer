@@ -22,7 +22,23 @@ jobs:
         shell: bash
       - name: Install Inno Setup Download plugin
         shell: pwsh
-        run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
+        run: |
+          Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
+          $InstallerProcess = Get-Process idpsetup.exe
+          Sleep 5
+          # Logs must be watched in separate job, because Inno Setup does not allow to print stdout.
+          $LogWatcher = Start-Job -ArgumentList $LogFile -ScriptBlock {
+              Param($LogFile)
+              Get-Content -Path $LogFile -Wait
+          }
+
+          # Wait for installer to finish
+          while (!$InstallerProcess.HasExited) {
+              Sleep 1
+              Receive-Job $LogWatcher
+          }
+
+          Stop-Job $LogWatcher
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
