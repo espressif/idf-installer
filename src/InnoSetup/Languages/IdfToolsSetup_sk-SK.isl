@@ -146,3 +146,7 @@ WindowsVersion=Verzia Windows
 SystemCheckAlternativeMirror=Test alternatívneho zrkadla
 ComponentOptimizationGiteeMirror=Git zrkadlo gitee.com/EspressifSystems/esp-idf
 ComponentOptimizationGitShallow=Plytký klon (--depth 1)
+SummaryComponents=Komponenty
+SummaryDrivers=Ovládače
+SummaryTargets=Ciele
+SummaryOptimization=Optimalizácia

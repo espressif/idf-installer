@@ -227,6 +227,9 @@ var
   Command: String;
 begin
   Command := GetIdfEnvCommand('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '"')
+  if (Length(GitDepth) > 0) then begin
+    Command := Command + ' --depth ' + GitDepth;
+  end;
   DoCmdlineInstall(CustomMessage('UpdatingSubmodules'), CustomMessage('UpdatingSubmodules'), Command);
 end;
 

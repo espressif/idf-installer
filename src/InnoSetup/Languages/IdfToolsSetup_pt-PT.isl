@@ -147,3 +147,7 @@ WindowsVersion=Windows version
 SystemCheckAlternativeMirror=Testing alternative mirror
 ComponentOptimizationGiteeMirror=Git mirror gitee.com/EspressifSystems/esp-idf
 ComponentOptimizationGitShallow=Shallow clone (--depth 1)
+SummaryComponents=Components
+SummaryDrivers=Drivers
+SummaryTargets=Targets
+SummaryOptimization=Optimization

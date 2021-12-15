@@ -16,11 +16,7 @@
 #define PythonInstallerDownloadURL "https://dl.espressif.com/dl/idf-python/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.30.1"
-#endif
-; The URL where git is stored is not equal to it's version. Minor build has prefixes with windows
-#ifndef GITVERSIONDIR
-  #define GITVERSIONDIR "v2.30.0.windows.2"
+  #define GITVERSION "2.34.1"
 #endif
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
