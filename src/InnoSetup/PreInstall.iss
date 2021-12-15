@@ -108,6 +108,7 @@ begin
   end;
 
   PrepareIdfPackage(GetEmbeddedGitPath(), GetGitDistZip(), '{#GitInstallerDownloadURL}');
+  GetPathWithForwardSlashes(GitExecutablePath)
   GitUseExisting := true;
 end;
 
@@ -227,6 +228,9 @@ begin
   begin
     IDFAddDownload();
   end;
+
+  { Update path to current instance of Git. }
+  ExecIdfEnv('config set --git "' +  GetPathWithForwardSlashes(GitExecutablePath) + '"');
 end;
 
 { ------------------------------ Custom steps after the main installation flow ------------------------------ }
