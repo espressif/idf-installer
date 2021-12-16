@@ -226,7 +226,7 @@ procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
 var
   Command: String;
 begin
-  Command := GetIdfEnvCommand('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '"')
+  Command := GetIdfEnvCommand('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '" --progress')
   if (Length(GitDepth) > 0) then begin
     Command := Command + ' --depth ' + GitDepth;
   end;

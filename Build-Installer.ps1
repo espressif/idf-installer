@@ -16,7 +16,7 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.15'
+    $IdfEnvVersion = '1.2.17'
 )
 
 # Stop on error
