@@ -107,10 +107,10 @@ function PrepareIdfEnv {
 }
 
 function PrepareIdfGit {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.34.1 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.34.2 `
         -FilePath cmd/git.exe `
-        -DistZip idf-git-2.34.1-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.34.1-win64.zip
+        -DistZip idf-git-2.34.2-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.34.2-win64.zip
 }
 
 function PrepareIdfPython {

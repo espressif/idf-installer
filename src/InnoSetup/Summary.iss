@@ -19,7 +19,7 @@ begin
 
   if (UseEmbeddedGit) then begin
     { app is know only in this section, it's not possible to set it in Page }
-    GitPath := ExpandConstant('{app}\tools\idf-git\2.34.1\cmd\');
+    GitPath := ExpandConstant('{app}\tools\idf-git\2.34.2\cmd\');
     GitExecutablePath := GitPath + 'git.exe';
 
     Result := Result + CustomMessage('UsingEmbeddedGit') + ' ' + GitVersion + ':' + NewLine
