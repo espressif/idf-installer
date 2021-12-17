@@ -23,6 +23,8 @@ jobs:
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: |
+          $Directory = (Get-Location).Path
+          $LogFile = Join-Path -Path $Directory -ChildPath out.txt
           Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
           $ProcessName = (Get-Item idpsetup.exe).Basename
           $InstallerProcess = Get-Process $ProcessName
@@ -36,14 +38,10 @@ jobs:
           # Wait for installer to finish
           while (!$InstallerProcess.HasExited) {
               Sleep 1
-              if ($null -ne $LogWatcher) {
-                Receive-Job $LogWatcher
-              }
+              Receive-Job $LogWatcher
           }
 
-          if ($null -ne $LogWatcher) {
-            Stop-Job $LogWatcher
-          }
+          Stop-Job $LogWatcher
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
