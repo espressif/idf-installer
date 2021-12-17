@@ -36,10 +36,14 @@ jobs:
           # Wait for installer to finish
           while (!$InstallerProcess.HasExited) {
               Sleep 1
-              Receive-Job $LogWatcher
+              if ($null -ne $LogWatcher) {
+                Receive-Job $LogWatcher
+              }
           }
 
-          Stop-Job $LogWatcher
+          if ($null -ne $LogWatcher) {
+            Stop-Job $LogWatcher
+          }
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
