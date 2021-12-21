@@ -56,6 +56,10 @@ begin
     Result := Result + 'Rust ';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TOIT_JAGUAR}')) then begin
+    Result := Result + 'Toit Jaguar ';
+  end;
+
   Result := Result + NewLine;
   Result := Result + CustomMessage('SummaryDrivers') + ': ';
 

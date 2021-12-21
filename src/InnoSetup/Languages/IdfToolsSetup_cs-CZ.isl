@@ -150,3 +150,5 @@ SummaryComponents=Komponenty
 SummaryDrivers=Ovladače
 SummaryTargets=Ciele
 SummaryOptimization=Optimilizace
+ComponentToitJaguar=Jazyk Toit - nástroj Jaguar (beta - jag.exe)
+InstallingToit=Instalace integrace s Toit

@@ -198,6 +198,7 @@ begin
     end;
 
     InstallRust();
+    InstallToit();
 
     if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}')) then
     begin

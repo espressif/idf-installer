@@ -151,3 +151,5 @@ SummaryComponents=Components
 SummaryDrivers=Drivers
 SummaryTargets=Targets
 SummaryOptimization=Optimization
+ComponentToitJaguar=Toit language - tool Jaguar (beta - jag.exe)
+InstallingToit=Installing Toit language

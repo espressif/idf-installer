@@ -78,6 +78,7 @@
 #define COMPONENT_ECLIPSE = 'ide/eclipse'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
 #define COMPONENT_RUST = 'ide/rust'
+#define COMPONENT_TOIT_JAGUAR = 'ide/toitjaguar'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
 #define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
 #define COMPONENT_POWERSHELL_DESKTOP = 'ide/powershell/desktop'
@@ -193,6 +194,7 @@ Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
 Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
+Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 Name: "{#COMPONENT_POWERSHELL}"; Description: {cm:ComponentPowerShell}; Types: full custom; Flags: checkablealone
 Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: {cm:ComponentPowerShellWindowsTerminal}; Types: full custom
 Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom minimal
