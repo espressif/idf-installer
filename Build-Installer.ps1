@@ -2,10 +2,12 @@
 param (
     [Parameter()]
     [String]
+    [ValidateSet('none', 'lzma')]
     $Compression = 'lzma',
     [String]
     $IdfPythonWheelsVersion = '3.8-2021-08-10',
     [String]
+    [ValidateSet('online', 'offline')]
     $InstallerType = 'online',
     [String]
     $Python = 'python',
@@ -14,7 +16,7 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.12'
+    $IdfEnvVersion = '1.2.18'
 )
 
 # Stop on error
@@ -105,10 +107,10 @@ function PrepareIdfEnv {
 }
 
 function PrepareIdfGit {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.30.1 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.34.2 `
         -FilePath cmd/git.exe `
-        -DistZip idf-git-2.30.1-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.30.1-win64.zip
+        -DistZip idf-git-2.34.2-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.34.2-win64.zip
 }
 
 function PrepareIdfPython {

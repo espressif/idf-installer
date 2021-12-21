@@ -19,7 +19,7 @@ begin
 
   if (UseEmbeddedGit) then begin
     { app is know only in this section, it's not possible to set it in Page }
-    GitPath := ExpandConstant('{app}\tools\idf-git\2.30.1\cmd\');
+    GitPath := ExpandConstant('{app}\tools\idf-git\2.34.2\cmd\');
     GitExecutablePath := GitPath + 'git.exe';
 
     Result := Result + CustomMessage('UsingEmbeddedGit') + ' ' + GitVersion + ':' + NewLine
@@ -42,6 +42,65 @@ begin
 
   Result := Result + CustomMessage('EspIdfToolsDirectory') + ' ' + NewLine +
             Space + ExpandConstant('{app}') + NewLine + NewLine;
+
+  Result := Result + CustomMessage('EspIdfToolsDirectory') + ' ' + NewLine +
+            Space + ExpandConstant('{app}') + NewLine + NewLine;
+
+  Result := Result + CustomMessage('SummaryComponents') + ': ';
+
+  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
+    Result := Result + 'Eclipse ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    Result := Result + 'Rust ';
+  end;
+
+  Result := Result + NewLine;
+  Result := Result + CustomMessage('SummaryDrivers') + ': ';
+
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_FTDI}')) then begin
+    Result := Result + 'FTDI ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_SILABS}')) then begin
+    Result := Result + 'Sillicon Labs ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_ESPRESSIF}')) then begin
+    Result := Result + 'Espressif ';
+  end;
+
+  Result := Result + NewLine;
+  Result := Result + CustomMessage('SummaryTargets') + ': ';
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32}')) then begin
+    Result := Result + 'ESP32 ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C3}')) then begin
+    Result := Result + 'ESP32-C3 ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S2}')) then begin
+    Result := Result + 'ESP32-S2 ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S3}')) then begin
+    Result := Result + 'ESP32-S3 ';
+  end;
+
+  Result := Result + NewLine;
+  Result := Result + CustomMessage('SummaryOptimization') + ': ';
+  if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}')) then begin
+    Result := Result + 'Assets (Espressif); ';
+  end;
+  if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}')) then begin
+    Result := Result + 'Mirror (Gitee.com); ';
+  end;
+  if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
+    Result := Result + 'Shallow (Git) ';
+  end;
 
   Log('Summary message: ' + NewLine + Result);
 end;

@@ -222,6 +222,17 @@ begin
   GitSwitchBranch(IDFPath, IDFDownloadVersion);
 end;
 
+procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
+var
+  Command: String;
+begin
+  Command := GetIdfEnvCommand('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '" --progress')
+  if (Length(GitDepth) > 0) then begin
+    Command := Command + ' --depth ' + GitDepth;
+  end;
+  DoCmdlineInstall(CustomMessage('UpdatingSubmodules'), CustomMessage('UpdatingSubmodules'), Command);
+end;
+
 procedure IDFDownloadInstall();
 var
   CmdLine: String;
@@ -258,7 +269,23 @@ begin
 
   if NeedToClone then
   begin
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}')) then begin
+        GitUseMirror := True;
+        IsGitRecursive := False;
+        GitRepository := 'https://gitee.com/EspressifSystems/esp-idf.git';
+        GitSubmoduleUrl := 'https://gitee.com/esp-submodules/';
+    end;
+
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
+      GitDepth := '1';
+    end;
+
+    if (Length(GitDepth) > 0) then begin
+      CmdLine := CmdLine + ' --depth ' + GitDepth + ' --shallow-submodules ';
+    end;
 
     if (IsGitRecursive) then begin
       CmdLine := CmdLine + ' --recursive ';
@@ -273,6 +300,10 @@ begin
 
     if IDFTempPath <> '' then
       GitRepoDissociate(IDFPath);
+
+    if (GitUseMirror) then begin
+      ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);
+    end;
 
   end else begin
 

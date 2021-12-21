@@ -404,43 +404,42 @@ begin
   SystemCheckStopRequest();
 end;
 
+{ Check certificate for the specific site }
+function VerifySiteCertificate(Url: String):Boolean;
+var
+  Command: String;
+  ResultCode: Integer;
+begin
+  SystemLogTitle(Url + ' ');
+  Command := GetIdfEnvCommand('certificate verify --url ' + Url);
+  ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
+
+  if (ResultCode <> 0) then begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
+    SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
+    Result := False;
+  end else begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultOk') + ']');
+    Result := True;
+  end;
+end;
+
 { Check whether site is reachable and that system trust the certificate. }
 procedure VerifyRootCertificates();
-var
-  ResultCode: Integer;
-  Command: String;
 begin
-  SystemLogTitle(CustomMessage('SystemCheckRootCertificates') + ' ');
+  SystemLogTitle(CustomMessage('SystemCheckRootCertificates'));
 
   { It's necessary to invoke reuqest to https server *BEFORE* Python. idf-env will retrieve and add Root Certificate if necessary. }
   { Without the certificate Python is failing to connect to https. }
   { Windows command to list current certificates: certlm.msc }
 
-  Command := GetIdfEnvCommand('certificate verify --url https://dl.espressif.com/dl/?system_check=win' + GetWindowsVersionString);
-  ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
-  if (ResultCode <> 0) then begin
-    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
-    SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
-    Exit;
+  IsEspressifSiteReachable := VerifySiteCertificate('https://dl.espressif.com/dl/esp-idf');
+  IsGithubSiteReachable := VerifySiteCertificate('https://github.com/espressif/esp-idf');
+  if not IsGithubSiteReachable then begin
+    SystemLog(' ' + CustomMessage('SystemCheckAlternativeMirror') + ' Gitee.com');
+    IsGiteeSiteReachable := VerifySiteCertificate('https://gitee.com/EspressifSystems/esp-idf');
   end;
-
-  Command := GetIdfEnvCommand('certificate verify --url https://github.com/espressif');
-  ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
-    if (ResultCode <> 0) then begin
-    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
-    SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
-    Exit;
-  end;
-
-  Command := GetIdfEnvCommand('certificate verify --url https://www.s3.amazonaws.com/');
-  ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
-
-  if (ResultCode <> 0) then begin
-    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
-    SystemLog(CustomMessage('SystemCheckRootCertificateWarning'));
-  end else begin
-    SystemLog(' [' + CustomMessage('SystemCheckResultOk') + ']');
-  end;
+  IsAmazonS3SiteReachable := VerifySiteCertificate('https://www.s3.amazonaws.com/');
 end;
 
 { Check whether long path is enabled in Windows. }

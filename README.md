@@ -28,9 +28,12 @@ Windows Installer `esp-idf-tools-setup` provides the following command-line para
 
 * ``/CONFIG=[PATH]`` - Path to ``ini`` configuration file to override default configuration of the installer. Default: ``config.ini``.
 * ``/GITCLEAN=[yes|no]`` - Perform git clean and remove untracked directories in Offline mode installation. Default: yes.
+* ``/GITDEPTH=[number]`` - Clone repository in shallow mode E.g. 1. Default: empty.
 * ``/GITRECURSIVE=[yes|no]`` - Clone recursively all git repository submodules. Default: yes
 * ``/GITREPO=[URL|PATH]`` - URL of repository to clone ESP-IDF. Default: https://github.com/espressif/esp-idf.git
 * ``/GITRESET=[yes|no]`` - Enable/Disable git reset of repository during installation. Default: yes.
+* ``/GITSUBMODULEURL=[URL]`` - Update URL in submodules after cloning to custom URL. Default: ''.
+* ``/GITUSEMIRROR=[yes|no]`` - Use Git mirror for cloning. Clone non-recursive and update URL of submodules. Default: no.
 * ``/HELP`` - Display command line options provided by Inno Setup installer.
 * ``/IDFDIR=[PATH]`` - Path to directory where it will be installed. Default: ``{userdesktop}\esp-idf}``
 * ``/IDFUSEEXISTING=[yes|no]`` - Indicates whether installer should be initialized in update mode of existing IDF. Default: no.

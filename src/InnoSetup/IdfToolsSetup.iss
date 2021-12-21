@@ -16,11 +16,7 @@
 #define PythonInstallerDownloadURL "https://dl.espressif.com/dl/idf-python/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.30.1"
-#endif
-; The URL where git is stored is not equal to it's version. Minor build has prefixes with windows
-#ifndef GITVERSIONDIR
-  #define GITVERSIONDIR "v2.30.0.windows.2"
+  #define GITVERSION "2.34.2"
 #endif
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
@@ -101,6 +97,8 @@
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
+#define COMPONENT_OPTIMIZATION_GITEE_MIRROR = 'optimization/gitee_mirror'
+#define COMPONENT_OPTIMIZATION_GIT_SHALLOW = 'optimization/git_shallow'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -192,8 +190,8 @@ Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 
 [Components]
 Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
-Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
+Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_POWERSHELL}"; Description: {cm:ComponentPowerShell}; Types: full custom; Flags: checkablealone
 Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: {cm:ComponentPowerShellWindowsTerminal}; Types: full custom
@@ -214,6 +212,8 @@ Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; 
 Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Types: custom;
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}"; Description: {cm:ComponentOptimizationGiteeMirror}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}"; Description: {cm:ComponentOptimizationGitShallow}; Types: full custom; Flags: checkablealone
 ;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
 ;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
 ;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
