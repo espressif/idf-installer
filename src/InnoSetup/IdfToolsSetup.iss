@@ -33,8 +33,8 @@
 #define IDFCmdExeShortcutDescription "Open ESP-IDF CMD Environment"
 #define IDFPsShortcutDescription "Open ESP-IDF PowerShell Environment"
 
-#define IDFEclipseShortcutDescription "Open ESP-IDF Eclipse IDE"
-#define IDFEclipseShortcutFile "ESP-IDF Eclipse.lnk"
+#define IDFEclipseShortcutDescription "Open Espressif-IDE"
+#define IDFEclipseShortcutFile "Espressif-IDE.lnk"
 
 ; List of default values
 ;  Default values can be set by command-line option when startig installer
@@ -169,7 +169,7 @@ Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 ;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
-Source: "{#BUILD}\tools\idf-eclipse\*"; DestDir: "\\?\{app}\tools\idf-eclipse"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\Espressif-IDE\*"; DestDir: "\\?\{app}\Espressif-IDE"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer

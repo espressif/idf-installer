@@ -182,22 +182,6 @@ end;
 
 
 {
-  Switch to different branch. Used in offline installation.
-}
-procedure GitSwitchBranch(Path: String; BranchName: String);
-var
-  CmdLine: String;
-begin
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' checkout ' + BranchName;
-  Log('Updating submodules: ' + CmdLine);
-  DoCmdlineInstall(CustomMessage('SwitchBranch'), CustomMessage('SwitchBranch'), CmdLine);
-
-  GitUpdateSubmodules(Path);
-  GitResetHard(Path);
-  GitCleanForceDirectory(Path);
-end;
-
-{
   There are 3 possible ways how an ESP-IDF copy can be obtained:
   - Download the .zip archive with submodules included, extract to destination directory,
     then do 'git reset --hard' and 'git submodule foreach git reset --hard' to correct for
@@ -218,8 +202,6 @@ begin
 
   IDFTempPath := ExpandConstant('{app}\releases\esp-idf-bundle');
   Log('IDFTempPath - location of bundle: ' + IDFTempPath);
-
-  GitSwitchBranch(IDFPath, IDFDownloadVersion);
 end;
 
 procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
