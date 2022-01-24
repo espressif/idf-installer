@@ -155,6 +155,14 @@ begin
   end;
 end;
 
+procedure InstallToit();
+begin
+  if (WizardIsComponentSelected('{#COMPONENT_TOIT_JAGUAR}')) then begin
+    DoCmdlineInstall(CustomMessage('InstallingToit'), CustomMessage('InstallingToit'), GetIdfEnvCommand('toit reinstall --jaguar'));
+  end;
+end;
+
+
 <event('NextButtonClick')>
 function PreInstallSteps(CurPageID: Integer): Boolean;
 var
