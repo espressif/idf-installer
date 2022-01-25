@@ -152,3 +152,4 @@ SummaryTargets=Targets
 SummaryOptimization=Optimization
 ComponentToitJaguar=Toit language support - Jaguar live reloading tool (beta - jag.exe)
 InstallingToit=Installing Toit language
+ComponentJdk=Amazon Corretto 11 JDK

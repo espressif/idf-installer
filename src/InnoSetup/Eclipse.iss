@@ -4,7 +4,7 @@
 
 function GetEclipsePath(FileName:String): String;
 begin
-  Result := ExpandConstant('{app}\Espressif-IDE\') + FileName;
+  Result := ExpandConstant('{app}\tools\espressif-ide\{#ECLIPSE_VERSION}\') + FileName;
 end;
 
 function GetEclipseExePath():String;

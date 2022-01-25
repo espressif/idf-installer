@@ -21,9 +21,9 @@
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
-#define ECLIPSE_VERSION "2021-09"
-#define ECLIPSE_INSTALLER "idf-eclipse-" + ECLIPSE_VERSION + "-win64.zip"
-#define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse/" + ECLIPSE_INSTALLER
+#define ECLIPSE_VERSION "2.4.0"
+#define ECLIPSE_INSTALLER "Espressif-IDE-" + ECLIPSE_VERSION + "-win32.win32.x86_64.zip"
+#define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/" + ECLIPSE_INSTALLER
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
@@ -73,9 +73,11 @@
 #define EXT = '..\..\ext'
 #define BUILD = '..\..\build\' + INSTALLERBUILDTYPE
 
+#define COMPONENT_FRAMEWORK_ESP_IDF_V432 = "framework/esp_idf_v432"
 #define COMPONENT_TOOLS = 'tools'
 #define COMPONENT_TOOLS_GIT = 'tools/git'
 #define COMPONENT_ECLIPSE = 'ide/eclipse'
+#define COMPONENT_ECLIPSE_JDK = 'ide/eclipse/jdk'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
 #define COMPONENT_RUST = 'ide/rust'
 #define COMPONENT_TOIT_JAGUAR = 'ide/toitjaguar'
@@ -113,7 +115,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={%USERPROFILE}\.espressif
+DefaultDirName={sd}\Espressif
 UsePreviousAppDir=no
 DirExistsWarning=no
 DefaultGroupName=ESP-IDF
@@ -168,12 +170,14 @@ Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json"
 Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
-;Source: "..\Resources\IdfSelector\*"; Flags: dontcopy
-Source: "{#BUILD}\Espressif-IDE\*"; DestDir: "\\?\{app}\Espressif-IDE"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\amazon-corretto-11-x64-windows-jdk\*"; DestDir: "\\?\{app}\tools\amazon-corretto-11-x64-windows-jdk"; Components: "{#COMPONENT_ECLIPSE_JDK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\espressif-ide\*"; DestDir: "\\?\{app}\tools\espressif-ide"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
-Source: "{#BUILD}\releases\esp-idf-bundle\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
+;Source: "{#BUILD}\frameworks\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
+
 
 Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
@@ -190,9 +194,12 @@ Name: "minimal"; Description: {cm:InstallationMinimal}
 Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 
 [Components]
+Name: "framework"; Description: "Frameworks"; Types: full custom; Flags: checkablealone
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Description: "ESP-IDF v4.3.2"; Types: full custom; Flags: checkablealone
 Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
 Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
+Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 Name: "{#COMPONENT_POWERSHELL}"; Description: {cm:ComponentPowerShell}; Types: full custom; Flags: checkablealone

@@ -100,6 +100,13 @@ end;
 
 function GetIDFPath(FileName: String): String;
 begin
+  Result := ExpandConstant('{app}\frameworks\esp-idf-v4.3.2');
+end;
+
+function GetIDFPathOld(FileName: String): String;
+begin
+  Result := ExpandConstant('{app}\frameworks\esp-idf-v4.3.2');
+
   if IDFUseExisting then begin
     Result := IDFExistingPath;
   end else begin
@@ -110,6 +117,7 @@ begin
   end;
   Result := Result + FileName;
 end;
+
 
 function GetPathWithForwardSlashes(Path: String): String;
 var

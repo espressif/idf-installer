@@ -57,7 +57,9 @@ function PrepareIdfPackage {
         [String]
         $DownloadUrl,
         [String]
-        $DistZip
+        $DistZip,
+        [String]
+        $StripDirectory
     )
     $FullFilePath = Join-Path -Path $BasePath -ChildPath $FilePath
     if (Test-Path -Path $FullFilePath -PathType Leaf) {
@@ -74,7 +76,15 @@ function PrepareIdfPackage {
         "Downloading $FullDistZipPath"
         Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
     }
-    Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
+
+    if ("" -ne $StripDirectory) {
+        $TempBasePath="${BasePath}-tmp"
+        Expand-Archive -Path $FullDistZipPath -DestinationPath $TempBasePath
+        Move-Item -Path "${TempBasePath}/${StripDirectory}/*" $BasePath
+        Remove-Item -Path $TempBasePath
+    } else {
+        Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
+    }
     Remove-Item -Path $FullDistZipPath
 }
 
@@ -140,11 +150,16 @@ function PrepareIdfPythonWheels {
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\ `
-        -FilePath Espressif-IDE\espressif-ide.exe `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\amazon-corretto-11-x64-windows-jdk\ `
+        -FilePath jdk11.0.14_9\bin\java.exe `
+        -DistZip amazon-corretto-11-x64-windows-jdk.zip `
+        -DownloadUrl https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip
+
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\espressif-ide\2.4.0 `
+        -FilePath espressif-ide.exe `
         -DistZip Espressif-IDE-2.4.0-win32.win32.x86_64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-2.4.0-win32.win32.x86_64.zip
-    Remove-Item -Path  build\$InstallerType\META-INF -Recurse -Force
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-2.4.0-win32.win32.x86_64.zip `
+        -StripDirectory Espressif-IDE
 }
 
 function PrepareIdfDriver {
@@ -152,7 +167,7 @@ function PrepareIdfDriver {
 }
 
 function PrepareOfflineBranches {
-    $BundleDir="build\$InstallerType\releases\esp-idf-bundle"
+    $BundleDir="build\$InstallerType\frameworks\esp-idf-${OfflineBranch}"
 
     if ( Test-Path -Path $BundleDir -PathType Container ) {
         git -C "$BundleDir" fetch

@@ -232,6 +232,10 @@ begin
       SaveIdfEclipseConfiguration(GetEclipsePath('esp_idf.json'));
     end;
 
+    if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
+      AppendEnvironmentVariable('PATH', ';', ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\'));
+    end;
+
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin
       CreateIDFEclipseShortcut('{autodesktop}');
     end;

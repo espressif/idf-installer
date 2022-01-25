@@ -11,7 +11,11 @@ var
 
 function IDFDownloadRequired(): Boolean;
 begin
-  Result := not IDFUseExisting;
+  if (IsOfflineMode) then begin
+    Result := false;
+  end else begin
+    Result := not IDFUseExisting;
+  end;
 end;
 
 procedure IDFPageUpdateInput();
