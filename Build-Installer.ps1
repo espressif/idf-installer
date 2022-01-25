@@ -81,7 +81,7 @@ function PrepareIdfPackage {
         $TempBasePath="${BasePath}-tmp"
         Expand-Archive -Path $FullDistZipPath -DestinationPath $TempBasePath
         Move-Item -Path "${TempBasePath}/${StripDirectory}/*" $BasePath
-        Remove-Item -Path $TempBasePath
+        Remove-Item -Path $TempBasePath -Recurse
     } else {
         Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
     }
