@@ -202,7 +202,7 @@ function PrepareOfflineBranches {
         Exit 1
     }
 
-    &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive download --platform Windows-x86_64 all
+    &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive install
     Pop-Location
 
     # Remove symlinks which are not supported on Windws, unfortunatelly -c core.symlinks=false does not work
@@ -303,6 +303,9 @@ PrepareIdfEnv
 
 if ('offline' -eq $InstallerType) {
     $IsccParameters += '/DOFFLINE=yes'
+    if ($Compression -eq 'none') {
+        $IsccParameters += '/DDISKSPANNING=yes'
+    }
 
     if (-Not(Test-Path build/$InstallerType/tools -PathType Container)) {
         New-Item build/$InstallerType/tools -Type Directory

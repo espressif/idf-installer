@@ -4,7 +4,13 @@
 #pragma include __INCLUDE__ + ";" + ReadReg(HKLM, "Software\Mitrich Software\Inno Download Plugin", "InstallDir")
 #include <idp.iss>
 
+; Following languages are supported only in online version
+#ifndef OFFLINE
 #define MyAppName "ESP-IDF Tools"
+#else
+#define MyAppName "ESP-IDF Tools (Offline)"
+#endif
+
 #define MyAppVersion "2.13"
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
@@ -133,6 +139,11 @@ WizardStyle=modern
 ShowLanguageDialog=yes
 OutputDir=..\..\build\
 
+; Testing build with larger disk size requires DiskSpanning - e.g. Offline without compression
+#ifdef DISKSPANNING
+DiskSpanning=yes
+#endif
+
 ; https://jrsoftware.org/ishelp/index.php?topic=setup_touchdate
 ; Default values are set to 'no' which might result in files that are installed on the machine
 ; in the 'future'. This creates a problem for Ninja/CMake which may end up in a neverending loop.
@@ -169,24 +180,38 @@ Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallbac
 Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json" ;Flags: skipifsourcedoesntexist
 Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
-Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
+;Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
+
 Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+
 Source: "{#BUILD}\tools\amazon-corretto-11-x64-windows-jdk\*"; DestDir: "\\?\{app}\tools\amazon-corretto-11-x64-windows-jdk"; Components: "{#COMPONENT_ECLIPSE_JDK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\ccache\*"; DestDir: "\\?\{app}\tools\ccache";  Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\cmake\*"; DestDir: "\\?\{app}\tools\cmake"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\dfu-util\*"; DestDir: "\\?\{app}\tools\dfu-util"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\esp32s2ulp-elf\*"; DestDir: "\\?\{app}\tools\esp32s2ulp-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\esp32ulp-elf\*"; DestDir: "\\?\{app}\tools\esp32ulp-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\espressif-ide\*"; DestDir: "\\?\{app}\tools\espressif-ide"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-exe\*"; DestDir: "\\?\{app}\tools\idf-exe"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\ninja\*"; DestDir: "\\?\{app}\tools\ninja"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\openocd-esp32\*"; DestDir: "\\?\{app}\tools\openocd-esp32"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\xtensa-esp32-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s2-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\xtensa-esp32s3-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s3-elf"; Components: "{#COMPONENT_TARGET_ESP32_S3}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 ;Source: "{#BUILD}\frameworks\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 
-Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Flags: recursesubdirs skipifsourcedoesntexist;
 ; Helper Python files for sanity check of Python environment - used by system_check_page
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
 
-Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 [Types]
 Name: "full"; Description: {cm:InstallationFull}
@@ -200,8 +225,13 @@ Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
 Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
 Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
+
+; Following languages are supported only in online version
+#ifndef OFFLINE
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
+#endif
+
 Name: "{#COMPONENT_POWERSHELL}"; Description: {cm:ComponentPowerShell}; Types: full custom; Flags: checkablealone
 Name: "{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}"; Description: {cm:ComponentPowerShellWindowsTerminal}; Types: full custom
 Name: "{#COMPONENT_POWERSHELL_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom minimal
@@ -219,23 +249,14 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
+
+; Following optimization are supported only in online version
+#ifndef OFFLINE
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Types: custom;
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}"; Description: {cm:ComponentOptimizationGiteeMirror}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}"; Description: {cm:ComponentOptimizationGitShallow}; Types: full custom; Flags: checkablealone
-;Name: "{#COMPONENT_TOOLS}"; Description: "Tools"; Types: full custom; Flags: fixed;
-;Name: "{#COMPONENT_TOOLS_GIT}"; Description: "Git"; Types: full custom;
-;Name: "optimization\windowsdefender"; Description: "Register Windows Defender exceptions"; Types: full
-
-
-;Name: "idf"; Description: "ESP-IDF"; Types: full
-;Name: "idf\tools"; Description: "Chip"; Types: full
-;Name: "idf\tools\chip_esp32"; Description: "ESP32"; Types: full
-;Name: "idf\tools\chip_esp32\esp_idf_v4_2"; Description: "ESP-IDF v4.2"; Types: full
-;Name: "idf\tools\chip_esp32\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
-;Name: "idf\tools\chip_esp8266"; Description: "ESP32"; Types: full
-;Name: "idf\tools\chip_esp8266\esp_idf_v3_3_4"; Description: "ESP-IDF v3.3.4"; Types: full
-;Name: "idf\tools\chip_esp8266\esp_idf_v4_1"; Description: "ESP-IDF v4.1"; Types: full
+#endif
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\dist"
