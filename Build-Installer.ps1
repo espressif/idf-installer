@@ -7,7 +7,7 @@ param (
     [String]
     $IdfPythonWheelsVersion = '3.8-2021-08-10',
     [String]
-    [ValidateSet('online', 'offline')]
+    [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
     $OfflineBranch = 'v4.3.2',
@@ -284,6 +284,7 @@ function CheckInnoSetupInstallation {
 CheckInnoSetupInstallation
 $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
 $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
+
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
 $Versions = Join-Path -Path $IdfToolsPath -ChildPath '/idf_versions.txt'
 $env:IDF_TOOLS_PATH=$IdfToolsPath
@@ -301,7 +302,7 @@ PrepareIdfCmdlinerunner
 PrepareIdf7za
 PrepareIdfEnv
 
-if ('offline' -eq $InstallerType) {
+if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
     if ($Compression -eq 'none') {
         $IsccParameters += '/DDISKSPANNING=yes'
@@ -319,11 +320,15 @@ if ('offline' -eq $InstallerType) {
     PrepareIdfGit
     PrepareIdfPython
     PrepareIdfPythonWheels
-    PrepareIdfEclipse
+    if ('espressif-ide' -eq $InstallerType) {
+        $IsccParameters += '/DESPRESSIFIDE=yes'
+        PrepareIdfEclipse
+    }
     "${OfflineBranch}" > $Versions
     PrepareOfflineBranches
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
+    $IsccParameters += '/DESPRESSIFIDE=yes'
     $IsccParameters += '/DOFFLINE=no'
 } else {
     $IsccParameters += '/DOFFLINE=no'
