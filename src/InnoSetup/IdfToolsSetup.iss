@@ -182,7 +182,8 @@ Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 ;Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 
-Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
+Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
 
 Source: "{#BUILD}\tools\amazon-corretto-11-x64-windows-jdk\*"; DestDir: "\\?\{app}\tools\amazon-corretto-11-x64-windows-jdk"; Components: "{#COMPONENT_ECLIPSE_JDK}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\ccache\*"; DestDir: "\\?\{app}\tools\ccache";  Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;

@@ -202,6 +202,7 @@ begin
   if (Pos('main', IDFDownloadVersion) > 0) or (Pos('master', IDFDownloadVersion) > 0) or IDFUseExisting then begin
     Result := GetIDFVersionFromHeaderFile();
   end else begin
+    IDFDownloadVersion:='4.3';
     Result := GetShortVersion(IDFDownloadVersion);
   end;
 end;
