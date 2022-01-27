@@ -363,10 +363,11 @@ var
   TargetSupportTestCommand: String;
 begin
   IDFPath := GetIDFPath('');
-  IDFToolsPyPath := IDFPath + '\tools\idf_tools.py';
+  IDFToolsPyPath := GetIDFPath('\tools\idf_tools.py');
   BundledIDFToolsPyPath := ExpandConstant('{app}\idf_tools_fallback.py');
   JSONArg := '';
 
+  Log('Checking whether file exists ' + IDFToolsPyPath);
   if FileExists(IDFToolsPyPath) then
   begin
     Log('idf_tools.py exists in IDF directory');
@@ -387,7 +388,7 @@ begin
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
   { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + JSONArg;
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + ' ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 
