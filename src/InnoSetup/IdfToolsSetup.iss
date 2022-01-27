@@ -89,7 +89,6 @@
 #define COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2 = "framework/esp_idf_v4_3_2"
 #define COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2 = "framework/esp_idf_v4_2_2"
 #define COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2 = "framework/esp_idf_v4_1_2"
-#define COMPONENT_FRAMEWORK_ESP_IDF_V3_3_6 = "framework/esp_idf_v3_3_6"
 
 #define COMPONENT_TOOLS = 'tools'
 #define COMPONENT_TOOLS_GIT = 'tools/git'
@@ -212,10 +211,6 @@ Source: "{#BUILD}\frameworks\esp-idf-v4.2.2\*"; DestDir: "\\?\{app}\frameworks\e
 Source: "{#BUILD}\frameworks\esp-idf-v4.1.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.1.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
 #endif
 
-#ifdef FRAMEWORK_ESP_IDF_V3_3_6
-Source: "{#BUILD}\frameworks\esp-idf-v3.3.6\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v3.3.6"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V3_3_6}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
-#endif
-
 #ifdef ESPRESSIFIDE
 Source: "{#BUILD}\tools\amazon-corretto-11-x64-windows-jdk\*"; DestDir: "\\?\{app}\tools\amazon-corretto-11-x64-windows-jdk"; Components: "{#COMPONENT_ECLIPSE_JDK}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\espressif-ide\*"; DestDir: "\\?\{app}\tools\espressif-ide"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
@@ -238,10 +233,8 @@ Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-
 
 #ifndef FRAMEWORK_ESP_IDF_V4_2_2
 #ifndef FRAMEWORK_ESP_IDF_V4_1_2
-#ifndef FRAMEWORK_ESP_IDF_V3_3_6
 Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\xtensa-esp32s3-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s3-elf"; Components: "{#COMPONENT_TARGET_ESP32_S3}"; Flags: recursesubdirs skipifsourcedoesntexist;
-#endif
 #endif
 #endif
 
@@ -279,10 +272,6 @@ Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2}"; Description: "ESP-IDF v4.2.2"; Ty
 Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2}"; Description: "ESP-IDF v4.1.2"; Types: full custom; Flags: checkablealone
 #endif
 
-#ifdef FRAMEWORK_ESP_IDF_V3_3_6
-Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V3_3_6}"; Description: "ESP-IDF v3.3.6"; Types: full custom; Flags: checkablealone
-#endif
-
 Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
 
 #ifdef ESPRESSIFIDE
@@ -313,9 +302,7 @@ Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types
 
 #ifndef FRAMEWORK_ESP_IDF_V4_2_2
 #ifndef FRAMEWORK_ESP_IDF_V4_1_2
-#ifndef FRAMEWORK_ESP_IDF_V3_3_6
 Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; Types: full; Flags: checkablealone
-#endif
 #endif
 #endif
 
@@ -324,9 +311,7 @@ Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; 
 
 #ifndef FRAMEWORK_ESP_IDF_V4_2_2
 #ifndef FRAMEWORK_ESP_IDF_V4_1_2
-#ifndef FRAMEWORK_ESP_IDF_V3_3_6
 Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
-#endif
 #endif
 #endif
 

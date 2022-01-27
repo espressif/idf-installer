@@ -166,6 +166,14 @@ begin
       exit;
     end;
 
+    if (IsOfflineMode) then begin
+      IDFDownloadVersion := '{#OFFLINEBRANCH}';
+      IDFDownloadPath := ExpandConstant('{app}\frameworks\esp-idf-v' + IDFDownloadVersion);
+      Log('Offline mode active');
+      Log('IDFDownloadVersion: ' + IDFDownloadVersion);
+      Log('IDFDownloadPath: ' + IDFDownloadPath);
+    end;
+
     IDFDir := GetIDFPath('');
     Log('Checking location of ToolsDir ' + ToolsDir + ' is not a subdirectory of ' + IDFDir);
     if Pos(IDFDir, ToolsDir) = 1 then

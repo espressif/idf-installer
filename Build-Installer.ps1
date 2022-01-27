@@ -305,6 +305,7 @@ PrepareIdfEnv
 if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
     $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
+    $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch.Replace('v', '')
     $IsccParameters += '/DFRAMEWORK_ESP_IDF_' + $OfflineBranch.Replace('v','V').Replace('.','_')
     if ($Compression -eq 'none') {
         $IsccParameters += '/DDISKSPANNING=yes'

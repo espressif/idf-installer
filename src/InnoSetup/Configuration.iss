@@ -97,14 +97,7 @@ begin
     Result := not IsOfflineMode;
 end;
 
-
 function GetIDFPath(FileName: String): String;
-begin
-  IDFDownloadVersion:='4.3.2';
-  Result := ExpandConstant('{app}\frameworks\esp-idf-v' + IDFDownloadVersion);
-end;
-
-function GetIDFPathOld(FileName: String): String;
 begin
   if IDFUseExisting then begin
     Result := IDFExistingPath;

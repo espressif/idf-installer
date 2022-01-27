@@ -190,9 +190,7 @@ begin
     AddPythonGitToPath();
 
     if not IDFUseExisting then begin
-      if (IsOfflineMode) then begin
-        IDFOfflineInstall();
-      end else begin
+      if not (IsOfflineMode) then begin
         IDFDownloadInstall();
       end;
     end;

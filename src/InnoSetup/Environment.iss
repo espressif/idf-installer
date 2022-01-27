@@ -193,17 +193,6 @@ end;
     as a '--reference'. This is done for other versions (such as release branches).
 }
 
-procedure IDFOfflineInstall();
-var
-  IDFTempPath: String;
-  IDFPath: String;
-begin
-  IDFPath := IDFDownloadPath;
-
-  IDFTempPath := ExpandConstant('{app}\releases\esp-idf-bundle');
-  Log('IDFTempPath - location of bundle: ' + IDFTempPath);
-end;
-
 procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
 var
   Command: String;

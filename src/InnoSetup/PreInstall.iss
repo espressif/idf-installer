@@ -210,14 +210,6 @@ begin
   ForceDirectories(ExpandConstant('{app}\dist'));
 
   PrepareEmbeddedPython();
-
-  if (IsOfflineMode) then begin
-    ForceDirectories(ExpandConstant('{app}\releases'));
-    IDFZIPFileVersion := IDFDownloadVersion;
-    IDFZIPFileName := ExpandConstant('{app}\releases\esp-idf-bundle.zip');
-    Exit;
-  end;
-
   PrepareEmbeddedGit();
   PrepareEclipse();
 
