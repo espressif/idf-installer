@@ -100,13 +100,12 @@ end;
 
 function GetIDFPath(FileName: String): String;
 begin
-  Result := ExpandConstant('{app}\frameworks\esp-idf-v4.3.2');
+  IDFDownloadVersion:='4.3.2';
+  Result := ExpandConstant('{app}\frameworks\esp-idf-v' + IDFDownloadVersion);
 end;
 
 function GetIDFPathOld(FileName: String): String;
 begin
-  Result := ExpandConstant('{app}\frameworks\esp-idf-v4.3.2');
-
   if IDFUseExisting then begin
     Result := IDFExistingPath;
   end else begin
@@ -202,7 +201,6 @@ begin
   if (Pos('main', IDFDownloadVersion) > 0) or (Pos('master', IDFDownloadVersion) > 0) or IDFUseExisting then begin
     Result := GetIDFVersionFromHeaderFile();
   end else begin
-    IDFDownloadVersion:='4.3';
     Result := GetShortVersion(IDFDownloadVersion);
   end;
 end;

@@ -304,6 +304,8 @@ PrepareIdfEnv
 
 if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
+    $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
+    $IsccParameters += '/DFRAMEWORK_ESP_IDF_' + $OfflineBranch.Replace('v','V').Replace('.','_')
     if ($Compression -eq 'none') {
         $IsccParameters += '/DDISKSPANNING=yes'
     }
@@ -322,7 +324,10 @@ if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
     PrepareIdfPythonWheels
     if ('espressif-ide' -eq $InstallerType) {
         $IsccParameters += '/DESPRESSIFIDE=yes'
+        $IsccParameters += '/DAPPNAME=Espressif-IDE'
         PrepareIdfEclipse
+    } else {
+        $IsccParameters += '/DAPPNAME=ESP-IDF Tools Offline'
     }
     "${OfflineBranch}" > $Versions
     PrepareOfflineBranches

@@ -5,13 +5,18 @@
 #include <idp.iss>
 
 ; Following languages are supported only in online version
-#ifndef OFFLINE
+#ifndef APPNAME
 #define MyAppName "ESP-IDF Tools"
 #else
-#define MyAppName "ESP-IDF Tools (Offline)"
+#define MyAppName APPNAME
 #endif
 
+#ifdef VERSION
+#define MyAppVersion VERSION
+#else
 #define MyAppVersion "2.13"
+#endif
+
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
@@ -79,9 +84,16 @@
 #define EXT = '..\..\ext'
 #define BUILD = '..\..\build\' + INSTALLERBUILDTYPE
 
-#define COMPONENT_FRAMEWORK_ESP_IDF_V432 = "framework/esp_idf_v432"
+#define COMPONENT_FRAMEWORK "framework"
+#define COMPONENT_FRAMEWORK_ESP_IDF_V4_4 = "framework/esp_idf_v4_4"
+#define COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2 = "framework/esp_idf_v4_3_2"
+#define COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2 = "framework/esp_idf_v4_2_2"
+#define COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2 = "framework/esp_idf_v4_1_2"
+#define COMPONENT_FRAMEWORK_ESP_IDF_V3_3_6 = "framework/esp_idf_v3_3_6"
+
 #define COMPONENT_TOOLS = 'tools'
 #define COMPONENT_TOOLS_GIT = 'tools/git'
+#define COMPONENT_IDE = 'ide'
 #define COMPONENT_ECLIPSE = 'ide/eclipse'
 #define COMPONENT_ECLIPSE_JDK = 'ide/eclipse/jdk'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
@@ -138,6 +150,7 @@ ChangesEnvironment=yes
 WizardStyle=modern
 ShowLanguageDialog=yes
 OutputDir=..\..\build\
+SetupIconFile=..\Resources\espressif.ico
 
 ; Testing build with larger disk size requires DiskSpanning - e.g. Offline without compression
 #ifdef DISKSPANNING
@@ -183,26 +196,54 @@ Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 ;Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 
 ; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
-Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#ifdef FRAMEWORK_ESP_IDF_V4_4
+Source: "{#BUILD}\frameworks\esp-idf-v4.4\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.4"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_4}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#endif
 
+#ifdef FRAMEWORK_ESP_IDF_V4_3_2
+Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V4_2_2
+Source: "{#BUILD}\frameworks\esp-idf-v4.2.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.2.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V4_1_2
+Source: "{#BUILD}\frameworks\esp-idf-v4.1.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.1.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V3_3_6
+Source: "{#BUILD}\frameworks\esp-idf-v3.3.6\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v3.3.6"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V3_3_6}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#endif
+
+#ifdef ESPRESSIFIDE
 Source: "{#BUILD}\tools\amazon-corretto-11-x64-windows-jdk\*"; DestDir: "\\?\{app}\tools\amazon-corretto-11-x64-windows-jdk"; Components: "{#COMPONENT_ECLIPSE_JDK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\ccache\*"; DestDir: "\\?\{app}\tools\ccache";  Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\cmake\*"; DestDir: "\\?\{app}\tools\cmake"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\dfu-util\*"; DestDir: "\\?\{app}\tools\dfu-util"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\espressif-ide\*"; DestDir: "\\?\{app}\tools\espressif-ide"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
+#endif
+
+Source: "{#BUILD}\tools\ccache\*"; DestDir: "\\?\{app}\tools\ccache";  Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\cmake\*"; DestDir: "\\?\{app}\tools\cmake"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\dfu-util\*"; DestDir: "\\?\{app}\tools\dfu-util"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\esp32s2ulp-elf\*"; DestDir: "\\?\{app}\tools\esp32s2ulp-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\esp32ulp-elf\*"; DestDir: "\\?\{app}\tools\esp32ulp-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\espressif-ide\*"; DestDir: "\\?\{app}\tools\espressif-ide"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-exe\*"; DestDir: "\\?\{app}\tools\idf-exe"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\ninja\*"; DestDir: "\\?\{app}\tools\ninja"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\openocd-esp32\*"; DestDir: "\\?\{app}\tools\openocd-esp32"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-exe\*"; DestDir: "\\?\{app}\tools\idf-exe"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\ninja\*"; DestDir: "\\?\{app}\tools\ninja"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\openocd-esp32\*"; DestDir: "\\?\{app}\tools\openocd-esp32"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\xtensa-esp32-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s2-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
+
+#ifndef FRAMEWORK_ESP_IDF_V4_2_2
+#ifndef FRAMEWORK_ESP_IDF_V4_1_2
+#ifndef FRAMEWORK_ESP_IDF_V3_3_6
+Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\xtensa-esp32s3-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s3-elf"; Components: "{#COMPONENT_TARGET_ESP32_S3}"; Flags: recursesubdirs skipifsourcedoesntexist;
+#endif
+#endif
+#endif
 
 ; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
 ;Source: "{#BUILD}\frameworks\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
@@ -220,12 +261,35 @@ Name: "minimal"; Description: {cm:InstallationMinimal}
 Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 
 [Components]
-Name: "framework"; Description: "Frameworks"; Types: full custom; Flags: checkablealone
-Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V432}"; Description: "ESP-IDF v4.3.2"; Types: full custom; Flags: checkablealone
-Name: "ide"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
+Name: "{#COMPONENT_FRAMEWORK}"; Description: "Frameworks"; Types: full custom; Flags: checkablealone
+
+#ifdef FRAMEWORK_ESP_IDF_V4_4
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_4}"; Description: "ESP-IDF v4.4"; Types: full custom; Flags: checkablealone
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V4_3_2
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2}"; Description: "ESP-IDF v4.3.2"; Types: full custom; Flags: checkablealone
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V4_2_2
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2}"; Description: "ESP-IDF v4.2.2"; Types: full custom; Flags: checkablealone
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V4_1_2
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2}"; Description: "ESP-IDF v4.1.2"; Types: full custom; Flags: checkablealone
+#endif
+
+#ifdef FRAMEWORK_ESP_IDF_V3_3_6
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V3_3_6}"; Description: "ESP-IDF v3.3.6"; Types: full custom; Flags: checkablealone
+#endif
+
+Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
+
+#ifdef ESPRESSIFIDE
 Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
 Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
+#endif
 
 ; Following languages are supported only in online version
 #ifndef OFFLINE
@@ -246,10 +310,26 @@ Name: "{#COMPONENT_DRIVER_FTDI}"; Description: {cm:ComponentDriverFtdi}; Types: 
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
+
+#ifndef FRAMEWORK_ESP_IDF_V4_2_2
+#ifndef FRAMEWORK_ESP_IDF_V4_1_2
+#ifndef FRAMEWORK_ESP_IDF_V3_3_6
 Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; Types: full; Flags: checkablealone
+#endif
+#endif
+#endif
+
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
+
+#ifndef FRAMEWORK_ESP_IDF_V4_2_2
+#ifndef FRAMEWORK_ESP_IDF_V4_1_2
+#ifndef FRAMEWORK_ESP_IDF_V3_3_6
+Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
+#endif
+#endif
+#endif
+
 
 ; Following optimization are supported only in online version
 #ifndef OFFLINE
@@ -281,7 +361,11 @@ Type: filesandordirs; Name: "{app}\python_env"
 
 [Run]
 Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: {cm:RunInstallGit}; Check: GitInstallRequired
+
+#ifdef ESPRESSIFIDE
 Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec unchecked; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
+#endif
+
 Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: {cm:RunPowerShell}; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"
 Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: {cm:RunCmd}; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}";
 
