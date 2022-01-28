@@ -18,7 +18,7 @@ on:
       components:
         description: 'Comma separated list of installer components from IdfToolsSetup.iss'
         required: true
-        default: ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,framework/esp_idf_v4_1_2,target/esp32
+        default: ide/powershell/windowsterminal,ide/powershell/desktop,ide/cmd/desktop,framework/esp_idf_v4_3_2,target/esp32
 
 jobs:
   check-requirements:
@@ -28,7 +28,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Download Installer
-        run:  Invoke-WebRequest ${{ github.event.inputs.installer_url }} -OutFile installer.exe
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest ${{ github.event.inputs.installer_url }} -OutFile installer.exe
         shell: pwsh
       - name: Run installer
         run: ./src/PowerShell/Install-Idf.ps1 -IdfVersion "${{ github.event.inputs.idf_version }}" -Components "${{ github.event.inputs.components }}" -TmpDirectory "$env:TMP/Ň i"
