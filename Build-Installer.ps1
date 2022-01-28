@@ -284,8 +284,15 @@ function CheckInnoSetupInstallation {
 }
 
 CheckInnoSetupInstallation
-$OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
-$OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
+
+if ('espressif-ide' -eq $InstallerType) {
+    $EspIdfBranchVersion = $OfflineBranch.Replace('v', '')
+    $OutputFileBaseName = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-unsigned"
+    $OutputFileSigned = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-signed.exe"
+} else {
+    $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
+    $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
+}
 
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
 $Versions = Join-Path -Path $IdfToolsPath -ChildPath '/idf_versions.txt'
@@ -304,7 +311,7 @@ PrepareIdfCmdlinerunner
 PrepareIdf7za
 PrepareIdfEnv
 
-if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
+if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
     $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch.Replace('v', '')
     $IsccParameters += '/DFRAMEWORK_ESP_IDF_' + $OfflineBranch.Replace('v','V').Replace('.','_')
