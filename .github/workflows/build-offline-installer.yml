@@ -20,6 +20,10 @@ jobs:
         id: get_installer_type
         run: echo ::set-output name=INSTALLER_TYPE::${${{ steps.get_version.outputs.VERSION }}//-*}
         shell: bash
+      - name: Get version for branch
+        id: get_branch_version
+        run: echo ::set-output name=BRANCH_VERSION::${${{ steps.get_version.outputs.VERSION }}//*-}
+        shell: bash
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
@@ -28,7 +32,7 @@ jobs:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
-        run: .\Build-Installer.ps1 -InstallerType offline
+        run: .\Build-Installer.ps1 -InstallerType offline -OfflineBranch v${{ steps.get_branch_version.outputs.BRANCH_VERSION }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

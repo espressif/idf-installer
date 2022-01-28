@@ -215,13 +215,19 @@ The setup will download the necessary dependencies and it will build the install
 The offline version is built by setting /DOFFLINE=yes to ISCC on the command-line. To speed up build, it's possible to redirect stdout of ISCC to the file.
 
 ```
-.\Build-Installer.ps1 -InstallerType offline >out.txt
+.\Build-Installer.ps1 -InstallerType offline -OfflineBranch v4.4 >out.txt
 ```
 
 To speed up development build it's possible to disable compression which is set by default to lzma.
 
 ```
-.\Build-Installer.ps1 -InstallerType offline -Compression none -SignInstaller $false >out.txt
+.\Build-Installer.ps1 -InstallerType offline -Compression none -SignInstaller $false -OfflineBranch v4.4 >out.txt
+```
+
+Build of Espressif-IDE installer which contains also latest stable ESP-IDF:
+
+```
+.\Build-Installer.ps1 -InstallerType espressif-ide -Compression none -SignInstaller $false -OfflineBranch v4.4
 ```
 
 #### Development work in idf_tool_setup.iss

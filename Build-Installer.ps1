@@ -18,7 +18,9 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.19'
+    $IdfEnvVersion = '1.2.19',
+    [String]
+    $EspressifIdeVersion = '4.2.0'
 )
 
 # Stop on error
@@ -304,7 +306,6 @@ PrepareIdfEnv
 
 if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
-    $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
     $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch.Replace('v', '')
     $IsccParameters += '/DFRAMEWORK_ESP_IDF_' + $OfflineBranch.Replace('v','V').Replace('.','_')
     if ($Compression -eq 'none') {
@@ -326,8 +327,10 @@ if (('offline' -eq $InstallerType) || ('espressif-ide' -eq $InstallerType)){
     if ('espressif-ide' -eq $InstallerType) {
         $IsccParameters += '/DESPRESSIFIDE=yes'
         $IsccParameters += '/DAPPNAME=Espressif-IDE'
+        $IsccParameters += '/DVERSION=' + $EspressifIdeVersion
         PrepareIdfEclipse
     } else {
+        $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
         $IsccParameters += '/DAPPNAME=ESP-IDF Tools Offline'
     }
     "${OfflineBranch}" > $Versions
