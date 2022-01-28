@@ -65,7 +65,7 @@
   #define OFFLINE = 'no';
 #endif
 #ifndef PYTHONWHEELSVERSION
-  #define PYTHONWHEELSVERSION = '3.8-2021-06-15'
+  #define PYTHONWHEELSVERSION = '3.8-2022-01-27'
 #endif
 
 ; Tool for managing ESP-IDF environments
