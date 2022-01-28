@@ -22,7 +22,7 @@ jobs:
         shell: bash
       - name: Get version for branch
         id: get_branch_version
-        run: echo ::set-output name=BRANCH_VERSION::${${{ steps.get_version.outputs.VERSION }}//*-}
+        run: echo ::set-output name=BRANCH_VERSION::${GITHUBREF/ref\/tags\/offline-/}
         shell: bash
       - name: Install Inno Setup Download plugin
         shell: pwsh
