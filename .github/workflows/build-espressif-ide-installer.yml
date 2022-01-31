@@ -9,9 +9,14 @@ jobs:
   build-espressif-ide-installer:
     name: Build Installer
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: d:/b
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          path: d:/b
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
