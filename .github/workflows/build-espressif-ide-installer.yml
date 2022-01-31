@@ -20,6 +20,9 @@ jobs:
         id: get_installer_type
         run: echo ::set-output name=INSTALLER_TYPE::${${{ steps.get_version.outputs.VERSION }}//-*}
         shell: bash
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
