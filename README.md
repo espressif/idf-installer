@@ -10,9 +10,33 @@ ESP-IDF Tools Installer for Windows download page: https://dl.espressif.com/dl/e
 
 ### Table with downloads
 
+#### Universal Online Installer
+
+Note: Online Installer is recommended way of the installation.
+
+| Version | Purpose | Size |
+| ------- | ------- | ---- |
+| 2.13 Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.13/esp-idf-tools-setup-online-2.13.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.13.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
+
+#### Single ESP-IDF Branch Offline Installer
+
+| Version | Content | Size |
+| ------- | ------- | ---- |
+| ESP-IDF v4.4 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.4/esp-idf-tools-setup-online-4.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3 | 600 MB |
+| ESP-IDF v4.3.2 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.3.2/esp-idf-tools-setup-online-4.3.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.2.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3 | 570 MB |
+| ESP-IDF v4.2.2 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.2.2/esp-idf-tools-setup-online-4.2.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.2.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 376 MB |
+| ESP-IDF v4.1.2 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.1.2/esp-idf-tools-setup-online-4.1.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.1.2.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 353 MB |
+
+#### Espressif-IDE Offline Installer
+
+| Version | Content | Size |
+| ------- | ------- | ---- |
+| Espressif-IDE v2.4.0 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.4.0/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe) | Espressif-IDE + JDK + ESP-IDF v4.4 | 1 GB |
+
+#### Older versions
+
 | ESP-IDF Tools Installer | Online | Offline |
 | ----------------------- | ------ | ------- |
-| 2.13 (Beta)             | [Download](https://github.com/espressif/idf-installer/releases)       |         |
 | 2.12 - 2021-11-22 | [Download](https://github.com/espressif/idf-installer/releases/download/online-2.12/esp-idf-tools-setup-online-2.12.exe) 3.2 MB [![test-online-installer](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-online-installer-scheduled.yml) | [Download](https://github.com/espressif/idf-installer/releases/download/offline-2.12/esp-idf-tools-setup-offline-2.12.exe) 1.7 GB with ESP-IDF 4.3.1, 4.2.2, Eclipse + IDF Plugin v2.2.0 [![test-offline-installer](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml/badge.svg)](https://github.com/espressif/idf-installer/actions/workflows/test-offline-installer-dispatch.yml) |
 | 2.11 - 2021-09-23 | [Download](https://github.com/espressif/idf-installer/releases/download/online-2.11/esp-idf-tools-setup-online-2.11.exe) 3.2 MB | [Download](https://github.com/espressif/idf-installer/releases/download/offline-2.11/esp-idf-tools-setup-offline-2.11.exe) 1.7 GB with ESP-IDF 4.3.1, 4.2.2, Eclipse + IDF Plugin v2.2.0 |
 | 2.10 - 2021-08-10 | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.10.exe) 3.2 MB | [Download](https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.10.exe) 1.6 GB with ESP-IDF 4.3, 4.2.2, Eclipse + IDF Plugin v2.1.0 |
@@ -191,13 +215,19 @@ The setup will download the necessary dependencies and it will build the install
 The offline version is built by setting /DOFFLINE=yes to ISCC on the command-line. To speed up build, it's possible to redirect stdout of ISCC to the file.
 
 ```
-.\Build-Installer.ps1 -InstallerType offline >out.txt
+.\Build-Installer.ps1 -InstallerType offline -OfflineBranch v4.4 >out.txt
 ```
 
 To speed up development build it's possible to disable compression which is set by default to lzma.
 
 ```
-.\Build-Installer.ps1 -InstallerType offline -Compression none -SignInstaller $false >out.txt
+.\Build-Installer.ps1 -InstallerType offline -Compression none -SignInstaller $false -OfflineBranch v4.4 >out.txt
+```
+
+Build of Espressif-IDE installer which contains also latest stable ESP-IDF:
+
+```
+.\Build-Installer.ps1 -InstallerType espressif-ide -Compression none -SignInstaller $false -OfflineBranch v4.4
 ```
 
 #### Development work in idf_tool_setup.iss

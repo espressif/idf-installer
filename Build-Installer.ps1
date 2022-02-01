@@ -5,10 +5,12 @@ param (
     [ValidateSet('none', 'lzma')]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2021-08-10',
+    $IdfPythonWheelsVersion = '3.8-2022-01-27',
     [String]
-    [ValidateSet('online', 'offline')]
+    [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
+    [String]
+    $OfflineBranch = 'v4.3.2',
     [String]
     $Python = 'python',
     [Boolean]
@@ -16,7 +18,9 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.19'
+    $IdfEnvVersion = '1.2.22',
+    [String]
+    $EspressifIdeVersion = '2.4.0'
 )
 
 # Stop on error
@@ -25,6 +29,16 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = 'SilentlyContinue'
 # Display logs correctly on GitHub Runner
 $ErrorView = 'NormalView'
+
+"Processing configuration:"
+"-Compression            = ${Compression}"
+"-IdfPythonWheelsVersion = ${IdfPythonWheelsVersion}"
+"-InstallerType          = ${InstallerType}"
+"-OfflineBranch          = ${OfflineBranch}"
+"-Python                 = ${Python}"
+"-SignInstaller          = ${SignInstaller}"
+"-SetupCompiler          = ${SetupCompiler}"
+"-IdfEnvVersion          = ${IdfEnvVersion}"
 
 function DownloadIdfVersions() {
     if (Test-Path -Path $Versions -PathType Leaf) {
@@ -45,7 +59,9 @@ function PrepareIdfPackage {
         [String]
         $DownloadUrl,
         [String]
-        $DistZip
+        $DistZip,
+        [String]
+        $StripDirectory
     )
     $FullFilePath = Join-Path -Path $BasePath -ChildPath $FilePath
     if (Test-Path -Path $FullFilePath -PathType Leaf) {
@@ -62,7 +78,15 @@ function PrepareIdfPackage {
         "Downloading $FullDistZipPath"
         Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
     }
-    Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
+
+    if ("" -ne $StripDirectory) {
+        $TempBasePath="${BasePath}-tmp"
+        Expand-Archive -Path $FullDistZipPath -DestinationPath $TempBasePath
+        Move-Item -Path "${TempBasePath}/${StripDirectory}/*" $BasePath
+        Remove-Item -Path $TempBasePath -Recurse
+    } else {
+        Expand-Archive -Path $FullDistZipPath -DestinationPath $BasePath
+    }
     Remove-Item -Path $FullDistZipPath
 }
 
@@ -124,14 +148,20 @@ function PrepareIdfPythonWheels {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion `
         -FilePath version.txt `
         -DistZip idf-python-wheels-$IdfPythonWheelsVersion-win64.zip `
-        -DownloadUrl https://github.com/espressif/idf-python-wheels/releases/download/v${IdfPythonWheelsVersion}/idf-python-wheels-3.8-win64.zip
+        -DownloadUrl https://github.com/espressif/idf-python-wheels/releases/download/v${IdfPythonWheelsVersion}/idf-python-wheels-3.8-x86_64-pc-windows-msvc.zip
 }
 
 function PrepareIdfEclipse {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-eclipse\2021-09 `
-        -FilePath eclipse.exe `
-        -DistZip idf-eclipse-2021-09-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse/idf-eclipse-2021-09-win64.zip
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\amazon-corretto-11-x64-windows-jdk\ `
+        -FilePath jdk11.0.14_9\bin\java.exe `
+        -DistZip amazon-corretto-11-x64-windows-jdk.zip `
+        -DownloadUrl https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip
+
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\espressif-ide\2.4.0 `
+        -FilePath espressif-ide.exe `
+        -DistZip Espressif-IDE-2.4.0-win32.win32.x86_64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-2.4.0-win32.win32.x86_64.zip `
+        -StripDirectory Espressif-IDE
 }
 
 function PrepareIdfDriver {
@@ -139,13 +169,13 @@ function PrepareIdfDriver {
 }
 
 function PrepareOfflineBranches {
-    $BundleDir="build\$InstallerType\releases\esp-idf-bundle"
+    $BundleDir="build\$InstallerType\frameworks\esp-idf-${OfflineBranch}"
 
     if ( Test-Path -Path $BundleDir -PathType Container ) {
         git -C "$BundleDir" fetch
     } else {
         "Performing full clone."
-        git clone -q --shallow-since=2020-06-01 --jobs 8 --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
+        git clone --branch "$OfflineBranch" -q --depth 1 --shallow-submodules --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
 
         # Remove hidden attribute from .git. Inno Setup is not able to read it.
         attrib "$BundleDir\.git" -s -h
@@ -167,47 +197,15 @@ function PrepareOfflineBranches {
 
     }
 
-    $Content = Get-Content -Path $Versions
-    [array]::Reverse($Content)
-    $Content | ForEach-Object {
-        $Branch = $_
-
-        if ($null -eq $Branch) {
-            continue;
-        }
-
-        Push-Location "$BundleDir"
-
-        "Processing branch: ($Branch)"
-        git fetch origin tag "$Branch"
-        git checkout "$Branch"
-
-        # Pull changes only for branches, tags does not support pull
-        #https://stackoverflow.com/questions/1593188/how-to-programmatically-determine-whether-the-git-checkout-is-a-tag-and-if-so-w
-        git describe --exact-match HEAD
-        if (0 -ne $LASTEXITCODE) {
-            git pull
-        }
-
-        git submodule update --init --recursive
-
-        # Clean up left over submodule directories after switching to other branch
-        git clean --force -d
-        # Some modules are very persistent like cmok and needs 2nd round of cleaning
-        git clean --force -d
-
-        git reset --hard
-        git submodule foreach git reset --hard
-
-        if (0 -ne (git status -s | Measure-Object).Count) {
-            "git status not empty. Repository is dirty. Aborting."
-            git status
-            Exit 1
-        }
-
-        &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive download --platform Windows-x86_64 all
-        Pop-Location
+    Push-Location "$BundleDir"
+    if (0 -ne (git status -s | Measure-Object).Count) {
+        "git status not empty. Repository is dirty. Aborting."
+        git status
+        Exit 1
     }
+
+    &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive install
+    Pop-Location
 
     # Remove symlinks which are not supported on Windws, unfortunatelly -c core.symlinks=false does not work
     Get-ChildItem "$BundleDir" -recurse -force | Where-Object { $_.Attributes -match "ReparsePoint" }
@@ -286,8 +284,16 @@ function CheckInnoSetupInstallation {
 }
 
 CheckInnoSetupInstallation
-$OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
-$OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
+
+if ('espressif-ide' -eq $InstallerType) {
+    $EspIdfBranchVersion = $OfflineBranch.Replace('v', '')
+    $OutputFileBaseName = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-unsigned"
+    $OutputFileSigned = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-signed.exe"
+} else {
+    $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
+    $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
+}
+
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
 $Versions = Join-Path -Path $IdfToolsPath -ChildPath '/idf_versions.txt'
 $env:IDF_TOOLS_PATH=$IdfToolsPath
@@ -305,8 +311,13 @@ PrepareIdfCmdlinerunner
 PrepareIdf7za
 PrepareIdfEnv
 
-if ('offline' -eq $InstallerType) {
+if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
+    $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch.Replace('v', '')
+    $IsccParameters += '/DFRAMEWORK_ESP_IDF_' + $OfflineBranch.Replace('v','V').Replace('.','_')
+    if ($Compression -eq 'none') {
+        $IsccParameters += '/DDISKSPANNING=yes'
+    }
 
     if (-Not(Test-Path build/$InstallerType/tools -PathType Container)) {
         New-Item build/$InstallerType/tools -Type Directory
@@ -320,11 +331,20 @@ if ('offline' -eq $InstallerType) {
     PrepareIdfGit
     PrepareIdfPython
     PrepareIdfPythonWheels
-    PrepareIdfEclipse
-    Copy-Item .\src\Resources\idf_versions_offline.txt $Versions
+    if ('espressif-ide' -eq $InstallerType) {
+        $IsccParameters += '/DESPRESSIFIDE=yes'
+        $IsccParameters += '/DAPPNAME=Espressif-IDE'
+        $IsccParameters += '/DVERSION=' + $EspressifIdeVersion
+        PrepareIdfEclipse
+    } else {
+        $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
+        $IsccParameters += '/DAPPNAME=ESP-IDF Tools Offline'
+    }
+    "${OfflineBranch}" > $Versions
     PrepareOfflineBranches
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
+    $IsccParameters += '/DESPRESSIFIDE=yes'
     $IsccParameters += '/DOFFLINE=no'
 } else {
     $IsccParameters += '/DOFFLINE=no'

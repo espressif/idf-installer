@@ -182,22 +182,6 @@ end;
 
 
 {
-  Switch to different branch. Used in offline installation.
-}
-procedure GitSwitchBranch(Path: String; BranchName: String);
-var
-  CmdLine: String;
-begin
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' checkout ' + BranchName;
-  Log('Updating submodules: ' + CmdLine);
-  DoCmdlineInstall(CustomMessage('SwitchBranch'), CustomMessage('SwitchBranch'), CmdLine);
-
-  GitUpdateSubmodules(Path);
-  GitResetHard(Path);
-  GitCleanForceDirectory(Path);
-end;
-
-{
   There are 3 possible ways how an ESP-IDF copy can be obtained:
   - Download the .zip archive with submodules included, extract to destination directory,
     then do 'git reset --hard' and 'git submodule foreach git reset --hard' to correct for
@@ -208,19 +192,6 @@ end;
     directory. Then do a git clone of the Github repository, using the temporary directory
     as a '--reference'. This is done for other versions (such as release branches).
 }
-
-procedure IDFOfflineInstall();
-var
-  IDFTempPath: String;
-  IDFPath: String;
-begin
-  IDFPath := IDFDownloadPath;
-
-  IDFTempPath := ExpandConstant('{app}\releases\esp-idf-bundle');
-  Log('IDFTempPath - location of bundle: ' + IDFTempPath);
-
-  GitSwitchBranch(IDFPath, IDFDownloadVersion);
-end;
 
 procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
 var
@@ -392,10 +363,11 @@ var
   TargetSupportTestCommand: String;
 begin
   IDFPath := GetIDFPath('');
-  IDFToolsPyPath := IDFPath + '\tools\idf_tools.py';
+  IDFToolsPyPath := GetIDFPath('\tools\idf_tools.py');
   BundledIDFToolsPyPath := ExpandConstant('{app}\idf_tools_fallback.py');
   JSONArg := '';
 
+  Log('Checking whether file exists ' + IDFToolsPyPath);
   if FileExists(IDFToolsPyPath) then
   begin
     Log('idf_tools.py exists in IDF directory');
@@ -416,7 +388,7 @@ begin
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
   { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + JSONArg;
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + ' ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 

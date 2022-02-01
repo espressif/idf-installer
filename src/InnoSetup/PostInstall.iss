@@ -160,12 +160,25 @@ begin
 end;
 
 procedure InstallEclipse();
+var
+  FilePath: String;
 begin
   if (not WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
     Exit;
   end;
 
-  InstallIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), GetEclipsePath(''));
+  FilePath := GetEclipseExePath();
+  Log('Checking existence of: ' + FilePath);
+  if (FileExists(FilePath)) then begin
+    Log('Found.');
+    Exit;
+  end;
+
+  DoCmdlineInstall(CustomMessage('ComponentEclipse'), CustomMessage('ComponentEclipse'), GetIdfEnvCommand('ide install --url "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-2.4.0-win32.win32.x86_64.zip" --file "Espressif-IDE-2.4.0-win32.win32.x86_64.zip" --destination "' + GetPathWithForwardSlashes(GetEclipsePath('')) + '"'));
+
+  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
+    InstallIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\java.exe'), GetJdkDistZip(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\') );
+  end;
 end;
 
 <event('CurStepChanged')>
@@ -175,6 +188,11 @@ var
 begin
   if CurStep <> ssPostInstall then
     exit;
+
+  { Set IDF_TOOLS_PATH variable, in case it was set to a different value in the environment.
+    The installer will set the variable to the new value in the registry, but we also need the
+    new value to be visible to this process. }
+  SetEnvironmentVariable('IDF_TOOLS_PATH', ExpandConstant('{app}'));
 
   ExtractTemporaryFile('7za.exe');
 
@@ -190,9 +208,7 @@ begin
     AddPythonGitToPath();
 
     if not IDFUseExisting then begin
-      if (IsOfflineMode) then begin
-        IDFOfflineInstall();
-      end else begin
+      if not (IsOfflineMode) then begin
         IDFDownloadInstall();
       end;
     end;
@@ -230,6 +246,10 @@ begin
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
       SaveIdfEclipseConfiguration(GetEclipsePath('esp_idf.json'));
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
+      AppendEnvironmentVariable('PATH', ';', ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\'));
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin

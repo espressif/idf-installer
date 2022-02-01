@@ -2,7 +2,7 @@
 param (
     [Parameter()]
     [String]
-    $IdfPath = "C:/Users/runneradmin/Desktop/esp-idf",
+    $IdfPath = "${HOME}/Desktop/esp-idf",
     [String]
     $IdfShortVersion = "4.2"
 )
@@ -24,7 +24,7 @@ Set-Location "${IdfPath}"
 Start-Sleep -s 5
 
 $WSShell = New-Object -comObject WScript.Shell
-$LinkPath = "C:/Users/runneradmin/Desktop/ESP-IDF ${IdfShortVersion} PowerShell.lnk"
+$LinkPath = "${HOME}/Desktop/ESP-IDF ${IdfShortVersion} PowerShell.lnk"
 
 if (-Not(Test-Path $LinkPath -PathType Leaf)) {
     "$LinkPath does not exist"

@@ -43,9 +43,6 @@ begin
   Result := Result + CustomMessage('EspIdfToolsDirectory') + ' ' + NewLine +
             Space + ExpandConstant('{app}') + NewLine + NewLine;
 
-  Result := Result + CustomMessage('EspIdfToolsDirectory') + ' ' + NewLine +
-            Space + ExpandConstant('{app}') + NewLine + NewLine;
-
   Result := Result + CustomMessage('SummaryComponents') + ': ';
 
   if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin

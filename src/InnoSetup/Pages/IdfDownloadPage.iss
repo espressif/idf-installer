@@ -6,10 +6,10 @@
 var
   IDFDownloadPage: TInputOptionWizardPage;
 
-function GetSuggestedIDFDirectory(): String;
+function GetSuggestedIDFDirectory(SelectedIdfVersion:String): String;
 var
-BaseName: String;
-RepeatIndex: Integer;
+  BaseName: String;
+  RepeatIndex: Integer;
 begin
   if (IDFDirectory <> '') then begin
     Result := IDFDirectory
@@ -18,7 +18,10 @@ begin
 
   { Start with Desktop\esp-idf name and if it already exists,
     keep trying with Desktop\esp-idf-N for N=2 and above. }
-  BaseName := ExpandConstant('{userdesktop}\esp-idf');
+  if Pos('release', SelectedIdfVersion) > 0 then begin
+    Delete(SelectedIdfVersion, 1, 8);
+  end;
+  BaseName := ExpandConstant('C:\Espressif\frameworks\esp-idf-' + SelectedIdfVersion);
   Result := BaseName;
   RepeatIndex := 1;
   while DirExists(Result) do
@@ -97,7 +100,7 @@ begin
   end;
   Page.SelectedValueIndex := 0;
 
-  ChoicePageSetInputText(Page, GetSuggestedIDFDirectory());
+  ChoicePageSetInputText(Page, GetSuggestedIDFDirectory(IDFDownloadAvailableVersions[Page.SelectedValueIndex]));
 end;
 
 { Validation of PATH for IDF releases which does not support special characters. }
@@ -123,6 +126,7 @@ var
   Page: TInputOptionWizardPage;
 begin
   Page := TInputOptionWizardPage(Sender);
+  ChoicePageSetInputText(Page, GetSuggestedIDFDirectory( IDFDownloadAvailableVersions[Page.SelectedValueIndex]));
   Log('OnIDFDownloadSelectionChange index=' + IntToStr(Page.SelectedValueIndex));
 end;
 

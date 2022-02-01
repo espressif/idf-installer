@@ -4,12 +4,12 @@
 
 function GetEclipsePath(FileName:String): String;
 begin
-  Result := ExpandConstant('{app}\tools\idf-eclipse\{#ECLIPSE_VERSION}\') + FileName;
+  Result := ExpandConstant('{app}\tools\espressif-ide\{#ECLIPSE_VERSION}\') + FileName;
 end;
 
 function GetEclipseExePath():String;
 begin
-  Result := GetEclipsePath('eclipse.exe');
+  Result := GetEclipsePath('espressif-ide.exe');
 end;
 
 procedure CreateIDFEclipseShortcut(LnkString: String);

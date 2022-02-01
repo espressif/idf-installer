@@ -117,6 +117,11 @@ begin
   Result := ExpandConstant('{app}\dist\{#ECLIPSE_INSTALLER}');
 end;
 
+function GetJdkDistZip():String;
+begin
+  Result := ExpandConstant('{app}\dist\{#JDK_INSTALLER}');
+end;
+
 procedure PrepareEclipse();
 begin
   if (not WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
@@ -124,6 +129,9 @@ begin
   end;
 
   PrepareIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), '{#ECLIPSE_DOWNLOADURL}');
+  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
+    PrepareIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\java.exe'), GetJdkDistZip(), '{#JDK_DOWNLOADURL}');
+  end;
 end;
 
 procedure InstallSelectedDrivers();
@@ -210,14 +218,6 @@ begin
   ForceDirectories(ExpandConstant('{app}\dist'));
 
   PrepareEmbeddedPython();
-
-  if (IsOfflineMode) then begin
-    ForceDirectories(ExpandConstant('{app}\releases'));
-    IDFZIPFileVersion := IDFDownloadVersion;
-    IDFZIPFileName := ExpandConstant('{app}\releases\esp-idf-bundle.zip');
-    Exit;
-  end;
-
   PrepareEmbeddedGit();
   PrepareEclipse();
 
@@ -259,11 +259,6 @@ begin
   EnvPath := PythonPath + ';' + GitPath + ';' + EnvPath;
   Log('Setting PATH for this process: ' + EnvPath);
   SetEnvironmentVariable('PATH', EnvPath);
-
-  { Set IDF_TOOLS_PATH variable, in case it was set to a different value in the environment.
-    The installer will set the variable to the new value in the registry, but we also need the
-    new value to be visible to this process. }
-  SetEnvironmentVariable('IDF_TOOLS_PATH', ExpandConstant('{app}'))
 
   { Set PYTHONNOUSERSITE variable True to avoid loading packages from AppData\Roaming. }
   { https://doc.pypy.org/en/latest/man/pypy.1.html#environment }
