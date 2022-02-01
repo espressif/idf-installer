@@ -31,7 +31,7 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Content | Size |
 | ------- | ------- | ---- |
-| Espressif-IDE v2.4.0 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.4.0/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe | Espressif-IDE + JDK + ESP-IDF v4.4 | 1 GB |
+| Espressif-IDE v2.4.0 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.4.0/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe) | Espressif-IDE + JDK + ESP-IDF v4.4 | 1 GB |
 
 #### Older versions
 
