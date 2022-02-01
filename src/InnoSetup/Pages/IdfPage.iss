@@ -11,7 +11,11 @@ var
 
 function IDFDownloadRequired(): Boolean;
 begin
-  Result := not IDFUseExisting;
+  if (IsOfflineMode) then begin
+    Result := false;
+  end else begin
+    Result := not IDFUseExisting;
+  end;
 end;
 
 procedure IDFPageUpdateInput();
@@ -62,6 +66,7 @@ function OnIDFPageValidate(Sender: TWizardPage): Boolean;
 var
   Page: TInputOptionWizardPage;
   NotSupportedMsg, IDFPath, IDFPyPath, RequirementsPath: String;
+  RequirementsPathV5: String;
 begin
   Page := TInputOptionWizardPage(Sender);
   Log('OnIDFPageValidate index=' + IntToStr(Page.SelectedValueIndex));
@@ -105,7 +110,8 @@ begin
     end;
 
     RequirementsPath := IDFPath + '\requirements.txt';
-    if not FileExists(RequirementsPath) then
+    RequirementsPathV5 := IDFPath + '\requirements.core.txt';
+    if (not FileExists(RequirementsPath)) and (not FileExists(RequirementsPathV5)) then
     begin
       MessageBox(NotSupportedMsg +
              CustomMessage('UnableToFindRequirementsTxt') + ' ' + IDFPath, mbError, MB_OK);
@@ -161,6 +167,16 @@ begin
       Result := False;
       exit;
     end;
+
+#ifdef OFFLINEBRANCH
+    if (IsOfflineMode) then begin
+      IDFDownloadVersion := '{#OFFLINEBRANCH}';
+      IDFDownloadPath := ExpandConstant('{app}\frameworks\esp-idf-v' + IDFDownloadVersion);
+      Log('Offline mode active');
+      Log('IDFDownloadVersion: ' + IDFDownloadVersion);
+      Log('IDFDownloadPath: ' + IDFDownloadPath);
+    end;
+#endif
 
     IDFDir := GetIDFPath('');
     Log('Checking location of ToolsDir ' + ToolsDir + ' is not a subdirectory of ' + IDFDir);

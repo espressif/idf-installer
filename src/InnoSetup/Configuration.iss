@@ -27,10 +27,17 @@ var
     GitPath:String;
     GitExecutablePath:String;
     GitVersion: String;
+    GitSubmoduleUrl: String;
+    GitUseMirror: Boolean;
+    GitDepth: String;
     PythonVersion:String;
     PythonPath:String;
     PythonExecutablePath: String;
     CodePage: String;
+    IsEspressifSiteReachable: Boolean;
+    IsGithubSiteReachable: Boolean;
+    IsAmazonS3SiteReachable: Boolean;
+    IsGiteeSiteReachable: Boolean;
 
 function GetConfigurationString(Key: String; Default: String):String;
 var Value: String;
@@ -66,7 +73,10 @@ begin
     IsGitCleanAllowed := GetConfigurationBoolean('GITCLEAN', 'yes');
     IsGitRecursive := GetConfigurationBoolean('GITRECURSIVE', 'yes');
     IsGitResetAllowed := GetConfigurationBoolean('GITRESET', 'yes');
+    GitDepth := GetConfigurationString('GITDEPTH', '');
     GitRepository := GetConfigurationString('GITREPO', 'https://github.com/espressif/esp-idf.git');
+    GitSubmoduleUrl := GetConfigurationString('GITSUBMODULEURL', '');
+    GitUseMirror := GetConfigurationBoolean('GITUSEMIRROR', 'no');
     IDFDirectory := GetConfigurationString('IDFDIR', '');
     IDFUseExisting := GetConfigurationBoolean('IDFUSEEXISTING', 'no');
     IDFVersion := GetConfigurationString('IDFVERSION', '');
@@ -87,7 +97,6 @@ begin
     Result := not IsOfflineMode;
 end;
 
-
 function GetIDFPath(FileName: String): String;
 begin
   if IDFUseExisting then begin
@@ -100,6 +109,7 @@ begin
   end;
   Result := Result + FileName;
 end;
+
 
 function GetPathWithForwardSlashes(Path: String): String;
 var
@@ -245,7 +255,7 @@ begin
   Content := '{' + #13#10;
   Content := Content + '  "$schema": "http://json-schema.org/schema#",' + #13#10;
   Content := Content + '  "$id": "http://dl.espressif.com/dl/schemas/esp_idf",' + #13#10;
-  Content := Content + '  "_comment": "Configuration file for ESP-IDF Eclipse plugin.",' + #13#10;
+  Content := Content + '  "_comment": "Configuration file for idf-env.",' + #13#10;
   Content := Content + '  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",' + #13#10;
   Content := Content + '  "gitPath": "' + GetPathWithForwardSlashes(GitExecutablePath) + '",' + #13#10;
   Content := Content + '  "idfToolsPath": "' + GetPathWithForwardSlashes(ExpandConstant('{app}')) + '",' + #13#10;

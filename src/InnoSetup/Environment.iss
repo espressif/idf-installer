@@ -182,22 +182,6 @@ end;
 
 
 {
-  Switch to different branch. Used in offline installation.
-}
-procedure GitSwitchBranch(Path: String; BranchName: String);
-var
-  CmdLine: String;
-begin
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' checkout ' + BranchName;
-  Log('Updating submodules: ' + CmdLine);
-  DoCmdlineInstall(CustomMessage('SwitchBranch'), CustomMessage('SwitchBranch'), CmdLine);
-
-  GitUpdateSubmodules(Path);
-  GitResetHard(Path);
-  GitCleanForceDirectory(Path);
-end;
-
-{
   There are 3 possible ways how an ESP-IDF copy can be obtained:
   - Download the .zip archive with submodules included, extract to destination directory,
     then do 'git reset --hard' and 'git submodule foreach git reset --hard' to correct for
@@ -209,17 +193,15 @@ end;
     as a '--reference'. This is done for other versions (such as release branches).
 }
 
-procedure IDFOfflineInstall();
+procedure ApplyIdfMirror(Path: String; Url: String; SubmoduleUrl: String);
 var
-  IDFTempPath: String;
-  IDFPath: String;
+  Command: String;
 begin
-  IDFPath := IDFDownloadPath;
-
-  IDFTempPath := ExpandConstant('{app}\releases\esp-idf-bundle');
-  Log('IDFTempPath - location of bundle: ' + IDFTempPath);
-
-  GitSwitchBranch(IDFPath, IDFDownloadVersion);
+  Command := GetIdfEnvCommand('idf mirror --idf-path "' + Path + '" --url "' + Url + '" --submodule-url "' + SubmoduleUrl + '" --progress')
+  if (Length(GitDepth) > 0) then begin
+    Command := Command + ' --depth ' + GitDepth;
+  end;
+  DoCmdlineInstall(CustomMessage('UpdatingSubmodules'), CustomMessage('UpdatingSubmodules'), Command);
 end;
 
 procedure IDFDownloadInstall();
@@ -258,7 +240,23 @@ begin
 
   if NeedToClone then
   begin
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}')) then begin
+        GitUseMirror := True;
+        IsGitRecursive := False;
+        GitRepository := 'https://gitee.com/EspressifSystems/esp-idf.git';
+        GitSubmoduleUrl := 'https://gitee.com/esp-submodules/';
+    end;
+
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
+      GitDepth := '1';
+    end;
+
+    if (Length(GitDepth) > 0) then begin
+      CmdLine := CmdLine + ' --depth ' + GitDepth + ' --shallow-submodules ';
+    end;
 
     if (IsGitRecursive) then begin
       CmdLine := CmdLine + ' --recursive ';
@@ -273,6 +271,10 @@ begin
 
     if IDFTempPath <> '' then
       GitRepoDissociate(IDFPath);
+
+    if (GitUseMirror) then begin
+      ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);
+    end;
 
   end else begin
 
@@ -361,10 +363,11 @@ var
   TargetSupportTestCommand: String;
 begin
   IDFPath := GetIDFPath('');
-  IDFToolsPyPath := IDFPath + '\tools\idf_tools.py';
+  IDFToolsPyPath := GetIDFPath('\tools\idf_tools.py');
   BundledIDFToolsPyPath := ExpandConstant('{app}\idf_tools_fallback.py');
   JSONArg := '';
 
+  Log('Checking whether file exists ' + IDFToolsPyPath);
   if FileExists(IDFToolsPyPath) then
   begin
     Log('idf_tools.py exists in IDF directory');
@@ -385,7 +388,7 @@ begin
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
   { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + JSONArg;
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path ' + IDFPath + ' ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 

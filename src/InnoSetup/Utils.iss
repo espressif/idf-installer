@@ -27,6 +27,14 @@ procedure ProcEnd(inst: Longword);
 function SetEnvironmentVariable(lpName: string; lpValue: string): BOOL;
   external 'SetEnvironmentVariable{#AW}@kernel32.dll stdcall';
 
+procedure AppendEnvironmentVariable(VariableName: String; Delimiter: String; Value: String);
+var
+  OriginalValue: String;
+begin
+  OriginalValue := GetEnv(VariableName);
+  SetEnvironmentVariable(VariableName, OriginalValue + Delimiter + Value);
+end;
+
 { ------------------------------ Functions to query the registry ------------------------------ }
 
 { Utility to search in HKLM and HKCU for an installation path. Looks in both 64-bit & 32-bit registry. }

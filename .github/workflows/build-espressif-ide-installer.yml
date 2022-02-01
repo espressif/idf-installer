@@ -1,17 +1,21 @@
-name: build-offline-installer
+name: build-espressif-ide-installer
 
 on:
   push:
     tags:
-      - offline-*
+      - espressif-ide-*
 
 jobs:
-  build-offline-installer:
+  build-espressif-ide-installer:
     name: Build Installer
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Map local long path to new drive
+        id: map_path
+        shell: pwsh
+        run: subst "p:" "$env:GITHUB_WORKSPACE"
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -20,10 +24,9 @@ jobs:
         id: get_installer_type
         run: echo ::set-output name=INSTALLER_TYPE::${${{ steps.get_version.outputs.VERSION }}//-*}
         shell: bash
-      - name: Get version for branch
-        id: get_branch_version
-        run: echo ::set-output name=BRANCH_VERSION::${GITHUB_REF/refs\/tags\/offline-/}
-        shell: bash
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
@@ -32,7 +35,8 @@ jobs:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
-        run: .\Build-Installer.ps1 -InstallerType offline -OfflineBranch v${{ steps.get_branch_version.outputs.BRANCH_VERSION }}
+        working-directory: "P:"
+        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch v4.4
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -50,8 +54,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/esp-idf-tools-setup-offline-signed.exe
-          asset_name: esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
+          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4-signed.exe
+          asset_name: espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.exe
           asset_content_type: application/octet-stream
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
@@ -60,4 +64,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-offline-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
+        run: aws s3 cp --acl=public-read --no-progress ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.exe

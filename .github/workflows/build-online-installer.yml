@@ -22,7 +22,7 @@ jobs:
         shell: bash
       - name: Install Inno Setup Download plugin
         shell: pwsh
-        run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
+        run: ./src/PowerShell/Install-IdpSetup.ps1
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
