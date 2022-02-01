@@ -66,6 +66,7 @@ function OnIDFPageValidate(Sender: TWizardPage): Boolean;
 var
   Page: TInputOptionWizardPage;
   NotSupportedMsg, IDFPath, IDFPyPath, RequirementsPath: String;
+  RequirementsPathV5: String;
 begin
   Page := TInputOptionWizardPage(Sender);
   Log('OnIDFPageValidate index=' + IntToStr(Page.SelectedValueIndex));
@@ -109,7 +110,8 @@ begin
     end;
 
     RequirementsPath := IDFPath + '\requirements.txt';
-    if not FileExists(RequirementsPath) then
+    RequirementsPathV5 := IDFPath + '\requirements.core.txt';
+    if (not FileExists(RequirementsPath)) and (not FileExists(RequirementsPathV5)) then
     begin
       MessageBox(NotSupportedMsg +
              CustomMessage('UnableToFindRequirementsTxt') + ' ' + IDFPath, mbError, MB_OK);
