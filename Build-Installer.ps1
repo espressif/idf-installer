@@ -20,7 +20,7 @@ param (
     [String]
     $IdfEnvVersion = '1.2.20',
     [String]
-    $EspressifIdeVersion = '4.2.0'
+    $EspressifIdeVersion = '2.4.0'
 )
 
 # Stop on error
