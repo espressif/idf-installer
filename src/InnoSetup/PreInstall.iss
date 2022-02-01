@@ -252,11 +252,6 @@ begin
   Log('Setting PATH for this process: ' + EnvPath);
   SetEnvironmentVariable('PATH', EnvPath);
 
-  { Set IDF_TOOLS_PATH variable, in case it was set to a different value in the environment.
-    The installer will set the variable to the new value in the registry, but we also need the
-    new value to be visible to this process. }
-  SetEnvironmentVariable('IDF_TOOLS_PATH', ExpandConstant('{app}'))
-
   { Set PYTHONNOUSERSITE variable True to avoid loading packages from AppData\Roaming. }
   { https://doc.pypy.org/en/latest/man/pypy.1.html#environment }
   { If set to a non-empty value, equivalent to the -s option. Don’t add the user site directory to sys.path. }
