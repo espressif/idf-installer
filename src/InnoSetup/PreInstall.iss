@@ -117,6 +117,11 @@ begin
   Result := ExpandConstant('{app}\dist\{#ECLIPSE_INSTALLER}');
 end;
 
+function GetJdkDistZip():String;
+begin
+  Result := ExpandConstant('{app}\dist\{#JDK_INSTALLER}');
+end;
+
 procedure PrepareEclipse();
 begin
   if (not WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
@@ -124,6 +129,9 @@ begin
   end;
 
   PrepareIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), '{#ECLIPSE_DOWNLOADURL}');
+  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
+    PrepareIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\java.exe'), GetJdkDistZip(), '{#JDK_DOWNLOADURL}');
+  end;
 end;
 
 procedure InstallSelectedDrivers();

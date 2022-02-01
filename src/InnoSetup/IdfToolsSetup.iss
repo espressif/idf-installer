@@ -36,6 +36,9 @@
 #define ECLIPSE_INSTALLER "Espressif-IDE-" + ECLIPSE_VERSION + "-win32.win32.x86_64.zip"
 #define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/" + ECLIPSE_INSTALLER
 
+#define JDK_INSTALLER "amazon-corretto-11-x64-windows-jdk.zip"
+#define JDK_DOWNLOADURL "https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip"
+
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 
 ; Example of file name on desktop "ESP-IDF 4.2 Powershell"
