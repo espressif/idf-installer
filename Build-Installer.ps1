@@ -18,7 +18,7 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.19',
+    $IdfEnvVersion = '1.2.20',
     [String]
     $EspressifIdeVersion = '4.2.0'
 )

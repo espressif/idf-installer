@@ -281,7 +281,7 @@ Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full cu
 #endif
 
 ; Following languages are supported only in online version
-#ifndef OFFLINE
+#if OFFLINE == 'no'
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
@@ -351,7 +351,7 @@ Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /no
 Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
 #endif
 
-#ifndef OFFLINE
+#if OFFLINE == 'no'
 Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec unchecked; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
 #endif
 
