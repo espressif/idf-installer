@@ -16,4 +16,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-        run: aws s3 cp --acl=public-read --no-progress ./src/Resources/download/index.html s3://${{ secrets.DL_BUCKET }}/dl/esp-idf/index.html
+        run: |
+          aws s3 cp --acl=public-read --no-progress ./src/Resources/download/index.html s3://${{ secrets.DL_BUCKET }}/dl/esp-idf/index.html
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DL_DISTRIBUTION_ID }} --paths "/dl/esp-idf/index.html"
