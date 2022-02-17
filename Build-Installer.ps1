@@ -157,10 +157,10 @@ function PrepareIdfEclipse {
         -DistZip amazon-corretto-11-x64-windows-jdk.zip `
         -DownloadUrl https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip
 
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\espressif-ide\2.4.1 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\espressif-ide\${EspressifIdeVersion} `
         -FilePath espressif-ide.exe `
-        -DistZip Espressif-IDE-2.4.1-win32.win32.x86_64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-2.4.1-win32.win32.x86_64.zip `
+        -DistZip Espressif-IDE-${EspressifIdeVersion}-win32.win32.x86_64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-${EspressifIdeVersion}-win32.win32.x86_64.zip `
         -StripDirectory Espressif-IDE
 }
 
@@ -335,6 +335,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
         $IsccParameters += '/DESPRESSIFIDE=yes'
         $IsccParameters += '/DAPPNAME=Espressif-IDE'
         $IsccParameters += '/DVERSION=' + $EspressifIdeVersion
+        $IsccParameters += '/DESPRESSIFIDEVERSION=' + $EspressifIdeVersion
         PrepareIdfEclipse
     } else {
         $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
