@@ -174,7 +174,7 @@ begin
     Exit;
   end;
 
-  DoCmdlineInstall(CustomMessage('ComponentEclipse'), CustomMessage('ComponentEclipse'), GetIdfEnvCommand('ide install --url "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-2.4.1-win32.win32.x86_64.zip" --file "Espressif-IDE-2.4.1-win32.win32.x86_64.zip" --destination "' + GetPathWithForwardSlashes(GetEclipsePath('')) + '"'));
+  DoCmdlineInstall(CustomMessage('ComponentEclipse'), CustomMessage('ComponentEclipse'), GetIdfEnvCommand(ExpandConstant('ide install --url "{#ECLIPSE_DOWNLOADURL}" --file "{#ECLIPSE_INSTALLER}" --destination "') + GetPathWithForwardSlashes(GetEclipsePath('')) + '"'));
 
   if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
     InstallIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\java.exe'), GetJdkDistZip(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\') );
