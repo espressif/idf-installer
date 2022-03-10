@@ -10,7 +10,7 @@ param (
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
-    $OfflineBranch = 'v4.3.2',
+    $OfflineBranch = 'v4.4',
     [String]
     $Python = 'python',
     [Boolean]
