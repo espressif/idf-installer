@@ -152,3 +152,4 @@ SummaryTargets=Ciele
 SummaryOptimization=Optimalizácia
 ComponentToitJaguar=Jazyk Toit - nástroj Jaguar s podporou live-reload (beta - jag.exe)
 InstallingToit=Inštalácia integrácie s Toit
+SettingEnvironmentVariable=Nastavovanie premennej prostredia

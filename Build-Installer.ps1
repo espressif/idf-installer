@@ -2,7 +2,7 @@
 param (
     [Parameter()]
     [String]
-    [ValidateSet('none', 'lzma')]
+    [ValidateSet('none', 'lzma', 'zip')]
     $Compression = 'lzma',
     [String]
     $IdfPythonWheelsVersion = '3.8-2022-01-27',
@@ -10,7 +10,7 @@ param (
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
-    $OfflineBranch = 'v4.3.2',
+    $OfflineBranch = 'v4.4',
     [String]
     $Python = 'python',
     [Boolean]
@@ -18,9 +18,11 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.23',
+    $IdfEnvVersion = '1.2.25',
     [String]
-    $EspressifIdeVersion = '2.4.2'
+    $EspressifIdeVersion = '2.4.2',
+    [String]
+    $JdkVersion = "jdk11.0.14_10"
 )
 
 # Stop on error
@@ -33,12 +35,14 @@ $ErrorView = 'NormalView'
 "Processing configuration:"
 "-Compression            = ${Compression}"
 "-IdfPythonWheelsVersion = ${IdfPythonWheelsVersion}"
+"-IdfEnvVersion          = ${IdfEnvVersion}"
 "-InstallerType          = ${InstallerType}"
+"-JdkVersion             = ${JdkVersion}"
 "-OfflineBranch          = ${OfflineBranch}"
 "-Python                 = ${Python}"
 "-SignInstaller          = ${SignInstaller}"
 "-SetupCompiler          = ${SetupCompiler}"
-"-IdfEnvVersion          = ${IdfEnvVersion}"
+
 
 function DownloadIdfVersions() {
     if (Test-Path -Path $Versions -PathType Leaf) {
@@ -64,6 +68,7 @@ function PrepareIdfPackage {
         $StripDirectory
     )
     $FullFilePath = Join-Path -Path $BasePath -ChildPath $FilePath
+    "Checking existence of file: $FullFilePath"
     if (Test-Path -Path $FullFilePath -PathType Leaf) {
         "$FullFilePath found."
         return
@@ -74,6 +79,7 @@ function PrepareIdfPackage {
     }
 
     $FullDistZipPath = Join-Path -Path $BasePath -ChildPath $DistZip
+    "Checking existence of dist: $FullDistZipPath"
     if (-Not(Test-Path -Path $FullDistZipPath -PathType Leaf)) {
         "Downloading $FullDistZipPath"
         Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
@@ -146,14 +152,14 @@ function PrepareIdfPython {
 
 function PrepareIdfPythonWheels {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion `
-        -FilePath version.txt `
+        -FilePath "itsdangerous*.whl" `
         -DistZip idf-python-wheels-$IdfPythonWheelsVersion-win64.zip `
         -DownloadUrl https://github.com/espressif/idf-python-wheels/releases/download/v${IdfPythonWheelsVersion}/idf-python-wheels-3.8-x86_64-pc-windows-msvc.zip
 }
 
 function PrepareIdfEclipse {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\amazon-corretto-11-x64-windows-jdk\ `
-        -FilePath jdk11.0.14_9\bin\java.exe `
+        -FilePath ${JdkVersion}\bin\java.exe `
         -DistZip amazon-corretto-11-x64-windows-jdk.zip `
         -DownloadUrl https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip
 
@@ -336,6 +342,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
         $IsccParameters += '/DAPPNAME=Espressif-IDE'
         $IsccParameters += '/DVERSION=' + $EspressifIdeVersion
         $IsccParameters += '/DESPRESSIFIDEVERSION=' + $EspressifIdeVersion
+        $IsccParameters += '/DJDKVERSION=' + $JdkVersion
         PrepareIdfEclipse
     } else {
         $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')

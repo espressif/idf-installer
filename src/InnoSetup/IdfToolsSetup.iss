@@ -40,6 +40,9 @@
 #define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/" + ECLIPSE_INSTALLER
 
 #define JDK_INSTALLER "amazon-corretto-11-x64-windows-jdk.zip"
+#ifndef JDKVERSION
+  #define JDKVERSION "jdk11.0.14_10"
+#endif
 #define JDK_DOWNLOADURL "https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip"
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
@@ -353,9 +356,9 @@ Type: filesandordirs; Name: "{app}\python_env"
 [Run]
 Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /norestart"; Description: {cm:RunInstallGit}; Check: GitInstallRequired
 
-#ifdef ESPRESSIFIDE
-Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
-#endif
+;#ifdef ESPRESSIFIDE
+;Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
+;#endif
 
 Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: {cm:RunPowerShell}; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"
 Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: {cm:RunCmd}; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}";
