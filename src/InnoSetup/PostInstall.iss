@@ -2,6 +2,11 @@
 { Copyright 2019-2021 Espressif Systems (Shanghai) CO LTD
   SPDX-License-Identifier: Apache-2.0 }
 
+procedure AppendEnvironmentVariable(VariableName: String; Value: String);
+begin
+  DoCmdlineInstall(CustomMessage('SettingEnvironmentVariable'), CustomMessage('SettingEnvironmentVariable'), GetIdfEnvCommand('shell append --variable "' + VariableName + '" --path "' + Value + '" '));
+end;
+
 { ------------------------------ Start menu shortcut ------------------------------ }
 
 { Store launcher paths so they can be invoked in post install phase declared in Run section. }
@@ -177,7 +182,7 @@ begin
   DoCmdlineInstall(CustomMessage('ComponentEclipse'), CustomMessage('ComponentEclipse'), GetIdfEnvCommand(ExpandConstant('ide install --url "{#ECLIPSE_DOWNLOADURL}" --file "{#ECLIPSE_INSTALLER}" --destination "') + GetPathWithForwardSlashes(GetEclipsePath('')) + '"'));
 
   if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
-    InstallIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\java.exe'), GetJdkDistZip(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\') );
+    InstallIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\java.exe'), GetJdkDistZip(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\') );
   end;
 end;
 
@@ -249,7 +254,7 @@ begin
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
-      AppendEnvironmentVariable('PATH', ';', ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\'));
+      AppendEnvironmentVariable('PATH', ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\'));
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin

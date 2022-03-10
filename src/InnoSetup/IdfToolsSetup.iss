@@ -40,6 +40,9 @@
 #define ECLIPSE_DOWNLOADURL "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/" + ECLIPSE_INSTALLER
 
 #define JDK_INSTALLER "amazon-corretto-11-x64-windows-jdk.zip"
+#ifndef JDKVERSION
+  #define JDKVERSION "jdk11.0.14_10"
+#endif
 #define JDK_DOWNLOADURL "https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip"
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"

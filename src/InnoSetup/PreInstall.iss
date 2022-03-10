@@ -130,7 +130,7 @@ begin
 
   PrepareIdfPackage(GetEclipseExePath(), GetEclipseDistZip(), '{#ECLIPSE_DOWNLOADURL}');
   if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
-    PrepareIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\jdk11.0.14_9\bin\java.exe'), GetJdkDistZip(), '{#JDK_DOWNLOADURL}');
+    PrepareIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\java.exe'), GetJdkDistZip(), '{#JDK_DOWNLOADURL}');
   end;
 end;
 
