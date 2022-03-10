@@ -4,7 +4,7 @@
 
 procedure AppendEnvironmentVariable(VariableName: String; Value: String);
 begin
-  DoCmdlineInstall(CustomMessage('SettingEnvironmentVariable'), CustomMessage('SettingEnvironmentVariable'), GetIdfEnvCommand('shell append --variable "' + VariableName + '" --path "' + Value + '" '));
+  DoCmdlineInstall(CustomMessage('SettingEnvironmentVariable'), CustomMessage('SettingEnvironmentVariable'), GetIdfEnvCommand('shell append --variable "' + VariableName + '" --path ' + Value + ' '));
 end;
 
 { ------------------------------ Start menu shortcut ------------------------------ }
