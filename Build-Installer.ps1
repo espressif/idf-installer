@@ -159,7 +159,7 @@ function PrepareIdfPythonWheels {
         # Patch requirements.txt to become resolvable
         $Requirements = "${WheelsDirectory}\requirements.txt"
         $regex = '^[^#].*windows-curses.*'
-        (Get-Content $BundleDir\requirements.txt) -replace $regex, '' | Set-Content $Requirements
+        (Get-Content $BundleDir\requirements.txt) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
         python3 -m pip download --python-version 3.8 `
             --only-binary=":all:" `
