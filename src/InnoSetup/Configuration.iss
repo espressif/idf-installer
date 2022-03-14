@@ -131,7 +131,7 @@ var
   MajorVersion: String;
   MinorVersion: String;
 begin
-  HeaderFileName := GetIDFPath('\components\esp_common\include\esp_idf_version.h');
+  HeaderFileName := GetIDFPath('components\esp_common\include\esp_idf_version.h');
   Log('Parsing version from header file: ' + HeaderFileName);
   if (not FileExists(HeaderFileName)) then begin
     Result := '';

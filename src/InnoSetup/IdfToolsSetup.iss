@@ -1,4 +1,4 @@
-; Copyright 2019-2021 Espressif Systems (Shanghai) CO LTD
+; Copyright 2019-2022 Espressif Systems (Shanghai) CO LTD
 ; SPDX-License-Identifier: Apache-2.0
 
 #pragma include __INCLUDE__ + ";" + ReadReg(HKLM, "Software\Mitrich Software\Inno Download Plugin", "InstallDir")
@@ -94,10 +94,7 @@
 #define BUILD = '..\..\build\' + INSTALLERBUILDTYPE
 
 #define COMPONENT_FRAMEWORK "framework"
-#define COMPONENT_FRAMEWORK_ESP_IDF_V4_4 = "framework/esp_idf_v4_4"
-#define COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2 = "framework/esp_idf_v4_3_2"
-#define COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2 = "framework/esp_idf_v4_2_2"
-#define COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2 = "framework/esp_idf_v4_1_2"
+#define COMPONENT_FRAMEWORK_ESP_IDF = "framework/esp_idf"
 
 #define COMPONENT_TOOLS = 'tools'
 #define COMPONENT_TOOLS_GIT = 'tools/git'
@@ -204,20 +201,8 @@ Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 ;Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
 
 ; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
-#ifdef FRAMEWORK_ESP_IDF_V4_4
-Source: "{#BUILD}\frameworks\esp-idf-v4.4\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.4"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_4}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
-#endif
-
-#ifdef FRAMEWORK_ESP_IDF_V4_3_2
-Source: "{#BUILD}\frameworks\esp-idf-v4.3.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.3.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
-#endif
-
-#ifdef FRAMEWORK_ESP_IDF_V4_2_2
-Source: "{#BUILD}\frameworks\esp-idf-v4.2.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.2.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
-#endif
-
-#ifdef FRAMEWORK_ESP_IDF_V4_1_2
-Source: "{#BUILD}\frameworks\esp-idf-v4.1.2\*"; DestDir: "\\?\{app}\frameworks\esp-idf-v4.1.2"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+#ifdef FRAMEWORK_ESP_IDF
+Source: "{#BUILD}\frameworks\*"; DestDir: "\\?\{app}\frameworks\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
 #endif
 
 #ifdef ESPRESSIFIDE
@@ -240,16 +225,13 @@ Source: "{#BUILD}\tools\openocd-esp32\*"; DestDir: "\\?\{app}\tools\openocd-esp3
 Source: "{#BUILD}\tools\xtensa-esp32-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
 Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s2-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
-#ifndef FRAMEWORK_ESP_IDF_V4_2_2
-#ifndef FRAMEWORK_ESP_IDF_V4_1_2
+#ifndef DISABLE_TARGET_ESP32_C3
 Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
+#endif
+
+#ifndef DISABLE_TARGET_ESP32_S3
 Source: "{#BUILD}\tools\xtensa-esp32s3-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s3-elf"; Components: "{#COMPONENT_TARGET_ESP32_S3}"; Flags: recursesubdirs skipifsourcedoesntexist;
 #endif
-#endif
-
-; esp-idf-bundle - bundle only in case it exists, it's used only in offline installer
-;Source: "{#BUILD}\frameworks\*"; DestDir: "{code:GetIDFPath}"; Flags: recursesubdirs skipifsourcedoesntexist;
-
 
 ; Helper Python files for sanity check of Python environment - used by system_check_page
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
@@ -265,20 +247,8 @@ Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 [Components]
 Name: "{#COMPONENT_FRAMEWORK}"; Description: "Frameworks"; Types: full custom; Flags: checkablealone
 
-#ifdef FRAMEWORK_ESP_IDF_V4_4
-Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_4}"; Description: "ESP-IDF v4.4"; Types: full custom; Flags: checkablealone
-#endif
-
-#ifdef FRAMEWORK_ESP_IDF_V4_3_2
-Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_3_2}"; Description: "ESP-IDF v4.3.2"; Types: full custom; Flags: checkablealone
-#endif
-
-#ifdef FRAMEWORK_ESP_IDF_V4_2_2
-Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_2_2}"; Description: "ESP-IDF v4.2.2"; Types: full custom; Flags: checkablealone
-#endif
-
-#ifdef FRAMEWORK_ESP_IDF_V4_1_2
-Name: "{#COMPONENT_FRAMEWORK_ESP_IDF_V4_1_2}"; Description: "ESP-IDF v4.1.2"; Types: full custom; Flags: checkablealone
+#ifdef FRAMEWORK_ESP_IDF
+Name: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Description: "ESP-IDF {#FRAMEWORK_ESP_IDF}"; Types: full custom; Flags: checkablealone
 #endif
 
 Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
@@ -309,19 +279,15 @@ Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Typ
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
 
-#ifndef FRAMEWORK_ESP_IDF_V4_2_2
-#ifndef FRAMEWORK_ESP_IDF_V4_1_2
+#ifndef DISABLE_TARGET_ESP32_C3
 Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; Types: full; Flags: checkablealone
-#endif
 #endif
 
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
 
-#ifndef FRAMEWORK_ESP_IDF_V4_2_2
-#ifndef FRAMEWORK_ESP_IDF_V4_1_2
+#ifndef DISABLE_TARGET_ESP32_S3
 Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
-#endif
 #endif
 
 

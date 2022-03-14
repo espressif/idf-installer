@@ -363,7 +363,7 @@ var
   TargetSupportTestCommand: String;
 begin
   IDFPath := GetIDFPath('');
-  IDFToolsPyPath := GetIDFPath('\tools\idf_tools.py');
+  IDFToolsPyPath := GetIDFPath('tools\idf_tools.py');
   BundledIDFToolsPyPath := ExpandConstant('{app}\idf_tools_fallback.py');
   JSONArg := '';
 

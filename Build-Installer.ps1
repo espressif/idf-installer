@@ -5,7 +5,7 @@ param (
     [ValidateSet('none', 'lzma', 'zip')]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2022-01-27',
+    $IdfPythonWheelsVersion = '3.8-2022-03-14',
     [String]
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
@@ -43,6 +43,7 @@ $ErrorView = 'NormalView'
 "-SignInstaller          = ${SignInstaller}"
 "-SetupCompiler          = ${SetupCompiler}"
 
+$BundleDir="build\$InstallerType\frameworks\esp-idf-${OfflineBranch}"
 
 function DownloadIdfVersions() {
     if (Test-Path -Path $Versions -PathType Leaf) {
@@ -151,10 +152,21 @@ function PrepareIdfPython {
 }
 
 function PrepareIdfPythonWheels {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion `
-        -FilePath "itsdangerous*.whl" `
-        -DistZip idf-python-wheels-$IdfPythonWheelsVersion-win64.zip `
-        -DownloadUrl https://github.com/espressif/idf-python-wheels/releases/download/v${IdfPythonWheelsVersion}/idf-python-wheels-3.8-x86_64-pc-windows-msvc.zip
+    $WheelsDirectory = "build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion"
+    if (!( Test-Path -Path $WheelsDirectory -PathType Container )) {
+        mkdir $WheelsDirectory
+
+        # Patch requirements.txt to become resolvable
+        $Requirements = "${WheelsDirectory}\requirements.txt"
+        $regex = '^[^#].*windows-curses.*'
+        (Get-Content $BundleDir\requirements.txt) -replace $regex, '' | Set-Content $Requirements
+
+        python3 -m pip download --python-version 3.8 `
+            --only-binary=":all:" `
+            --extra-index-url "https://dl.espressif.com/pypi/" `
+            -r ${Requirements} `
+            -d ${WheelsDirectory}
+    }
 }
 
 function PrepareIdfEclipse {
@@ -175,8 +187,6 @@ function PrepareIdfDriver {
 }
 
 function PrepareOfflineBranches {
-    $BundleDir="build\$InstallerType\frameworks\esp-idf-${OfflineBranch}"
-
     if ( Test-Path -Path $BundleDir -PathType Container ) {
         git -C "$BundleDir" fetch
     } else {
@@ -320,7 +330,13 @@ PrepareIdfEnv
 if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
     $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch.Replace('v', '')
-    $IsccParameters += '/DFRAMEWORK_ESP_IDF_' + $OfflineBranch.Replace('v','V').Replace('.','_')
+    $IsccParameters += '/DFRAMEWORK_ESP_IDF=' + $OfflineBranch
+
+    if (($OfflineBranch -like 'v4.1*') -or ($OfflineBranch -like 'v4.2*') ){
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C3'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_S3'
+    }
+
     if ($Compression -eq 'none') {
         $IsccParameters += '/DDISKSPANNING=yes'
     }
@@ -336,7 +352,6 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     PrepareIdfDriver
     PrepareIdfGit
     PrepareIdfPython
-    PrepareIdfPythonWheels
     if ('espressif-ide' -eq $InstallerType) {
         $IsccParameters += '/DESPRESSIFIDE=yes'
         $IsccParameters += '/DAPPNAME=Espressif-IDE'
@@ -350,6 +365,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     }
     "${OfflineBranch}" > $Versions
     PrepareOfflineBranches
+    PrepareIdfPythonWheels
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
     $IsccParameters += '/DESPRESSIFIDE=yes'
