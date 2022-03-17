@@ -12,6 +12,11 @@ begin
   Result := GetEclipsePath('espressif-ide.exe');
 end;
 
+function GetEclipseIniPath():String;
+begin
+  Result := GetEclipsePath('espressif-ide.ini');
+end;
+
 procedure CreateIDFEclipseShortcut(LnkString: String);
 var
   Destination: String;
