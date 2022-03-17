@@ -3,9 +3,21 @@
   SPDX-License-Identifier: Apache-2.0 }
 
 procedure AppendEnvironmentVariable(VariableName: String; Value: String);
+var
+  Command: String;
 begin
-  DoCmdlineInstall(CustomMessage('SettingEnvironmentVariable'), CustomMessage('SettingEnvironmentVariable'), GetIdfEnvCommand('shell append --variable "' + VariableName + '" --path ' + Value + ' '));
+  Command := GetIdfEnvCommand('shell append --variable "' + VariableName + '" --path ' + Value + ' ')
+  DoCmdlineInstall(CustomMessage('SettingEnvironmentVariable'), CustomMessage('SettingEnvironmentVariable'), Command);
 end;
+
+procedure SetEspressifIdeVM(IniPath: String; VmPah: String);
+var
+  Command: String;
+begin
+  Command := GetIdfEnvCommand('ide configure --ini "' + IniPath + '" --vm "' + VmPah + '"')
+  DoCmdlineInstall(CustomMessage('SettingEnvironmentVariable'), CustomMessage('SettingEnvironmentVariable'), Command);
+end;
+
 
 { ------------------------------ Start menu shortcut ------------------------------ }
 
@@ -254,7 +266,7 @@ begin
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
-      AppendEnvironmentVariable('PATH', ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\'));
+      SetEspressifIdeVM(GetEclipseIniPath(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\javaw.exe'));
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin
