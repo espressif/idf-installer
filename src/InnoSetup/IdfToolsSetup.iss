@@ -14,7 +14,7 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.13"
+#define MyAppVersion "2.14"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."

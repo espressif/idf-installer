@@ -115,7 +115,7 @@ begin
     RequirementsPath := IDFPath + '\requirements.txt';
     RequirementsPathV5 := IDFPath + '\requirements.core.txt';
     RequirementsPathV5Tools := IDFPath + '\tools\requirements\requirements.core.txt';
-    if (not FileExists(RequirementsPath)) and (not FileExists(RequirementsPathV5)) 
+    if (not FileExists(RequirementsPath)) and (not FileExists(RequirementsPathV5))
       and (not FileExists(RequirementsPathV5Tools)) then
     begin
       MessageBox(NotSupportedMsg +
@@ -170,6 +170,13 @@ begin
     if (Length(ToolsDir) > 90) then begin
       MessageBox(CustomMessage('ErrorTooLongToolsPath'), mbError, MB_OK);
       Result := False;
+      exit;
+    end;
+
+    if Pos(' ', ToolsDir) <> 0 then
+    begin
+      MessageBox(CustomMessage('SpacesInPathNotSupported') + #13#10 +
+             CustomMessage('ChooseDifferentDirectory'), mbError, MB_OK);
       exit;
     end;
 
