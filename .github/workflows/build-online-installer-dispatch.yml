@@ -19,7 +19,7 @@ jobs:
       id: get_latest_release
       with:
         # route: GET /repos/{owner}/{repo}/releases/latest
-        route: GET /repos/{owner}/{repo}/releases/preview-3.x
+        route: GET /repos/{owner}/{repo}/releases/tags/preview-3.x
         owner: espressif
         repo: idf-installer
       env:
