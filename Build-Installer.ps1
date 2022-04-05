@@ -255,7 +255,7 @@ function SignInstaller {
         $SignParameters += "/p"
         $SignParameters += $env:CERTIFICATE_PASSWORD
     }
-    $SignParameters += "build\${OutputFileBaseName}.exe"
+    $SignParameters += "${OutputFileBaseName}.exe"
 
     [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
     "File: $CertificateFile"
@@ -264,8 +264,8 @@ function SignInstaller {
     &$SignTool $SignParameters
 
     if (0 -eq $LASTEXITCODE) {
-        mv build\${OutputFileBaseName}.exe build\$OutputFileSigned
-        Get-ChildItem -l build\$OutputFileSigned
+        mv ${OutputFileBaseName}.exe $OutputFileSigned
+        Get-ChildItem -l $OutputFileSigned
         Remove-Item $CertificateFile
     } else {
         Remove-Item $CertificateFile
@@ -280,8 +280,8 @@ if ('espressif-ide' -eq $InstallerType) {
     $OutputFileBaseName = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-unsigned"
     $OutputFileSigned = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-signed.exe"
 } else {
-    $OutputFileBaseName = "build/src-tauri/target/release/idf-installer"
-    $OutputFileSigned = "uild/src-tauri/target/release/idf-installer-signed.exe"
+    $OutputFileBaseName = "src-tauri/target/release/idf-installer"
+    $OutputFileSigned = "src-tauri/target/release/idf-installer-signed.exe"
 }
 
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
@@ -340,7 +340,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     PrepareOfflineBranches
     PrepareIdfPythonWheels
 } elseif ('online' -eq $InstallerType) {
-    DownloadIdfVersions
+    # DownloadIdfVersions
     $IsccParameters += '/DESPRESSIFIDE=yes'
     $IsccParameters += '/DOFFLINE=no'
 } else {
