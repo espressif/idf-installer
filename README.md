@@ -1,5 +1,7 @@
 # ESP-IDF Tools Installer for Windows
 
+## Work In Progress on Installer version 3 - Experimental - Please use main branch for official version
+
 ## Download
 
 ESP-IDF Tools Installer for Windows download page: https://dl.espressif.com/dl/esp-idf/

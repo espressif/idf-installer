@@ -1,0 +1,33 @@
+{
+  "package": {
+    "productName": "idf-installer",
+    "version": "3.0.0"
+  },
+  "build": {
+    "distDir": "Set automatically by Vue CLI plugin",
+    "devPath": "Set automatically by Vue CLI plugin",
+    "withGlobalTauri": true,
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "tauri": {
+    "updater": {
+      "active": false
+    },
+    "allowlist": {
+      "all": true
+    },
+    "windows": [
+      {
+        "title": "ESP-IDF Installer 3 (preview)",
+        "width": 900,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "'unsafe-eval' 'unsafe-inline'"
+    }
+  }
+}
