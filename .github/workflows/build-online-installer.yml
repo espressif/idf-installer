@@ -18,9 +18,10 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: get_latest_release
       with:
-        route: GET /repos/{owner}/{repo}/releases/latest
-        owner: georgik
-        repo: idf-installer-tauri
+        #route: GET /repos/{owner}/{repo}/releases/latest
+        route: GET /repos/{owner}/{repo}/releases/tag/untagged-a7c69a969e15962b4f94
+        owner: espressif
+        repo: idf-installer
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: get upload url
@@ -48,7 +49,7 @@ jobs:
           ASSET_NAME: 'idf-installer-linux'
           ASSET_CONTENT_TYPE: 'application/octet-stream'
         - os: windows-latest
-          ASSET_PATH: 'src-tauri/target/release/idf-installer.exe'
+          ASSET_PATH: 'src-tauri/target/release/idf-installer-signed.exe'
           ASSET_NAME: 'idf-installer-windows.exe'
           ASSET_CONTENT_TYPE: 'application/octet-stream'
     steps:
@@ -70,6 +71,10 @@ jobs:
         run: yarn && yarn build
       - name: build the app - Rust part
         run: yarn tauri:build
+      - name: Sign binary
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: .\Build-Installer.ps1
       - name: Upload Release Asset
         if: github.event.inputs.upload_artifacts == 'yes'
         id: upload-release-asset

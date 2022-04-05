@@ -117,20 +117,6 @@ function PrepareIdfFile {
     Invoke-WebRequest -O $FullFilePath $DownloadUrl
 }
 
-function PrepareIdfCmdlinerunner {
-    PrepareIdfPackage -BasePath build\$InstallerType\lib `
-        -FilePath cmdlinerunner.dll `
-        -DistZip idf-cmdlinerunner-1.0.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-cmdlinerunner/idf-cmdlinerunner-1.0.zip
-}
-
-function PrepareIdf7za {
-    PrepareIdfPackage -BasePath build\$InstallerType\lib `
-        -FilePath 7za.exe `
-        -DistZip idf-7za.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-7za/idf-7za-19.0.zip
-}
-
 function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
@@ -289,25 +275,13 @@ function SignInstaller {
 
 }
 
-function CheckInnoSetupInstallation {
-    if (Get-Command $SetupCompiler -ErrorAction SilentlyContinue) {
-        "Inno Setup found"
-        return
-    }
-    "Inno Setup not found in PATH. Please install as Administrator following dependencies:"
-    "choco install innosetup inno-download-plugin"
-    Exit 1
-}
-
-CheckInnoSetupInstallation
-
 if ('espressif-ide' -eq $InstallerType) {
     $EspIdfBranchVersion = $OfflineBranch.Replace('v', '')
     $OutputFileBaseName = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-unsigned"
     $OutputFileSigned = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-signed.exe"
 } else {
-    $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
-    $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
+    $OutputFileBaseName = "build/src-tauri/target/release/idf-installer"
+    $OutputFileSigned = "uild/src-tauri/target/release/idf-installer-signed.exe"
 }
 
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
@@ -323,9 +297,8 @@ $IsccParameters += "/DDIST=..\..\build\$InstallerType"
 if (-Not(Test-Path build/$InstallerType/lib -PathType Container)) {
     New-Item build/$InstallerType/lib -Type Directory
 }
-PrepareIdfCmdlinerunner
-PrepareIdf7za
-PrepareIdfEnv
+
+# PrepareIdfEnv
 
 if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
@@ -374,21 +347,21 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=no'
 }
 
-$IsccParameters += "/DINSTALLERBUILDTYPE=$InstallerType"
+# $IsccParameters += "/DINSTALLERBUILDTYPE=$InstallerType"
 
-$IsccParameters += ".\src\InnoSetup\IdfToolsSetup.iss"
-$IsccParameters += "/F$OutputFileBaseName"
+# $IsccParameters += ".\src\InnoSetup\IdfToolsSetup.iss"
+# $IsccParameters += "/F$OutputFileBaseName"
 
-$Command = "$SetupCompiler $IsccParameters"
-$Command
-&$SetupCompiler $IsccParameters
-if (0 -eq $LASTEXITCODE) {
-    $Command
-    Get-ChildItem -l build\$OutputFileName
-} else {
-    "Build failed!"
-    Exit 1
-}
+# $Command = "$SetupCompiler $IsccParameters"
+# $Command
+# &$SetupCompiler $IsccParameters
+# if (0 -eq $LASTEXITCODE) {
+#     $Command
+#     Get-ChildItem -l build\$OutputFileName
+# } else {
+#     "Build failed!"
+#     Exit 1
+# }
 
 if ($true -eq $SignInstaller) {
     SignInstaller
