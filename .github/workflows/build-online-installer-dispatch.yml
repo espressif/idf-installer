@@ -53,6 +53,15 @@ jobs:
           ASSET_NAME: 'idf-installer-windows.exe'
           ASSET_CONTENT_TYPE: 'application/octet-stream'
     steps:
+      - name: Check secrets
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        env:
+          CERTIFICATE: ${{ secrets.CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+        run: |
+          if ($null -eq $env:CERTIFICATE) { "CERTIFICATE variable not set"; Exit 1 }
+          if ($null -eq $env:CERTIFICATE_PASSWORD) { "CERTIFICATE_PASSWORD variable not set"; Exit 1 }
       - uses: actions/checkout@v2
       - name: setup node
         uses: actions/setup-node@v1
@@ -74,6 +83,9 @@ jobs:
       - name: Sign binary
         if: matrix.os == 'windows-latest'
         shell: pwsh
+        env:
+          CERTIFICATE: ${{ secrets.CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         run: .\Build-Installer.ps1
       - name: Upload Release Asset
         if: github.event.inputs.upload_artifacts == 'yes'
