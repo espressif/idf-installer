@@ -18,8 +18,8 @@ jobs:
     - uses: octokit/request-action@v2.x
       id: get_latest_release
       with:
-        #route: GET /repos/{owner}/{repo}/releases/latest
-        route: GET /repos/{owner}/{repo}/releases/untagged-a7c69a969e15962b4f94
+        # route: GET /repos/{owner}/{repo}/releases/latest
+        route: GET /repos/{owner}/{repo}/releases/preview-3.x
         owner: espressif
         repo: idf-installer
       env:
