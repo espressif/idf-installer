@@ -74,6 +74,9 @@ jobs:
       - name: Sign binary
         if: matrix.os == 'windows-latest'
         shell: pwsh
+        env:
+          CERTIFICATE: ${{ secrets.CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         run: .\Build-Installer.ps1
       - name: Upload Release Asset
         if: github.event.inputs.upload_artifacts == 'yes'
