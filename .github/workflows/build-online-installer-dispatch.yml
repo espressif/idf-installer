@@ -73,6 +73,9 @@ jobs:
         run: yarn tauri:build
       - name: Sign binary
         if: matrix.os == 'windows-latest'
+        env:
+          CERTIFICATE: ${{ secrets.CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         run: .\Build-Installer.ps1
       - name: Upload Release Asset
