@@ -1,6 +1,6 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <HelloWorld msg="Welcome to ESP-IDF Installer 3 (preview)"/>
+  <FrameworkSelector msg="Welcome to ESP-IDF Installer 3 (preview)"/>
 </template>
 
 <script>
