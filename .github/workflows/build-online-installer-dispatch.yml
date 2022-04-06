@@ -49,7 +49,7 @@ jobs:
           ASSET_NAME: 'idf-installer-x86_64-linux'
           ASSET_CONTENT_TYPE: 'application/octet-stream'
         - os: windows-latest
-          ASSET_PATH: 'src-tauri/target/release/idf-installer-signed.exe'
+          ASSET_PATH: 'src-tauri/target/release/idf-installer.exe'
           ASSET_NAME: 'idf-installer-x86_64-windows.exe'
           ASSET_CONTENT_TYPE: 'application/octet-stream'
     steps:
