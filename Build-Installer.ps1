@@ -264,9 +264,9 @@ function SignInstaller {
     &$SignTool $SignParameters
 
     if (0 -eq $LASTEXITCODE) {
-        "mv ${OutputFileBaseName}.exe $OutputFileSigned"
-        mv ${OutputFileBaseName}.exe $OutputFileSigned
-        Get-ChildItem -l $OutputFileSigned
+        # "mv ${OutputFileBaseName}.exe $OutputFileSigned"
+        # mv ${OutputFileBaseName}.exe $OutputFileSigned
+        # Get-ChildItem -l $OutputFileSigned
         Remove-Item $CertificateFile
     } else {
         Remove-Item $CertificateFile
