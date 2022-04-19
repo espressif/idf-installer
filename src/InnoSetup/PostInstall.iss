@@ -224,22 +224,21 @@ begin
   try
     AddPythonGitToPath();
 
-    if not IDFUseExisting then begin
-      if not (IsOfflineMode) then begin
-        IDFDownloadInstall();
-      end;
-    end;
-
-    InstallRust();
-    InstallToit();
-
     if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}')) then
     begin
       SetEnvironmentVariable('IDF_GITHUB_ASSETS', 'dl.espressif.com/github_assets')
     end;
 
-    IDFToolsSetup();
-    SaveIdfConfiguration(ExpandConstant('{app}\esp_idf.json'));
+    if (WizardIsComponentSelected('{#COMPONENT_FRAMEWORK}')) then begin
+      if not IDFUseExisting then begin
+        if not (IsOfflineMode) then begin
+            IDFDownloadInstall();
+        end;
+      end;
+
+      IDFToolsSetup();
+      SaveIdfConfiguration(ExpandConstant('{app}\esp_idf.json'));
+    end;
 
     if (WizardIsComponentSelected('{#COMPONENT_POWERSHELL_WINDOWS_TERMINAL}')) then begin
       CreateIDFWindowsTerminalShortcut();
@@ -272,6 +271,9 @@ begin
     if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_DESKTOP}')) then begin
       CreateIDFEclipseShortcut('{autodesktop}');
     end;
+
+    InstallRust();
+    InstallToit();
 
   except
     SetupAborted := True;

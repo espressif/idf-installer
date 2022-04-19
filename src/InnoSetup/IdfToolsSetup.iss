@@ -245,13 +245,13 @@ Name: "minimal"; Description: {cm:InstallationMinimal}
 Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 
 [Components]
-Name: "{#COMPONENT_FRAMEWORK}"; Description: "Frameworks"; Types: full custom; Flags: checkablealone
+Name: "{#COMPONENT_FRAMEWORK}"; Description: "Frameworks"; Types: full minimal custom;
 
 #ifdef FRAMEWORK_ESP_IDF
 Name: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Description: "ESP-IDF {#FRAMEWORK_ESP_IDF}"; Types: full custom; Flags: checkablealone
 #endif
 
-Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom; Flags: fixed
+Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 
 #ifdef ESPRESSIFIDE
 Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
@@ -272,7 +272,7 @@ Name: "{#COMPONENT_POWERSHELL_STARTMENU}"; Description: {cm:ComponentStartMenuSh
 Name: "{#COMPONENT_CMD}"; Description: {cm:ComponentCommandPrompt}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_CMD_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full
 Name: "{#COMPONENT_CMD_STARTMENU}"; Description: {cm:ComponentStartMenuShortcut}; Types: full
-Name: "{#COMPONENT_DRIVER}"; Description: {cm:ComponentDrivers}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER}"; Description: {cm:ComponentDrivers}; Types: full;
 Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: {cm:ComponentDriverEspressif}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: {cm:ComponentDriverFtdi}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Types: full; Flags: checkablealone
