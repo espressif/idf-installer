@@ -22,7 +22,7 @@ param (
     [String]
     $EspressifIdeVersion = '2.4.2',
     [String]
-    $JdkVersion = "jdk11.0.15_10"
+    $JdkVersion = "jdk11.0.15_9"
 )
 
 # Stop on error
