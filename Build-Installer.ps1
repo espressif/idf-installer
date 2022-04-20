@@ -18,11 +18,11 @@ param (
     [String]
     $SetupCompiler = 'iscc',
     [String]
-    $IdfEnvVersion = '1.2.26',
+    $IdfEnvVersion = '1.2.27',
     [String]
     $EspressifIdeVersion = '2.4.2',
     [String]
-    $JdkVersion = "jdk11.0.14_10"
+    $JdkVersion = "jdk11.0.15_9"
 )
 
 # Stop on error
