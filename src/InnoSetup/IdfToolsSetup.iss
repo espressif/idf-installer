@@ -41,7 +41,7 @@
 
 #define JDK_INSTALLER "amazon-corretto-11-x64-windows-jdk.zip"
 #ifndef JDKVERSION
-  #define JDKVERSION "jdk11.0.14_10"
+  #define JDKVERSION "jdk11.0.15_10"
 #endif
 #define JDK_DOWNLOADURL "https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip"
 
