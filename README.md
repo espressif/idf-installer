@@ -141,7 +141,7 @@ Some functionality of the installer depends on additional programs:
 
 * [7-zip](https://www.7-zip.org) — used to extract downloaded IDF archives.
 
-* [cmdlinerunner](cmdlinerunner/cmdlinerunner.c) — a helper DLL used to run external command-line programs from the installer, capture live console output, and get the exit code.
+* [cmdlinerunner](https://github.com/espressif/innosetup-cmdlinerunner/blob/main/cmdlinerunner.c) — a helper DLL used to run external command-line programs from the installer, capture live console output, and get the exit code.
 
 ## Installation of dependencies via Chocolatey
 
@@ -283,7 +283,7 @@ Select Run - Parameters in Inno Setup and add parameters.
 Example of parameters:
 
 ```
-/SKIPSYSTEMCHECK=yes /IDFVERSIONSURL=http://localhost:8000/idf_versions.txt /GITRESET=no /GITREPO=C:/projects/esp-idf /GITRECURSIVE=no
+/SKIPSYSTEMCHECK=yes /IDFVERSIONSURL=https://dl.espressif.com/dl/esp-idf/idf_versions.txt /GITRESET=no /GITREPO=C:/projects/esp-idf /GITRECURSIVE=no
 ```
 
 These combinations of parameters will result:
@@ -362,10 +362,10 @@ Use the following command to copy the installer to Hyper-V machine with the name
 
 ## Contributing L10N
 
-Localization messages for the installer are stored in [src/InnoSetup/Languages](tree/main/src/InnoSetup/Languages).
+Localization messages for the installer are stored in [src/InnoSetup/Languages](https://github.com/espressif/idf-installer/tree/main/src/InnoSetup/Languages).
 
 Adding new localization: 
-- create issue on [GitHub](issues)
+- create issue on [GitHub](https://github.com/espressif/idf-installer/issues)
 - register new language in src/InnoSetup/IdfToolsSetup.iss
 
 Files can be converted to XLIFF using Translate Toolkit - ini2po and po2xliff.

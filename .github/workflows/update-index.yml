@@ -10,6 +10,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.4.1
+        with:
+          args: --verbose --no-progress './README.md' './src/Resources/download/index.html'
+          fail: true
       - name: Upload index.html To dl.espressif.com
         id: upload-index-espressif
         env:
