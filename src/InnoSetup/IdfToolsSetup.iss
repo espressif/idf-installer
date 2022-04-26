@@ -43,7 +43,11 @@
 #ifndef JDKVERSION
   #define JDKVERSION "jdk11.0.15_9"
 #endif
-#define JDK_DOWNLOADURL "https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip"
+
+#ifndef JDKARTIFACTVERSION
+  #define JDKARTIFACTVERSION  "11.0.15.9.1"
+#endif
+#define JDK_DOWNLOADURL "https://corretto.aws/downloads/resources/" + JDKARTIFACTVERSION + "/amazon-corretto-" + JDKARTIFACTVERSION + "-windows-x64-jdk.zip"
 
 #define IDFVersionsURL "https://dl.espressif.com/dl/esp-idf/idf_versions.txt"
 

@@ -180,6 +180,10 @@ procedure InstallEclipse();
 var
   FilePath: String;
 begin
+  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
+    InstallIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\java.exe'), GetJdkDistZip(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\') );
+  end;
+
   if (not WizardIsComponentSelected('{#COMPONENT_ECLIPSE}')) then begin
     Exit;
   end;
@@ -192,10 +196,6 @@ begin
   end;
 
   DoCmdlineInstall(CustomMessage('ComponentEclipse'), CustomMessage('ComponentEclipse'), GetIdfEnvCommand(ExpandConstant('ide install --url "{#ECLIPSE_DOWNLOADURL}" --file "{#ECLIPSE_INSTALLER}" --destination "') + GetPathWithForwardSlashes(GetEclipsePath('')) + '"'));
-
-  if (WizardIsComponentSelected('{#COMPONENT_ECLIPSE_JDK}')) then begin
-    InstallIdfPackage(ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\{#JDKVERSION}\bin\java.exe'), GetJdkDistZip(), ExpandConstant('{app}\tools\amazon-corretto-11-x64-windows-jdk\') );
-  end;
 end;
 
 <event('CurStepChanged')>

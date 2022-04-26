@@ -22,7 +22,9 @@ param (
     [String]
     $EspressifIdeVersion = '2.4.2',
     [String]
-    $JdkVersion = "jdk11.0.15_9"
+    $JdkVersion = "jdk11.0.15_9",
+    [String]
+    $JdkArtifactVersion = "11.0.15.9.1"
 )
 
 # Stop on error
@@ -38,6 +40,7 @@ $ErrorView = 'NormalView'
 "-IdfEnvVersion          = ${IdfEnvVersion}"
 "-InstallerType          = ${InstallerType}"
 "-JdkVersion             = ${JdkVersion}"
+"-JdkArtifactVersion     = ${JdkArtifactVersion}"
 "-OfflineBranch          = ${OfflineBranch}"
 "-Python                 = ${Python}"
 "-SignInstaller          = ${SignInstaller}"
@@ -173,7 +176,7 @@ function PrepareIdfEclipse {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\amazon-corretto-11-x64-windows-jdk\ `
         -FilePath ${JdkVersion}\bin\java.exe `
         -DistZip amazon-corretto-11-x64-windows-jdk.zip `
-        -DownloadUrl https://corretto.aws/downloads/latest/amazon-corretto-11-x64-windows-jdk.zip
+        -DownloadUrl https://corretto.aws/downloads/resources/${JdkArtifactVersion}/amazon-corretto-${JdkArtifactVersion}-windows-x64-jdk.zip
 
     PrepareIdfPackage -BasePath build\$InstallerType\tools\espressif-ide\${EspressifIdeVersion} `
         -FilePath espressif-ide.exe `
@@ -358,6 +361,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
         $IsccParameters += '/DVERSION=' + $EspressifIdeVersion
         $IsccParameters += '/DESPRESSIFIDEVERSION=' + $EspressifIdeVersion
         $IsccParameters += '/DJDKVERSION=' + $JdkVersion
+        $IsccParameters += '/DJDKARTIFACTVERSION=' + $JdkArtifactVersion
         PrepareIdfEclipse
     } else {
         $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
@@ -368,6 +372,8 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     PrepareIdfPythonWheels
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
+    $IsccParameters += '/DJDKVERSION=' + $JdkVersion
+    $IsccParameters += '/DJDKARTIFACTVERSION=' + $JdkArtifactVersion
     $IsccParameters += '/DESPRESSIFIDE=yes'
     $IsccParameters += '/DOFFLINE=no'
 } else {
