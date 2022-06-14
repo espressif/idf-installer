@@ -20,7 +20,7 @@ param (
     [String]
     $IdfEnvVersion = '1.2.27',
     [String]
-    $EspressifIdeVersion = '2.4.2',
+    $EspressifIdeVersion = '2.5.0',
     [String]
     $JdkVersion = "jdk11.0.15_9",
     [String]
