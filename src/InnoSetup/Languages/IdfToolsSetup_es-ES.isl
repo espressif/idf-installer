@@ -147,6 +147,6 @@ SummaryComponents=Components
 SummaryDrivers=Drivers
 SummaryTargets=Targets
 SummaryOptimization=Optimization
-ComponentToitJaguar=Toit language support - Jaguar live reloading tool (beta - jag.exe)
+ComponentToitJaguar=Toit language support - Jaguar live reloading tool (jag.exe)
 InstallingToit=Installing Toit language
 SettingEnvironmentVariable=Setting environment variable

@@ -150,6 +150,6 @@ SummaryComponents=Komponenty
 SummaryDrivers=Ovladače
 SummaryTargets=Ciele
 SummaryOptimization=Optimilizace
-ComponentToitJaguar=Jazyk Toit - nástroj Jaguar s podporou pro live-reload (beta - jag.exe)
+ComponentToitJaguar=Jazyk Toit - nástroj Jaguar s podporou pro live-reload (jag.exe)
 InstallingToit=Instalace integrace s Toit
 SettingEnvironmentVariable=Konfigurace proměnné prostředí
