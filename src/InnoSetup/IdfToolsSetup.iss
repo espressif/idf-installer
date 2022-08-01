@@ -14,7 +14,7 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.15"
+#define MyAppVersion "2.16"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
@@ -119,6 +119,7 @@
 #define COMPONENT_DRIVER_FTDI = "driver/ftdi"
 #define COMPONENT_DRIVER_SILABS = "driver/silabs"
 #define COMPONENT_DRIVER_ESPRESSIF = "driver/espressif"
+#define COMPONENT_DRIVER_WCH = "driver/wch"
 #define COMPONENT_TARGET = "target"
 #define COMPONENT_TARGET_ESP32 = "target/esp32"
 #define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
@@ -280,6 +281,7 @@ Name: "{#COMPONENT_DRIVER}"; Description: {cm:ComponentDrivers}; Types: full;
 Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: {cm:ComponentDriverEspressif}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: {cm:ComponentDriverFtdi}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_WCH}"; Description: {cm:ComponentDriverWch}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
 

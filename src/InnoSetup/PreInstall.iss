@@ -151,6 +151,10 @@ begin
     DriverList := DriverList + ' --espressif'
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_WCH}')) then begin
+    DriverList := DriverList + ' --wch'
+  end;
+
   if (Length(DriverList) > 0) then begin
     InstallDrivers(DriverList);
   end;
