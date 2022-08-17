@@ -180,7 +180,6 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand(CommandLine));
-    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), 'refreshenv');
   end;
 end;
 
