@@ -4,7 +4,7 @@ param (
     [String]
     $IdfPath = "${HOME}/Desktop/esp-idf",
     [String]
-    $IdfShortVersion = "4.2"
+    $IdfShortVersion = "4.4"
 )
 
 # Stop if any command fails
