@@ -263,16 +263,16 @@ Name: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Description: "ESP-IDF {#FRAMEWORK_ESP_ID
 Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 
 #ifdef ESPRESSIFIDE
-#if OFFLINE == 'yes'
-Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
-Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
-#endif
-#if OFFLINE == 'no'
-#endif
-Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
-Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: custom
+  #if OFFLINE == 'yes'
+    Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
+    Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
+    Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
+  #endif
+  #if OFFLINE == 'no'
+    Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
+    Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
+    Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: custom
+  #endif
 #endif
 
 ; Following languages are supported only in online version
