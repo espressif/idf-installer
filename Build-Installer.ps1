@@ -10,7 +10,7 @@ param (
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
-    $OfflineBranch = 'v4.4',
+    $OfflineBranch = 'v4.4.2',
     [String]
     $Python = 'python',
     [Boolean]
@@ -20,7 +20,7 @@ param (
     [String]
     $IdfEnvVersion = '1.2.30',
     [String]
-    $EspressifIdeVersion = '2.5.0',
+    $EspressifIdeVersion = '2.6.0',
     [String]
     $JdkVersion = "jdk11.0.15_9",
     [String]
