@@ -56,6 +56,7 @@ ComponentRust=Soporte del lenguaje Rust
 ComponentRustGnu=Rust ESP toolchain for x86_64-pc-windows-gnu (requires MinGW)
 ComponentRustGnuMinGW=MinGW x86_64
 ComponentRustMsvc=Rust ESP toolchain for x86_64-pc-windows-msvc (requires Windows 10 SDK and MSVC C++)
+ComponentRustMsvcVctools=Windows 10 SDK and MSVC C++
 ComponentDesktopShortcut=Atajo de Escritorio
 ComponentPowerShell=PowerShell
 ComponentPowerShellWindowsTerminal=Menú de selección de Windows Terminal

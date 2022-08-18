@@ -176,6 +176,10 @@ begin
     CommandLine := CommandLine + ' --extra-tools=mingw';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+    CommandLine := CommandLine + ' --extra-tools=vctools';
+  end;
+
   CommandLine := CommandLine + ' --extra-crates=ldproxy';
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin

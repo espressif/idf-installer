@@ -55,6 +55,7 @@ ComponentRust=对 Xtensa 的 Rust 语言支持
 ComponentRustGnu=Rust ESP toolchain for x86_64-pc-windows-gnu (requires MinGW)
 ComponentRustGnuMinGW=MinGW x86_64
 ComponentRustMsvc=Rust ESP toolchain for x86_64-pc-windows-msvc (requires Windows 10 SDK and MSVC C++)
+ComponentRustMsvcVctools=Windows 10 SDK and MSVC C++
 ComponentDesktopShortcut=桌面快捷方式
 ComponentPowerShell=PowerShell
 ComponentPowerShellWindowsTerminal=Windows 终端下拉菜单

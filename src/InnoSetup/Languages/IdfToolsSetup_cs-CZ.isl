@@ -55,6 +55,7 @@ ComponentRust=Jazyk Rust
 ComponentRustGnu=Rust ESP toolchain x86_64-pc-windows-gnu (vužaduje MinGW)
 ComponentRustGnuMinGW=MinGW x86_64
 ComponentRustMsvc=Rust ESP toolchain x86_64-pc-windows-msvc (vyžaduje Windows 10 SDK a MSVC C++)
+ComponentRustMsvcVctools=Windows 10 SDK a MSVC C++
 ComponentDesktopShortcut=Odkaz na ploše
 ComponentPowerShell=PowerShell
 ComponentPowerShellWindowsTerminal=Windows Terminal rozbalovací menu

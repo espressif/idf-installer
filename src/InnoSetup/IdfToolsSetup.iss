@@ -110,6 +110,7 @@
 #define COMPONENT_RUST_GNU = 'ide/rust/gnu'
 #define COMPONENT_RUST_GNU_MINGW = 'ide/rust/gnu/mingw'
 #define COMPONENT_RUST_MSVC = 'ide/rust/msvc'
+#define COMPONENT_RUST_MSVC_VCTOOLS = 'ide/rust/msvc/vctools'
 #define COMPONENT_TOIT_JAGUAR = 'ide/toitjaguar'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
 #define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
@@ -277,9 +278,10 @@ Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: custom
 ; Following languages are supported only in online version
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
-Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom
-Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom
-Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom
+Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
 
