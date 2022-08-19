@@ -54,8 +54,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4-signed.exe
-          asset_name: espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.exe
+          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4.2-signed.exe
+          asset_name: espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.2.exe
           asset_content_type: application/octet-stream
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
