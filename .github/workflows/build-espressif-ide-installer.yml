@@ -36,7 +36,7 @@ jobs:
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         working-directory: "P:"
-        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch v4.4
+        run: .\Build-Installer.ps1 -InstallerType espressif-ide
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
