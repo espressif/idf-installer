@@ -14,7 +14,7 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.15"
+#define MyAppVersion "2.16"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
@@ -33,7 +33,7 @@
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
 #ifndef ESPRESSIFIDEVERSION
-  #define ESPRESSIFIDEVERSION "2.5.0"
+  #define ESPRESSIFIDEVERSION "2.6.0"
 #endif
 
 #define ECLIPSE_INSTALLER "Espressif-IDE-" + ESPRESSIFIDEVERSION + "-win32.win32.x86_64.zip"
@@ -107,6 +107,10 @@
 #define COMPONENT_ECLIPSE_JDK = 'ide/eclipse/jdk'
 #define COMPONENT_ECLIPSE_DESKTOP = 'ide/eclipse/desktop'
 #define COMPONENT_RUST = 'ide/rust'
+#define COMPONENT_RUST_GNU = 'ide/rust/gnu'
+#define COMPONENT_RUST_GNU_MINGW = 'ide/rust/gnu/mingw'
+#define COMPONENT_RUST_MSVC = 'ide/rust/msvc'
+#define COMPONENT_RUST_MSVC_VCTOOLS = 'ide/rust/msvc/vctools'
 #define COMPONENT_TOIT_JAGUAR = 'ide/toitjaguar'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
 #define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
@@ -119,6 +123,7 @@
 #define COMPONENT_DRIVER_FTDI = "driver/ftdi"
 #define COMPONENT_DRIVER_SILABS = "driver/silabs"
 #define COMPONENT_DRIVER_ESPRESSIF = "driver/espressif"
+#define COMPONENT_DRIVER_WCH = "driver/wch"
 #define COMPONENT_TARGET = "target"
 #define COMPONENT_TARGET_ESP32 = "target/esp32"
 #define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
@@ -258,14 +263,25 @@ Name: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Description: "ESP-IDF {#FRAMEWORK_ESP_ID
 Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 
 #ifdef ESPRESSIFIDE
-Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
-Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
+  #if OFFLINE == 'yes'
+    Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
+    Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: full custom
+    Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: full custom
+  #endif
+  #if OFFLINE == 'no'
+    Name: "{#COMPONENT_ECLIPSE}"; Description: {cm:ComponentEclipse}; Types: custom; Flags: checkablealone
+    Name: "{#COMPONENT_ECLIPSE_DESKTOP}"; Description: {cm:ComponentDesktopShortcut}; Types: custom
+    Name: "{#COMPONENT_ECLIPSE_JDK}"; Description: {cm:ComponentJdk}; Types: custom
+  #endif
 #endif
 
 ; Following languages are supported only in online version
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
+Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
 
@@ -280,6 +296,7 @@ Name: "{#COMPONENT_DRIVER}"; Description: {cm:ComponentDrivers}; Types: full;
 Name: "{#COMPONENT_DRIVER_ESPRESSIF}"; Description: {cm:ComponentDriverEspressif}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_FTDI}"; Description: {cm:ComponentDriverFtdi}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_DRIVER_WCH}"; Description: {cm:ComponentDriverWch}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
 
@@ -298,7 +315,7 @@ Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; 
 ; Following optimization are supported only in online version
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Types: custom;
-Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: full custom; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}"; Description: {cm:ComponentOptimizationGiteeMirror}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}"; Description: {cm:ComponentOptimizationGitShallow}; Types: full custom; Flags: checkablealone
 #endif

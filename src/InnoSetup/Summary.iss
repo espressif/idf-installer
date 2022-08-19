@@ -72,6 +72,10 @@ begin
     Result := Result + 'Espressif ';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_WCH}')) then begin
+    Result := Result + 'WCH ';
+  end;
+
   Result := Result + NewLine;
   Result := Result + CustomMessage('SummaryTargets') + ': ';
 

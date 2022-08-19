@@ -151,15 +151,39 @@ begin
     DriverList := DriverList + ' --espressif'
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_DRIVER_WCH}')) then begin
+    DriverList := DriverList + ' --wch'
+  end;
+
   if (Length(DriverList) > 0) then begin
     InstallDrivers(DriverList);
   end;
 end;
 
 procedure InstallRust();
+var
+  CommandLine: String;
 begin
+  CommandLine := 'rust install'
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU}')) then begin
+    CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu';
+  end else if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC}')) then begin
+    CommandLine := CommandLine + ' --default-host x86_64-pc-windows-msvc';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
+    CommandLine := CommandLine + ' --extra-tools=mingw';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+    CommandLine := CommandLine + ' --extra-tools=vctools';
+  end;
+
+  CommandLine := CommandLine + ' --extra-crates=ldproxy';
+
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
-    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand('rust reinstall'));
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand(CommandLine));
   end;
 end;
 
