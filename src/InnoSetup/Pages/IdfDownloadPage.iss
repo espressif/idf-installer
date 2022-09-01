@@ -114,7 +114,7 @@ function IsDirNameValid(const Value: string): Boolean;
 var
   I: Integer;
 begin
-  if not IsPathCheckEnabled then begin
+  if not IsCheckPathEnabled then begin
     Result := True;
     Exit;
   end;
@@ -152,14 +152,14 @@ begin
     exit;
   end;
 
-  if (Pos(' ', IDFPath) <> 0) and IsPathCheckEnabled then
+  if (Pos(' ', IDFPath) <> 0) and IsCheckPathEnabled then
   begin
     MessageBox(CustomMessage('SpacesInPathNotSupported') + #13#10 +
            CustomMessage('ChooseDifferentDirectory'), mbError, MB_OK);
     exit;
   end;
 
-  if (Length(IDFPath) > 90) and IsPathCheckEnabled then begin
+  if (Length(IDFPath) > 90) and IsCheckPathEnabled then begin
     MessageBox(CustomMessage('ErrorTooLongIdfPath'), mbError, MB_OK);
     Result := False;
     exit;
