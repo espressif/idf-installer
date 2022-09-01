@@ -10,6 +10,7 @@ var
     IsGitRecursive: Boolean;
     IsGitResetAllowed: Boolean;
     IsGitCleanAllowed: Boolean;
+    IsPathCheckEnabled: Boolean;
     IsPythonNoUserSite: Boolean;
     IsOfflineMode: Boolean;
     IDFDirectory: String;
@@ -83,6 +84,7 @@ begin
     IDFVersionUrl := GetConfigurationString('IDFVERSIONSURL', 'https://dl.espressif.com/dl/esp-idf/idf_versions.txt');
     IsOfflineMode := GetConfigurationBoolean('OFFLINE', '{#OFFLINE}');
     IsPythonNoUserSite := GetConfigurationBoolean('PYTHONNOUSERSITE', 'yes');
+    IsPathCheckEnabled := GetConfigurationBoolean('PATHCHECK', 'yes');
     PythonWheelsUrl := GetConfigurationString('PYTHONWHEELSURL', 'https://dl.espressif.com/pypi');
     PythonWheelsVersion := GetConfigurationString('PYTHONWHEELSVERSION', '{#PYTHONWHEELSVERSION}');
     SkipSystemCheck := GetConfigurationBoolean('SKIPSYSTEMCHECK', 'no');

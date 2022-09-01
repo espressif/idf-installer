@@ -265,7 +265,7 @@ begin
     if IDFTempPath <> '' then
       CmdLine := CmdLine + ' --reference ' + IDFTempPath;
 
-    CmdLine := CmdLine + ' ' + GitRepository +' ' + IDFPath;
+    CmdLine := CmdLine + ' ' + GitRepository +' "' + IDFPath + '"';
     Log('Cloning IDF: ' + CmdLine);
     DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
 
