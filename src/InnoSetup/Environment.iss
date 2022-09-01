@@ -353,7 +353,7 @@ end;
 procedure IDFToolsSetup();
 var
   CmdLine: String;
-  IDFPath: String;
+  IdfPathWithForwardSlashes: String;
   IDFToolsPyPath: String;
   IDFToolsPyCmd: String;
   BundledIDFToolsPyPath: String;
@@ -362,7 +362,7 @@ var
   ResultCode: Integer;
   TargetSupportTestCommand: String;
 begin
-  IDFPath := GetIDFPath('');
+  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''));;
   IDFToolsPyPath := GetIDFPath('tools\idf_tools.py');
   BundledIDFToolsPyPath := ExpandConstant('{app}\idf_tools_fallback.py');
   JSONArg := '';
@@ -388,7 +388,7 @@ begin
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
   { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path "' + IDFPath + '" ' + JSONArg + ' ';
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path "' + IdfPathWithForwardSlashes + '" ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 
