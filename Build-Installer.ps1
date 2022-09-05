@@ -332,7 +332,7 @@ PrepareIdfEnv
 
 if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
-    $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch -replace '^v'
+    $IsccParameters += '/DOFFLINEBRANCH=' + ($OfflineBranch -replace '^v')
     $IsccParameters += '/DFRAMEWORK_ESP_IDF=' + $OfflineBranch
 
     if (($OfflineBranch -like 'v4.1*') -or ($OfflineBranch -like 'v4.2*') ){
@@ -364,7 +364,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
         $IsccParameters += '/DJDKARTIFACTVERSION=' + $JdkArtifactVersion
         PrepareIdfEclipse
     } else {
-        $IsccParameters += '/DVERSION=' + $OfflineBranch -replace '^v'
+        $IsccParameters += '/DVERSION=' + ($OfflineBranch -replace '^v')
         $IsccParameters += '/DAPPNAME=ESP-IDF Tools Offline'
     }
     "${OfflineBranch}" > $Versions
