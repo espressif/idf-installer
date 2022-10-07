@@ -162,7 +162,13 @@ function PrepareIdfPythonWheels {
         # Patch requirements.txt to become resolvable
         $Requirements = "${WheelsDirectory}\requirements.txt"
         $regex = '^[^#].*windows-curses.*'
-        (Get-Content $BundleDir\requirements.txt) -replace $regex, 'windows-curses' | Set-Content $Requirements
+
+        $RequirementsPath = "$BundleDir\tools\requirements\requirements.core.txt"
+        # ESP-IDF v5 - requirements is in tools\requirements\requirements.core.txt
+        if (-Not (Test-Path -Path "$RequirementsPath" -PathType Leaf)) {
+            $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
+        }
+        (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
         python3 -m pip download --python-version 3.8 `
             --only-binary=":all:" `
