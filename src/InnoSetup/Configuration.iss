@@ -10,6 +10,7 @@ var
     IsGitRecursive: Boolean;
     IsGitResetAllowed: Boolean;
     IsGitCleanAllowed: Boolean;
+    IsCheckPathEnabled: Boolean;
     IsPythonNoUserSite: Boolean;
     IsOfflineMode: Boolean;
     IDFDirectory: String;
@@ -70,6 +71,7 @@ begin
 
     Log('Configuration /CONFIG=' + ConfigurationFile);
 
+    IsCheckPathEnabled := GetConfigurationBoolean('CHECKPATH', 'yes');
     IsGitCleanAllowed := GetConfigurationBoolean('GITCLEAN', 'yes');
     IsGitRecursive := GetConfigurationBoolean('GITRECURSIVE', 'yes');
     IsGitResetAllowed := GetConfigurationBoolean('GITRESET', 'yes');

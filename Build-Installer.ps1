@@ -305,7 +305,7 @@ function CheckInnoSetupInstallation {
 CheckInnoSetupInstallation
 
 if ('espressif-ide' -eq $InstallerType) {
-    $EspIdfBranchVersion = $OfflineBranch.Replace('v', '')
+    $EspIdfBranchVersion = $OfflineBranch -replace '^v'
     $OutputFileBaseName = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-unsigned"
     $OutputFileSigned = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-signed.exe"
 } else {
@@ -332,7 +332,7 @@ PrepareIdfEnv
 
 if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'
-    $IsccParameters += '/DOFFLINEBRANCH=' + $OfflineBranch.Replace('v', '')
+    $IsccParameters += '/DOFFLINEBRANCH=' + ($OfflineBranch -replace '^v')
     $IsccParameters += '/DFRAMEWORK_ESP_IDF=' + $OfflineBranch
 
     if (($OfflineBranch -like 'v4.1*') -or ($OfflineBranch -like 'v4.2*') ){
@@ -364,7 +364,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
         $IsccParameters += '/DJDKARTIFACTVERSION=' + $JdkArtifactVersion
         PrepareIdfEclipse
     } else {
-        $IsccParameters += '/DVERSION=' + $OfflineBranch.Replace('v', '')
+        $IsccParameters += '/DVERSION=' + ($OfflineBranch -replace '^v')
         $IsccParameters += '/DAPPNAME=ESP-IDF Tools Offline'
     }
     "${OfflineBranch}" > $Versions

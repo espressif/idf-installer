@@ -67,6 +67,7 @@ Note: Online Installer is recommended way of the installation.
 
 Windows Installer `esp-idf-tools-setup` provides the following command-line parameters:
 
+* ``/CHECKPATH=[yes|no]`` - Check whether the installation path does not contain spaces or special characters or if it's too long. Set to ``no`` to disable checks. Default: yes.
 * ``/CONFIG=[PATH]`` - Path to ``ini`` configuration file to override default configuration of the installer. Default: ``config.ini``.
 * ``/GITCLEAN=[yes|no]`` - Perform git clean and remove untracked directories in Offline mode installation. Default: yes.
 * ``/GITDEPTH=[number]`` - Clone repository in shallow mode E.g. 1. Default: empty.
