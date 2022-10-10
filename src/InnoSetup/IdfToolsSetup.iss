@@ -207,7 +207,7 @@ Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallbac
 Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json" ;Flags: skipifsourcedoesntexist
 Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
-;Source: "{#BUILD}\dist\*"; DestDir: "{app}\dist"; Flags: skipifsourcedoesntexist;
+Source: "{#BUILD}\espidf.constraints.v*.txt"; DestDir: "{app}"; Flags: skipifsourcedoesntexist;
 
 ; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
 #ifdef FRAMEWORK_ESP_IDF

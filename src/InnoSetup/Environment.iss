@@ -393,6 +393,8 @@ begin
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 
   if (IsOfflineMode) then begin
+    SetEnvironmentVariable('IDF_PYTHON_CHECK_CONSTRAINTS', 'no');
+
     SetEnvironmentVariable('PIP_NO_INDEX', 'true');
     Log('Offline installation selected. Setting environment variable PIP_NO_INDEX=1');
     SetEnvironmentVariable('PIP_FIND_LINKS', ExpandConstant('{app}\tools\idf-python-wheels\' + PythonWheelsVersion));

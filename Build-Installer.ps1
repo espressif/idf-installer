@@ -57,6 +57,14 @@ function DownloadIdfVersions() {
     Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }
 
+function PrepareConstraints {
+    $ShortVersion = $OfflineBranch -replace "^v" -replace "-.*$"
+    $ConstraintFile = "espidf.constraints.v${ShortVersion}.txt"
+    $ConstraintUrl = "https://dl.espressif.com/dl/esp-idf/$ConstraintFile"
+    "Downloading $ConstraintUrl"
+    Invoke-WebRequest -O "build\$InstallerType\${ConstraintFile}" $ConstraintUrl
+}
+
 function PrepareIdfPackage {
     param (
         [Parameter()]
@@ -192,7 +200,7 @@ function PrepareIdfEclipse {
 }
 
 function PrepareIdfDriver {
-    &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs
+    &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs --wch
 }
 
 function PrepareOfflineBranches {
@@ -356,6 +364,11 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
 
     if (-Not(Test-Path build/$InstallerType/dist -PathType Container)) {
         New-Item build/$InstallerType/dist -Type Directory
+    }
+
+    # Download constraint files for ESP-IDF 5
+    if ($OfflineBranch -like 'v5.*') {
+        PrepareConstraints
     }
 
     PrepareIdfDriver
