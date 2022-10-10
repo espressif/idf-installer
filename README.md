@@ -37,7 +37,10 @@ Note: Online Installer is recommended way of the installation.
 | ------- | ------- | ---- |
 | ESP-IDF v4.4.2 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.4.2/esp-idf-tools-setup-offline-4.4.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.2.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3 | 600 MB |
 | ESP-IDF v4.4.1 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.4.1/esp-idf-tools-setup-offline-4.4.1.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.1.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3 | 600 MB |
+| ESP-IDF v4.3.4 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.3.4/esp-idf-tools-setup-offline-4.3.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.4.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3,
+ESP32-C3 | 570 MB |
 | ESP-IDF v4.3.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.3.3/esp-idf-tools-setup-offline-4.3.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3 | 570 MB |
+| ESP-IDF v4.2.4 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.2.3/esp-idf-tools-setup-offline-4.2.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.4.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 376 MB |
 | ESP-IDF v4.2.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.2.3/esp-idf-tools-setup-offline-4.2.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 376 MB |
 | ESP-IDF v4.1.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.1.3/esp-idf-tools-setup-offline-4.1.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.1.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 353 MB |
 
@@ -67,6 +70,7 @@ Note: Online Installer is recommended way of the installation.
 
 Windows Installer `esp-idf-tools-setup` provides the following command-line parameters:
 
+* ``/CHECKPATH=[yes|no]`` - Check whether the installation path does not contain spaces or special characters or if it's too long. Set to ``no`` to disable checks. Default: yes.
 * ``/CONFIG=[PATH]`` - Path to ``ini`` configuration file to override default configuration of the installer. Default: ``config.ini``.
 * ``/GITCLEAN=[yes|no]`` - Perform git clean and remove untracked directories in Offline mode installation. Default: yes.
 * ``/GITDEPTH=[number]`` - Clone repository in shallow mode E.g. 1. Default: empty.

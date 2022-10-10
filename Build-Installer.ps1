@@ -57,6 +57,14 @@ function DownloadIdfVersions() {
     Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }
 
+function PrepareConstraints {
+    $ShortVersion = $OfflineBranch -replace "^v" -replace "-.*$"
+    $ConstraintFile = "espidf.constraints.v${ShortVersion}.txt"
+    $ConstraintUrl = "https://dl.espressif.com/dl/esp-idf/$ConstraintFile"
+    "Downloading $ConstraintUrl"
+    Invoke-WebRequest -O "build\$InstallerType\${ConstraintFile}" $ConstraintUrl
+}
+
 function PrepareIdfPackage {
     param (
         [Parameter()]
@@ -162,7 +170,13 @@ function PrepareIdfPythonWheels {
         # Patch requirements.txt to become resolvable
         $Requirements = "${WheelsDirectory}\requirements.txt"
         $regex = '^[^#].*windows-curses.*'
-        (Get-Content $BundleDir\requirements.txt) -replace $regex, 'windows-curses' | Set-Content $Requirements
+
+        $RequirementsPath = "$BundleDir\tools\requirements\requirements.core.txt"
+        # ESP-IDF v5 - requirements is in tools\requirements\requirements.core.txt
+        if (-Not (Test-Path -Path "$RequirementsPath" -PathType Leaf)) {
+            $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
+        }
+        (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
         python3 -m pip download --python-version 3.8 `
             --only-binary=":all:" `
@@ -186,7 +200,7 @@ function PrepareIdfEclipse {
 }
 
 function PrepareIdfDriver {
-    &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs
+    &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs --wch
 }
 
 function PrepareOfflineBranches {
@@ -350,6 +364,11 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
 
     if (-Not(Test-Path build/$InstallerType/dist -PathType Container)) {
         New-Item build/$InstallerType/dist -Type Directory
+    }
+
+    # Download constraint files for ESP-IDF 5
+    if ($OfflineBranch -like 'v5.*') {
+        PrepareConstraints
     }
 
     PrepareIdfDriver

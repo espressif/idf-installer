@@ -10,6 +10,7 @@ var
     IsGitRecursive: Boolean;
     IsGitResetAllowed: Boolean;
     IsGitCleanAllowed: Boolean;
+    IsCheckPathEnabled: Boolean;
     IsPythonNoUserSite: Boolean;
     IsOfflineMode: Boolean;
     IDFDirectory: String;
@@ -70,6 +71,7 @@ begin
 
     Log('Configuration /CONFIG=' + ConfigurationFile);
 
+    IsCheckPathEnabled := GetConfigurationBoolean('CHECKPATH', 'yes');
     IsGitCleanAllowed := GetConfigurationBoolean('GITCLEAN', 'yes');
     IsGitRecursive := GetConfigurationBoolean('GITRECURSIVE', 'yes');
     IsGitResetAllowed := GetConfigurationBoolean('GITRESET', 'yes');
@@ -163,6 +165,7 @@ var
   MajorString: String;
   MinorString: String;
   DotIndex: Integer;
+  DashIndex: Integer;
 begin
   { Transform version vx.y or release/vx.y to x.y }
   VersionIndex := pos('v', VersionString);
@@ -183,6 +186,12 @@ begin
     end else begin
      VersionString :=  MajorString + '.' + VersionString;
     end;
+  end;
+
+  { Trim trailing dash }
+  DashIndex := pos('-', VersionString);
+  if (DashIndex > 0) then begin
+    VersionString := Copy(VersionString, 1, DashIndex - 1)
   end;
 
   Result := VersionString;

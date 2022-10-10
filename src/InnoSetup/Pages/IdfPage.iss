@@ -91,14 +91,14 @@ begin
       exit;
     end;
 
-    if Pos(' ', IDFPath) <> 0 then
+    if (Pos(' ', IDFPath) <> 0) and IsCheckPathEnabled then
     begin
       MessageBox(CustomMessage('SpacesInPathNotSupported') + #13#10 +
              CustomMessage('ChooseExistingEspIdfDirectory'), mbError, MB_OK);
       exit;
     end;
 
-    if (Length(IDFPath) > 90) then begin
+    if (Length(IDFPath) > 90) and IsCheckPathEnabled then begin
       MessageBox(CustomMessage('ErrorTooLongIdfPath'), mbError, MB_OK);
       Result := False;
       exit;
