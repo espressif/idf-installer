@@ -45,6 +45,7 @@ set PREFIX=%IDF_PYTHON% %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
 DOSKEY esptool.py=%PREFIX%\components\esptool_py\esptool\esptool.py $*
 DOSKEY espefuse.py=%PREFIX%\components\esptool_py\esptool\espefuse.py $*
+DOSKEY espsecure.py=%PREFIX%\components\esptool_py\esptool\espsecure.py $*
 DOSKEY otatool.py=%PREFIX%\components\app_update\otatool.py $*
 DOSKEY parttool.py=%PREFIX%\components\partition_table\parttool.py $*
 
