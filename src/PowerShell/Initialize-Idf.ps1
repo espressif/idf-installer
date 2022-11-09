@@ -48,6 +48,7 @@ if (-not $isEspIdfRoot) {
 function idf.py { &$PythonCommand "$IDF_PATH\tools\idf.py" $args }
 function esptool.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\esptool.py" $args }
 function espefuse.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\espefuse.py" $args }
+function espsecure.py { &$PythonCommand "$IDF_PATH\components\esptool_py\esptool\espsecure.py" $args }
 function otatool.py { &$PythonCommand "$IDF_PATH\components\app_update\otatool.py" $args }
 function parttool.py { &$PythonCommand "$IDF_PATH\components\partition_table\parttool.py" $args }
 
