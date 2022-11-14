@@ -635,6 +635,8 @@ end;
 procedure CreateSystemCheckPage();
 begin
   ExtractTemporaryFile('{#IDF_ENV}');
+  ExtractTemporaryFile('{#ESPUP}');
+  ExtractTemporaryFile('{#VS_BUILDTOOLS}');
 
   { Initialize data structure for Python }
   InstalledPythonVersions := TStringList.Create();

@@ -20,6 +20,8 @@ param (
     [String]
     $IdfEnvVersion = '1.2.30',
     [String]
+    $EspUpVersion = '0.2.1',
+    [String]
     $EspressifIdeVersion = '2.7.0',
     [String]
     $JdkVersion = "jdk11.0.17_8",
@@ -146,6 +148,18 @@ function PrepareIdfEnv {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath idf-env.exe `
         -DownloadUrl https://github.com/espressif/idf-env/releases/download/v${IdfEnvVersion}/win64.idf-env.exe
+}
+
+function PrepareEspUp {
+    PrepareIdfFile -BasePath build\$InstallerType\lib `
+        -FilePath espup.exe `
+        -DownloadUrl https://github.com/esp-rs/espup/releases/download/v${EspUpVersion}/espup-x86_64-pc-windows-msvc.exe
+}
+
+function PrepareVsBuildtools {
+    PrepareIdfFile -BasePath build\$InstallerType\lib `
+        -FilePath vs_buildtools.exe `
+        -DownloadUrl https://aka.ms/vs/17/release/vs_buildtools.exe
 }
 
 function PrepareIdfGit {
@@ -343,6 +357,8 @@ if (-Not(Test-Path build/$InstallerType/lib -PathType Container)) {
 PrepareIdfCmdlinerunner
 PrepareIdf7za
 PrepareIdfEnv
+PrepareEspUp
+PrepareVsBuildtools
 
 if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DOFFLINE=yes'

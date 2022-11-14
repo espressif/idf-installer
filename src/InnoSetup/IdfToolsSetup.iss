@@ -14,7 +14,7 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.17"
+#define MyAppVersion "2.18"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
@@ -83,6 +83,12 @@
 
 ; Tool for managing ESP-IDF environments
 #define IDF_ENV = 'idf-env.exe'
+
+; 2nd generation too for managing ESP-IDF environments
+#define ESPUP = 'espup.exe'
+
+; VS Build Tools required for Rust on Windows
+#define VS_BUILDTOOLS = 'vs_buildtools.exe'
 
 ; Build time variable which determines location of sources for the installer.
 ; OFFLINE mentioned above is runtime variable which allows to switch way how installer operates
@@ -201,6 +207,8 @@ Source: "{#BUILD}\lib\cmdlinerunner.dll"; Flags: dontcopy
 ;Source: "..\..\lib\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"; Flags: dontcopy
 Source: "{#BUILD}\lib\7za.exe"; Flags: dontcopy
 Source: "{#BUILD}\lib\{#IDF_ENV}"; DestDir: "{app}"; DestName: "{#IDF_ENV}"
+Source: "{#BUILD}\lib\{#ESPUP}"; DestDir: "{app}"; DestName: "{#ESPUP}"
+Source: "{#BUILD}\lib\{#VS_BUILDTOOLS}"; DestDir: "{app}"; DestName: "{#VS_BUILDTOOLS}"
 Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
 Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.

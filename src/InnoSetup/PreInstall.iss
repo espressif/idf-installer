@@ -160,30 +160,43 @@ begin
   end;
 end;
 
+procedure InstallVSBuildTools();
+var
+  CommandLine: String;
+begin
+  CommandLine := 'vs_BuildTools.exe --passive --wait';
+  CommandLine := CommandLine + ' --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 ';
+  CommandLine := CommandLine + ' --add Microsoft.VisualStudio.Component.Windows11SDK';
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVsBuildtoolsCommand(CommandLine));
+  end;
+end;
+
 procedure InstallRust();
 var
   CommandLine: String;
 begin
-  CommandLine := 'rust install'
+  CommandLine := 'install'
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU}')) then begin
-    CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu';
+    {CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu'; }
   end else if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC}')) then begin
-    CommandLine := CommandLine + ' --default-host x86_64-pc-windows-msvc';
+    {CommandLine := CommandLine + ' --default-host x86_64-pc-windows-msvc';}
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
-    CommandLine := CommandLine + ' --extra-tools=mingw';
+    {CommandLine := CommandLine + ' --extra-tools=mingw';}
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
-    CommandLine := CommandLine + ' --extra-tools=vctools';
+    InstallVSBuildTools();
   end;
 
   CommandLine := CommandLine + ' --extra-crates=ldproxy';
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
-    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand(CommandLine));
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspUpCommand(CommandLine));
   end;
 end;
 

@@ -14,6 +14,18 @@ begin
   Result := ExpandConstant('{tmp}\{#IDF_ENV} ') + Command;
 end;
 
+{ Get path to EspUp process for managing installed instances of ESP-IDF. }
+function GetEspUpCommand(Command: String):String;
+begin
+  Result := ExpandConstant('{tmp}\{#ESPUP} ') + Command;
+end;
+
+{ Get path to VS Buildtools process for managing Visual Studio dependencies. }
+function GetVsBuildtoolsCommand(Command: String):String;
+begin
+  Result := ExpandConstant('{tmp}\{#VS_BUILDTOOLS} ') + Command;
+end;
+
 function ExecIdfEnv(Parameters: String):String;
 var
   Command: String;
