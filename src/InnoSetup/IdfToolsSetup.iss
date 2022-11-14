@@ -41,11 +41,11 @@
 
 #define JDK_INSTALLER "amazon-corretto-11-x64-windows-jdk.zip"
 #ifndef JDKVERSION
-  #define JDKVERSION "jdk11.0.15_9"
+  #define JDKVERSION "jdk11.0.17_8"
 #endif
 
 #ifndef JDKARTIFACTVERSION
-  #define JDKARTIFACTVERSION  "11.0.15.9.1"
+  #define JDKARTIFACTVERSION  "11.0.17.8.1"
 #endif
 #define JDK_DOWNLOADURL "https://corretto.aws/downloads/resources/" + JDKARTIFACTVERSION + "/amazon-corretto-" + JDKARTIFACTVERSION + "-windows-x64-jdk.zip"
 

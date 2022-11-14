@@ -22,9 +22,9 @@ param (
     [String]
     $EspressifIdeVersion = '2.7.0',
     [String]
-    $JdkVersion = "jdk11.0.15_9",
+    $JdkVersion = "jdk11.0.17_8",
     [String]
-    $JdkArtifactVersion = "11.0.15.9.1"
+    $JdkArtifactVersion = "11.0.17.8.1"
 )
 
 # Stop on error
@@ -93,7 +93,7 @@ function PrepareIdfPackage {
     $FullDistZipPath = Join-Path -Path $BasePath -ChildPath $DistZip
     "Checking existence of dist: $FullDistZipPath"
     if (-Not(Test-Path -Path $FullDistZipPath -PathType Leaf)) {
-        "Downloading $FullDistZipPath"
+        "Downloading from $DownloadUrl to $FullDistZipPath"
         Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
     }
 
@@ -195,7 +195,7 @@ function PrepareIdfEclipse {
     PrepareIdfPackage -BasePath build\$InstallerType\tools\espressif-ide\${EspressifIdeVersion} `
         -FilePath espressif-ide.exe `
         -DistZip Espressif-IDE-${EspressifIdeVersion}-win32.win32.x86_64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-${EspressifIdeVersion}-win32.win32.x86_64.zip `
+        -DownloadUrl "https://dl.espressif.com/dl/idf-eclipse-plugin/ide/Espressif-IDE-${EspressifIdeVersion}-win32.win32.x86_64.zip" `
         -StripDirectory Espressif-IDE
 }
 
