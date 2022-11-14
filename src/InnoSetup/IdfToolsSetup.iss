@@ -33,7 +33,7 @@
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
 #ifndef ESPRESSIFIDEVERSION
-  #define ESPRESSIFIDEVERSION "2.6.0"
+  #define ESPRESSIFIDEVERSION "2.7.0"
 #endif
 
 #define ECLIPSE_INSTALLER "Espressif-IDE-" + ESPRESSIFIDEVERSION + "-win32.win32.x86_64.zip"
@@ -41,11 +41,11 @@
 
 #define JDK_INSTALLER "amazon-corretto-11-x64-windows-jdk.zip"
 #ifndef JDKVERSION
-  #define JDKVERSION "jdk11.0.15_9"
+  #define JDKVERSION "jdk11.0.17_8"
 #endif
 
 #ifndef JDKARTIFACTVERSION
-  #define JDKARTIFACTVERSION  "11.0.15.9.1"
+  #define JDKARTIFACTVERSION  "11.0.17.8.1"
 #endif
 #define JDK_DOWNLOADURL "https://corretto.aws/downloads/resources/" + JDKARTIFACTVERSION + "/amazon-corretto-" + JDKARTIFACTVERSION + "-windows-x64-jdk.zip"
 
