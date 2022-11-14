@@ -164,7 +164,7 @@ procedure InstallVSBuildTools();
 var
   CommandLine: String;
 begin
-  CommandLine := 'vs_BuildTools.exe --passive --wait';
+  CommandLine := ' --passive --wait';
   CommandLine := CommandLine + ' --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 ';
   CommandLine := CommandLine + ' --add Microsoft.VisualStudio.Component.Windows11SDK';
 
