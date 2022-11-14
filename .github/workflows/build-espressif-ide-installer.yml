@@ -36,7 +36,7 @@ jobs:
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         working-directory: "P:"
-        run: .\Build-Installer.ps1 -InstallerType espressif-ide
+        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v4.4.3" -EspressifIdeVersion "${{ steps.get_version.outputs.VERSION }}"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -54,8 +54,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4.2-signed.exe
-          asset_name: espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.2.exe
+          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4.3-signed.exe
+          asset_name: espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.3.exe
           asset_content_type: application/octet-stream
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
@@ -64,4 +64,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4.2-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.2.exe
+        run: aws s3 cp --acl=public-read --no-progress ./build/espressif-ide-setup-espressif-ide-with-esp-idf-4.4.3-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/espressif-ide-setup-${{ steps.get_version.outputs.VERSION }}-with-esp-idf-4.4.3.exe
