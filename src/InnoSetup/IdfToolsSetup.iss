@@ -33,7 +33,7 @@
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
 #ifndef ESPRESSIFIDEVERSION
-  #define ESPRESSIFIDEVERSION "2.6.0"
+  #define ESPRESSIFIDEVERSION "2.7.0"
 #endif
 
 #define ECLIPSE_INSTALLER "Espressif-IDE-" + ESPRESSIFIDEVERSION + "-win32.win32.x86_64.zip"
