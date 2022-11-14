@@ -167,7 +167,7 @@ begin
   CommandLine := ' --passive --wait';
   CommandLine := CommandLine + ' --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 ';
   CommandLine := CommandLine + ' --add Microsoft.VisualStudio.Component.Windows11SDK';
-
+  { Add to Path C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64 }
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVsBuildtoolsCommand(CommandLine));
   end;
