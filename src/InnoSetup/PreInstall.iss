@@ -211,6 +211,7 @@ begin
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspUpCommand(CommandLine));
   end;
+  { Post processig step - set path exported by espup : C:\Espressif\tools\xtensa-esp32-elf\esp-2021r2-patch5-8_4_0\xtensa-esp32-elf\bin }
 end;
 
 procedure InstallToit();
