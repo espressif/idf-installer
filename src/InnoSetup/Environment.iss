@@ -26,6 +26,18 @@ begin
   Result := ExpandConstant('{tmp}\{#VS_BUILDTOOLS} ') + Command;
 end;
 
+{ Get path to winget process for managing Windows dependencies. }
+function GetWingetCommand(Command: String):String;
+begin
+  Result := ExpandConstant('{tmp}\{#WINGET} ') + Command;
+end;
+
+{ Get path to VC Redist process for deploying Visual Studio files. }
+function GetVcRedistCommand(Command: String):String;
+begin
+  Result := ExpandConstant('{tmp}\{#VC_REDIST} ') + Command;
+end;
+
 function ExecIdfEnv(Parameters: String):String;
 var
   Command: String;

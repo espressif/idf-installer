@@ -173,6 +173,19 @@ begin
   end;
 end;
 
+procedure InstallWindowsSDK();
+var
+  CommandLine: String;
+begin
+  CommandLine := ' /q /norestart';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVcRedistCommand(CommandLine));
+
+  CommandLine := ' install --silent --accept-source-agreements -e --id Microsoft.WindowsSDK';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetWingetCommand(CommandLine));
+  CommandLine := ' install Microsoft.VisualStudio.2022.BuildTools --silent --override "--wait --quiet --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetWingetCommand(CommandLine));
+end;
+
 procedure InstallRust();
 var
   CommandLine: String;
@@ -190,7 +203,7 @@ begin
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
-    InstallVSBuildTools();
+    InstallWindowsSDK();
   end;
 
   CommandLine := CommandLine + ' --extra-crates=ldproxy';

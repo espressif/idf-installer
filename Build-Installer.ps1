@@ -160,6 +160,16 @@ function PrepareVsBuildtools {
     PrepareIdfFile -BasePath build\$InstallerType\lib `
         -FilePath vs_buildtools.exe `
         -DownloadUrl https://aka.ms/vs/17/release/vs_buildtools.exe
+    PrepareIdfFile -BasePath build\$InstallerType\lib `
+        -FilePath WindowsPackageManager.dll `
+        -DownloadUrl https://github.com/espressif/idf-installer/releases/download/online-2.17-beta-01/WindowsPackageManager.dll
+    PrepareIdfFile -BasePath build\$InstallerType\lib `
+        -FilePath VC_redist.x64.exe `
+        -DownloadUrl https://github.com/espressif/idf-installer/releases/download/online-2.17-beta-01/VC_redist.x64.exe
+    PrepareIdfFile -BasePath build\$InstallerType\lib `
+        -FilePath resources.pri `
+        -DownloadUrl https://github.com/espressif/idf-installer/releases/download/online-2.17-beta-01/resources.pri
+
 }
 
 function PrepareIdfGit {

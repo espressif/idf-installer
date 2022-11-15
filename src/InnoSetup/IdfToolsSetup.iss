@@ -90,6 +90,17 @@
 ; VS Build Tools required for Rust on Windows
 #define VS_BUILDTOOLS = 'vs_buildtools.exe'
 
+; Winget tools
+#define WINGET = 'winget.exe'
+; Winget resources
+#define WINGET_RESOURCES = 'resources.pri'
+
+; VC Redistributable 2015-2022
+#define VC_REDIST = 'vc_redist.x64.exe'
+
+; Window Package Manager library
+#define WINDOW_PACKAGE_MANAGER = 'WindowsPackageManager.dll'
+
 ; Build time variable which determines location of sources for the installer.
 ; OFFLINE mentioned above is runtime variable which allows to switch way how installer operates
 #ifndef INSTALLERBUILDTYPE
@@ -209,6 +220,10 @@ Source: "{#BUILD}\lib\7za.exe"; Flags: dontcopy
 Source: "{#BUILD}\lib\{#IDF_ENV}"; DestDir: "{app}"; DestName: "{#IDF_ENV}"
 Source: "{#BUILD}\lib\{#ESPUP}"; DestDir: "{app}"; DestName: "{#ESPUP}"
 Source: "{#BUILD}\lib\{#VS_BUILDTOOLS}"; DestDir: "{app}"; DestName: "{#VS_BUILDTOOLS}"
+Source: "{#BUILD}\lib\{#WINGET}"; DestDir: "{app}"; DestName: "{#WINGET}"
+Source: "{#BUILD}\lib\{#WINGET_RESOURCES}"; DestDir: "{app}"; DestName: "{#WINGET_RESOURCES}"
+Source: "{#BUILD}\lib\{#VC_REDIST}"; DestDir: "{app}"; DestName: "{#VC_REDIST}"
+Source: "{#BUILD}\lib\{#WINDOW_PACKAGE_MANAGER}"; DestDir: "{app}"; DestName: "{#WINDOW_PACKAGE_MANAGER}"
 Source: "{#BUILD}\idf_versions.txt"; Flags: dontcopy
 Source: "..\Python\idf_tools.py"; DestDir: "{app}"; DestName: "idf_tools_fallback.py" ; Flags: skipifsourcedoesntexist
 ; Note: this tools.json matches the requirements of IDF v3.x versions.

@@ -637,6 +637,10 @@ begin
   ExtractTemporaryFile('{#IDF_ENV}');
   ExtractTemporaryFile('{#ESPUP}');
   ExtractTemporaryFile('{#VS_BUILDTOOLS}');
+  ExtractTemporaryFile('{#WINGET}');
+  ExtractTemporaryFile('{#WINGET_RESOURCES}');
+  ExtractTemporaryFile('{#VC_REDIST}');
+  ExtractTemporaryFile('{#WINDOW_PACKAGE_MANAGER}');
 
   { Initialize data structure for Python }
   InstalledPythonVersions := TStringList.Create();
