@@ -509,6 +509,20 @@ begin
   SystemLogTitle('Detected antivirus: ' + GetAntivirusName());
 end;
 
+procedure SystemCheckEnvironmentVariables();
+var
+  PathExt: String;
+begin
+SystemLogTitle(CustomMessage('SystemCheckEnvironmentVariables') + ' (PATHEXT) .');
+  PathExt := GetEnv('PATHEXT');
+  if Pos('.EXE', PathExt) = 0 then begin
+    SystemLogTitle(CustomMessage('SystemCheckPathExtError'));
+    SystemLog(' [' + CustomMessage('SystemCheckResultWarn') + ']');
+  end else begin
+    SystemLog(' [' + CustomMessage('SystemCheckResultOk') + ']');
+  end;
+end;
+
 { Execute system check }
 procedure ExecuteSystemCheck();
 begin
@@ -547,6 +561,10 @@ begin
   end else begin
     { User cancelled the check, let's enable Defender script so that use can decide to disable it. }
     IsWindowsDefenderEnabled := True;
+  end;
+
+  if (SystemCheckState <> SYSTEM_CHECK_STATE_STOPPED) then begin
+    SystemCheckEnvironmentVariables();
   end;
 
   if (SystemCheckState = SYSTEM_CHECK_STATE_STOPPED) then begin

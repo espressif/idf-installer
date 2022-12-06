@@ -161,3 +161,5 @@ ComponentToitJaguar=Jazyk Toit - nástroj Jaguar s podporou live-reload (jag.exe
 InstallingToit=Inštalácia integrácie s Toit
 ComponentJdk=Amazon Corretto 11 JDK
 SettingEnvironmentVariable=Nastavovanie premennej prostredia
+SystemCheckEnvironmentVariables=Environment variables
+SystemCheckPathExtError=PATHEXT does not contain .EXE
