@@ -83,7 +83,15 @@ begin
     Result := Result + 'ESP32 ';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C2}')) then begin
+    Result := Result + 'ESP32-C3 ';
+  end;
+
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C3}')) then begin
+    Result := Result + 'ESP32-C3 ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C6}')) then begin
     Result := Result + 'ESP32-C3 ';
   end;
 
