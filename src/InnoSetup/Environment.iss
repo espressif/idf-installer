@@ -294,7 +294,7 @@ begin
       /h copies hidden files, /q disables file name logging (making copying faster!)
     }
 
-    CmdLine := ExpandConstant('cmd.exe /c ""xcopy" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
+    CmdLine := ExpandConstant('cmd.exe /c ""xcopy.exe" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
     DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('CopyingEspIdf'), CmdLine);
 
     GitRepoFixFileMode(IDFPath);
