@@ -303,7 +303,7 @@ Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Fla
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
 
 #ifndef DISABLE_TARGET_ESP32_C2
-Name: "{#COMPONENT_TARGET_ESP32_C2}"; Description: {cm:ComponentTargetEsp32c2}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_C2}"; Description: {cm:ComponentTargetEsp32c2}; Types: custom; Flags: checkablealone
 #endif
 
 #ifndef DISABLE_TARGET_ESP32_C3
@@ -311,7 +311,7 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 #endif
 
 #ifndef DISABLE_TARGET_ESP32_C6
-Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: custom; Flags: checkablealone
 #endif
 
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
