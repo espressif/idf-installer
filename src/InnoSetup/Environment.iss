@@ -294,7 +294,7 @@ begin
       /h copies hidden files, /q disables file name logging (making copying faster!)
     }
 
-    CmdLine := ExpandConstant('cmd.exe /c ""xcopy" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
+    CmdLine := ExpandConstant('cmd.exe /c ""xcopy.exe" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
     DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('CopyingEspIdf'), CmdLine);
 
     GitRepoFixFileMode(IDFPath);
@@ -331,8 +331,16 @@ begin
       Targets := Targets + 'esp32,';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C2}')) then begin
+      Targets := Targets + 'esp32-c2,';
+  end;
+
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C3}')) then begin
       Targets := Targets + 'esp32-c3,';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C6}')) then begin
+      Targets := Targets + 'esp32-c6,';
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S3}')) then begin

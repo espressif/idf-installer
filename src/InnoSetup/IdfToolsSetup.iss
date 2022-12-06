@@ -126,7 +126,9 @@
 #define COMPONENT_DRIVER_WCH = "driver/wch"
 #define COMPONENT_TARGET = "target"
 #define COMPONENT_TARGET_ESP32 = "target/esp32"
+#define COMPONENT_TARGET_ESP32_C2 = "target/esp32c2"
 #define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
+#define COMPONENT_TARGET_ESP32_C6 = "target/esp32c6"
 #define COMPONENT_TARGET_ESP32_S = "target/esp32s"
 #define COMPONENT_TARGET_ESP32_S3 = "target/esp32s/s3"
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
@@ -300,8 +302,16 @@ Name: "{#COMPONENT_DRIVER_WCH}"; Description: {cm:ComponentDriverWch}; Types: fu
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
 
+#ifndef DISABLE_TARGET_ESP32_C2
+Name: "{#COMPONENT_TARGET_ESP32_C2}"; Description: {cm:ComponentTargetEsp32c2}; Types: custom; Flags: checkablealone
+#endif
+
 #ifndef DISABLE_TARGET_ESP32_C3
 Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; Types: full; Flags: checkablealone
+#endif
+
+#ifndef DISABLE_TARGET_ESP32_C6
+Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: custom; Flags: checkablealone
 #endif
 
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone

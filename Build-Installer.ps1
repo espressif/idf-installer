@@ -57,9 +57,13 @@ function DownloadIdfVersions() {
     Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }
 
-function PrepareConstraints {
+function GetConstraintFile() {
     $ShortVersion = $OfflineBranch -replace "^v" -replace "-.*$"
-    $ConstraintFile = "espidf.constraints.v${ShortVersion}.txt"
+    return "espidf.constraints.v${ShortVersion}.txt"
+}
+
+function PrepareConstraints {
+    $ConstraintFile = GetConstraintFile
     $ConstraintUrl = "https://dl.espressif.com/dl/esp-idf/$ConstraintFile"
     "Downloading $ConstraintUrl"
     Invoke-WebRequest -O "build\$InstallerType\${ConstraintFile}" $ConstraintUrl
@@ -164,18 +168,34 @@ function PrepareIdfPython {
 
 function PrepareIdfPythonWheels {
     $WheelsDirectory = "build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion"
-    if (!( Test-Path -Path $WheelsDirectory -PathType Container )) {
-        mkdir $WheelsDirectory
+    if ( Test-Path -Path $WheelsDirectory -PathType Container ) {
+        "$WheelsDirectory exists. Using cached content."
+        return
+    }
+    mkdir $WheelsDirectory
 
-        # Patch requirements.txt to become resolvable
-        $Requirements = "${WheelsDirectory}\requirements.txt"
-        $regex = '^[^#].*windows-curses.*'
+    # Patch requirements.txt to become resolvable
+    $Requirements = "${WheelsDirectory}\requirements.txt"
+    $regex = '^[^#].*windows-curses.*'
 
-        $RequirementsPath = "$BundleDir\tools\requirements\requirements.core.txt"
-        # ESP-IDF v5 - requirements is in tools\requirements\requirements.core.txt
-        if (-Not (Test-Path -Path "$RequirementsPath" -PathType Leaf)) {
-            $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
-        }
+    $RequirementsPath = "$BundleDir\tools\requirements\requirements.core.txt"
+    # ESP-IDF v5 - requirements is in tools\requirements\requirements.core.txt
+
+    if (Test-Path -Path "$RequirementsPath" -PathType Leaf) {
+        (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
+
+        $ConstraintFile = GetConstraintFile
+
+        python3 -m pip download --python-version 3.8 `
+            --only-binary=":all:" `
+            --extra-index-url "https://dl.espressif.com/pypi/" `
+            -r ${Requirements} `
+            -d ${WheelsDirectory} `
+            -c "build\$InstallerType\${ConstraintFile}"
+    } else {
+        # ESP-IDF v4 and older
+        $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
+
         (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
         python3 -m pip download --python-version 3.8 `
@@ -352,6 +372,17 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     if (($OfflineBranch -like 'v4.1*') -or ($OfflineBranch -like 'v4.2*') ){
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C3'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_S3'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C2'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
+    }
+
+    if (($OfflineBranch -like 'v4.3*') -or ($OfflineBranch -like 'v4.4*') ){
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C2'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
+    }
+
+    if ($OfflineBranch -like 'v5.0*') {
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
     }
 
     if ($Compression -eq 'none') {
