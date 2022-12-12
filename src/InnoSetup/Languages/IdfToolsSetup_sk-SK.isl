@@ -111,6 +111,7 @@ CheckPermissionToFile=Prosím, overte oprávnenia a reštartujte inštaláciu.
 SwitchBranch=Prepnutie vetvy
 FinishingEspIdfInstallation=Dokončenie inštalácie ESP-IDF
 CleaningUntrackedDirectories=Čistenie zložiek, ktoré nie sú verzované
+FetchingTags=Fetching tags
 ExtractingEspIdf=Rozbaľovanie ESP-IDF
 SettingUpReferenceRepository=Vytváranie referenčného repozitára
 DownloadingEspIdf=Preberanie ESP-IDF

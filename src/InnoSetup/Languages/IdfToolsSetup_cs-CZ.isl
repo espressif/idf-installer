@@ -111,6 +111,7 @@ CheckPermissionToFile=Prosím, ověřte oprávnění a restartujte instalaci.
 SwitchBranch=Přepnutí větve
 FinishingEspIdfInstallation=Dokončení instalace ESP-IDF
 CleaningUntrackedDirectories=Čistění složek, které nejsou verzovány
+FetchingTags=Fetching tags
 ExtractingEspIdf=Rozbalování ESP-IDF
 SettingUpReferenceRepository=Vytváření referenčního repositáře
 DownloadingEspIdf=Stahování ESP-IDF

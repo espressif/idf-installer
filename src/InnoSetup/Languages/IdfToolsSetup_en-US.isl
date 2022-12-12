@@ -111,6 +111,7 @@ CheckPermissionToFile=Please check the file access and retry the installation.
 SwitchBranch=Switching branch
 FinishingEspIdfInstallation=Finishing ESP-IDF installation
 CleaningUntrackedDirectories=Cleaning untracked directories
+FetchingTags=Fetching tags
 ExtractingEspIdf=Extracting ESP-IDF
 SettingUpReferenceRepository=Setting up reference repository
 DownloadingEspIdf=Downloading ESP-IDF

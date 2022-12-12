@@ -112,6 +112,7 @@ CheckPermissionToFile=Por favor verifique a permissão de acesso do ficheiro e t
 SwitchBranch=Alterando o branch
 FinishingEspIdfInstallation=A finalizar a instalação do ESP-IDF
 CleaningUntrackedDirectories=A limpar os diretórios não rastreados
+FetchingTags=Fetching tags
 ExtractingEspIdf=A extrair o ESP-IDF
 SettingUpReferenceRepository=A configurar a referência do repositório
 DownloadingEspIdf=Descarregando o ESP-IDF

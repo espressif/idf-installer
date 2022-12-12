@@ -111,6 +111,7 @@ CheckPermissionToFile=请检查文件权限并重试安装。
 SwitchBranch=切换分支
 FinishingEspIdfInstallation=完成 ESP-IDF 安装
 CleaningUntrackedDirectories=清理未跟踪的目录
+FetchingTags=Fetching tags
 ExtractingEspIdf=提取 ESP-IDF
 SettingUpReferenceRepository=设置参考仓库
 DownloadingEspIdf=下载 ESP-IDF

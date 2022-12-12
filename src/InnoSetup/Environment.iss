@@ -180,6 +180,13 @@ begin
   DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('CleaningUntrackedDirectories'), CmdLine);
 end;
 
+{ Fetch the tag with a given name from the remote }
+procedure GitFetchTag(Path: String, Tag: String);
+begin
+  CmdLine := GitExecutablePath + ' -C ' + Path + ' fetch origin ' + Tag;
+  Log('Fetching release tag: ' + CmdLine);
+  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('FetchingTags'), CmdLine);
+end;
 
 {
   There are 3 possible ways how an ESP-IDF copy can be obtained:
@@ -268,6 +275,16 @@ begin
     CmdLine := CmdLine + ' ' + GitRepository +' "' + IDFPath + '"';
     Log('Cloning IDF: ' + CmdLine);
     DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
+
+    if Length(GitDepth) > 0 and IDFZIPFileName <> '' then begin
+      { If we did a shallow clone, fetch the latest tag on this branch,
+        otherwise 'git describe' will not return expected results.
+        Ideally, we need to "unshallow the repositry up until the nearest tag";
+        Git doesn't provide such a feature, so here we simply fetch
+        some known release on the same branch. It might not be the most recent one.
+      }
+      GitFetchTag(IDFPath, IDFZIPFileVersion);
+    end;
 
     if IDFTempPath <> '' then
       GitRepoDissociate(IDFPath);
