@@ -396,7 +396,7 @@ begin
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
   { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path "' + IdfPathWithBackwardSlashes + '" ' + JSONArg + ' ';
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" "--idf-path=' + IdfPathWithBackwardSlashes + '" ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 
