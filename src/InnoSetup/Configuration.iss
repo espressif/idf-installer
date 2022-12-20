@@ -122,6 +122,16 @@ begin
   Result := ResultPath;
 end;
 
+function GetPathWithBackwardSlashes(Path: String): String;
+var
+  ResultPath: String;
+begin
+  ResultPath := Path;
+  StringChangeEx(ResultPath, '/', '\', True);
+  Result := ResultPath;
+end;
+
+
 { Find Major and Minor version in esp_idf_version.h file. }
 function GetIDFVersionFromHeaderFile():String;
 var
