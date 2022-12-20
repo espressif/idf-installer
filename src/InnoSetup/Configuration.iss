@@ -122,7 +122,7 @@ begin
   Result := ResultPath;
 end;
 
-function GetPathWithBackwardSlashes(Path: String): String;
+function GetPathWithBackslashes(Path: String): String;
 var
   ResultPath: String;
 begin
