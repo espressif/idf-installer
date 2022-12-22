@@ -251,11 +251,7 @@ begin
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
 
     if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
-      GitDepth := '1';
-    end;
-
-    if (Length(GitDepth) > 0) then begin
-      CmdLine := CmdLine + ' --depth ' + GitDepth + ' --shallow-submodules ';
+      CmdLine := CmdLine + ' --single-branch  --shallow-submodules ';
     end;
 
     if (IsGitRecursive) then begin
