@@ -238,11 +238,15 @@ Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-
 
 #ifndef DISABLE_TARGET_ESP32_C3
 Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: "{#COMPONENT_TARGET_ESP32_C3}"; Flags: recursesubdirs skipifsourcedoesntexist;
 #endif
 
 #ifndef DISABLE_TARGET_ESP32_S3
 Source: "{#BUILD}\tools\xtensa-esp32s3-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s3-elf"; Components: "{#COMPONENT_TARGET_ESP32_S3}"; Flags: recursesubdirs skipifsourcedoesntexist;
 #endif
+
+; ESP-IDF v5
+Source: "{#BUILD}\tools\xtensa-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\xtensa-esp-elf-gdb"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; Helper Python files for sanity check of Python environment - used by system_check_page
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
