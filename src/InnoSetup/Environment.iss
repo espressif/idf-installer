@@ -251,11 +251,7 @@ begin
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
 
     if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
-      GitDepth := '1';
-    end;
-
-    if (Length(GitDepth) > 0) then begin
-      CmdLine := CmdLine + ' --depth ' + GitDepth + ' --shallow-submodules ';
+      CmdLine := CmdLine + ' --single-branch  --shallow-submodules ';
     end;
 
     if (IsGitRecursive) then begin
@@ -358,10 +354,19 @@ begin
   end;
 end;
 
+function TrimTrailingBackslash(Path: String): String;
+begin
+  if (Length(Path) > 0) and (Path[Length(Path)] = '\') then  begin
+    Result := Copy(Path, 1, Length(Path) - 1);
+  end else begin
+    Result := Path;
+  end;
+end;
+
 procedure IDFToolsSetup();
 var
   CmdLine: String;
-  IdfPathWithForwardSlashes: String;
+  IdfPathWithBackslashes: String;
   IDFToolsPyPath: String;
   IDFToolsPyCmd: String;
   BundledIDFToolsPyPath: String;
@@ -370,7 +375,7 @@ var
   ResultCode: Integer;
   TargetSupportTestCommand: String;
 begin
-  IdfPathWithForwardSlashes := GetPathWithForwardSlashes(GetIDFPath(''));;
+  IdfPathWithBackslashes := TrimTrailingBackslash(GetPathWithBackslashes(GetIDFPath('')));
   IDFToolsPyPath := GetIDFPath('tools\idf_tools.py');
   BundledIDFToolsPyPath := ExpandConstant('{app}\idf_tools_fallback.py');
   JSONArg := '';
@@ -396,7 +401,7 @@ begin
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
   { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" --idf-path "' + IdfPathWithForwardSlashes + '" ' + JSONArg + ' ';
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" "--idf-path=' + IdfPathWithBackslashes + '" ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 
