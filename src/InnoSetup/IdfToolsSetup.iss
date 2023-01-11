@@ -239,16 +239,16 @@ Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-
 ; GDB RISC-V - ifndef begins with the latest chip def. If installer is not capable of handling the chip in the latest chip
 ; then one chip is eliminated from the list
 #ifndef DISABLE_TARGET_ESP32_C6
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_C6}; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_C6}; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_C6} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_C6} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
 #else
 #ifndef DISABLE_TARGET_ESP32_C2
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2}; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2}; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
 #else
 #ifndef DISABLE_TARGET_ESP32_C3
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3}; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3}; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
+Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
 #endif
 #endif
 #endif
