@@ -21,7 +21,7 @@
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
-#define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/16/release/vs_buildtools.exe"
+#define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
 
 #ifndef PYTHONVERSION
   #define PYTHONVERSION "3.8.7"
