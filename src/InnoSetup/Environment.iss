@@ -16,22 +16,32 @@ end;
 
 function GetEspupPath():String;
 begin
-  Result := ExpandConstant('{app}\tools\espup\espup.exe');
+  Result := ExpandConstant('{app}\tools\espup\');
+end;
+
+function GetEspupExe():String;
+begin
+  Result := GetEspupPath() + 'espup.exe';
 end;
 
 function GetEspupCommand(Command: String):String;
 begin
-  Result := GetEspupPath() + ' ' + Command;
+  Result := GetEspupExe() + ' ' + Command;
 end;
 
 function GetVSBuildToolsPath():String;
 begin
-  Result := ExpandConstant('{app}\tools\vs_build_tools\vs_build_tools.exe');
+  Result := ExpandConstant('{app}\tools\vs_build_tools\');
+end;
+
+function GetVSBuildToolsExe():String;
+begin
+  Result := GetVSBuildToolsPath() + 'vs_build_tools.exe';
 end;
 
 function GetVSBuildToolsCommand(Command: String):String;
 begin
-  Result := GetVSBuildToolsPath() + ' ' + Command;
+  Result := GetVSBuildToolsExe() + ' ' + Command;
 end;
 
 function ExecIdfEnv(Parameters: String):String;

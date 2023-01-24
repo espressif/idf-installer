@@ -79,12 +79,14 @@ end;
 
 procedure PrepareEspup();
 begin
-  PrepareIdfPackage(GetEspupPath(), GetEspupPath(), '{#ESPUP_DOWNLOADURL}');
+  ForceDirectories(GetEspupPath());
+  PrepareIdfPackage(GetEspupExe(), GetEspupExe(), '{#ESPUP_DOWNLOADURL}');
 end;
 
 procedure PrepareVSBuildTools();
 begin
-  PrepareIdfPackage(GetVSBuildToolsPath(), GetVSBuildToolsPath(), '{#VS_BUILD_TOOLS_DOWNLOADURL}');
+  ForceDirectories(GetVSBuildToolsPath());
+  PrepareIdfPackage(GetVSBuildToolsExe(), GetVSBuildToolsExe(), '{#VS_BUILD_TOOLS_DOWNLOADURL}');
 end;
 
 procedure PrepareEmbeddedPython();
