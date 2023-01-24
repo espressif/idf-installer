@@ -20,6 +20,9 @@
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
+#define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
+#define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/16/release/vs_buildtools.exe"
+
 #ifndef PYTHONVERSION
   #define PYTHONVERSION "3.8.7"
 #endif
@@ -298,10 +301,10 @@ Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 ; Following languages are supported only in online version
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
-Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
 

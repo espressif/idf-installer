@@ -77,6 +77,16 @@ begin
   idpAddFile(DownloadUrl, DistZip);
 end;
 
+procedure PrepareEspup();
+begin
+  PrepareIdfPackage(GetEspupPath(), GetEspupPath(), '{#ESPUP_DOWNLOADURL}');
+end;
+
+procedure PrepareVSBuildTools();
+begin
+  PrepareIdfPackage(GetVSBuildToolsPath(), GetVSBuildToolsPath(), '{#VS_BUILD_TOOLS_DOWNLOADURL}');
+end;
+
 procedure PrepareEmbeddedPython();
 var
   EmbeddedPythonPath:String;
@@ -160,11 +170,19 @@ begin
   end;
 end;
 
+procedure InstallVCTools();
+var
+  CommandLine: String;
+begin
+  CommandLine := ' --passive --wait --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows11SDK';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVSBuildToolsCommand(CommandLine));
+end;
+
 procedure InstallRust();
 var
   CommandLine: String;
 begin
-  CommandLine := 'rust install'
+  CommandLine := 'install'
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU}')) then begin
     CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu';
@@ -177,13 +195,14 @@ begin
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
-    CommandLine := CommandLine + ' --extra-tools=vctools';
+    { CommandLine := CommandLine + ' --extra-tools=vctools'; }
+    InstallVCTools();
   end;
 
   CommandLine := CommandLine + ' --extra-crates=ldproxy';
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
-    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand(CommandLine));
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));
   end;
 end;
 
@@ -240,6 +259,13 @@ begin
   end;
 
   ForceDirectories(ExpandConstant('{app}\dist'));
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    PrepareEspup();
+    if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+      PrepareVSBuildTools();
+    end;
+  end;
 
   PrepareEmbeddedPython();
   PrepareEmbeddedGit();
