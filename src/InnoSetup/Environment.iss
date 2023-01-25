@@ -44,6 +44,31 @@ begin
   Result := GetVSBuildToolsExe() + ' ' + Command;
 end;
 
+function GetCargoBinPath():String;
+begin
+  Result := ExpandConstant('{userdesktop}\..\.cargo\bin\');
+end;
+
+function GetCargoExe():String;
+begin
+  Result := GetCargoBinPath() + 'cargo.exe';
+end;
+
+function GetCargoCommand(Command: String):String;
+begin
+  Result := GetCargoExe() + ' ' + Command;
+end;
+
+function GetCargoBinstallZip():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-binstall.zip';
+end;
+
+function GetCargoBinstallExe():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-binstall.exe';
+end;
+
 function ExecIdfEnv(Parameters: String):String;
 var
   Command: String;

@@ -83,6 +83,12 @@ begin
   PrepareIdfPackage(GetEspupExe(), GetEspupExe(), '{#ESPUP_DOWNLOADURL}');
 end;
 
+procedure PrepareCargoBinstall();
+begin
+  ForceDirectories(GetCargoBinPath());
+  PrepareIdfPackage(GetCargoBinstallExe(), GetCargoBinstallZip(), '{#CARGO_BINSTALL_DOWNLOADURL}');
+end;
+
 procedure PrepareVSBuildTools();
 begin
   ForceDirectories(GetVSBuildToolsPath());
@@ -172,11 +178,32 @@ begin
   end;
 end;
 
-procedure InstallVCTools();
+procedure InstallRustBinstall();
 var
   CommandLine: String;
 begin
-  CommandLine := ' --passive --wait --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows11SDK';
+  if FileExists(GetCargoBinstallExe()) then begin
+    Exit;
+  end;
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoBinstallZip() + '"');
+end;
+
+procedure InstallRustCrates();
+var
+  CommandLine: String;
+begin
+  CommandLine := 'binstall cargo-generate ldproxy cargo-espflash';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
+end;
+
+procedure InstallVCTools();
+var
+  CommandLine: String;
+  EnvPath: String;
+  VCToolsPath: String;
+begin
+  { VS Build Tools IDs: https://learn.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-build-tools?view=vs-2022 }
+  CommandLine := ' --passive --wait --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows11SDK.22621';
   DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVSBuildToolsCommand(CommandLine));
 end;
 
@@ -205,6 +232,8 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));
+    InstallRustBinstall();
+    InstallRustCrates();
   end;
 end;
 
@@ -264,6 +293,7 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     PrepareEspup();
+    PrepareCargoBinstall();
     if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
       PrepareVSBuildTools();
     end;

@@ -22,6 +22,7 @@
 
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
 #define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
+#define CARGO_BINSTALL_DOWNLOADURL "https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-pc-windows-msvc.zip"
 
 #ifndef PYTHONVERSION
   #define PYTHONVERSION "3.8.7"
@@ -394,7 +395,9 @@ Filename: "{app}\idf-env.exe"; \
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH"; \
     ValueData: "{app}"; Flags: preservestringtype createvalueifdoesntexist uninsdeletevalue deletevalue;
-
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"; \
+    Check: NeedsAddPathToVCTools('C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64')
 
 #include "Configuration.iss"
 #include "Utils.iss"
