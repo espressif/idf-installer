@@ -186,13 +186,14 @@ begin
     Exit;
   end;
   CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoBinstallZip() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
 end;
 
 procedure InstallRustCrates();
 var
   CommandLine: String;
 begin
-  CommandLine := 'binstall cargo-generate ldproxy cargo-espflash';
+  CommandLine := 'binstall -y cargo-generate ldproxy cargo-espflash';
   DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
 end;
 
