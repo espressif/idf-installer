@@ -212,7 +212,11 @@ procedure InstallRust();
 var
   CommandLine: String;
 begin
-  CommandLine := 'install'
+  if (not DirExists(GetRustToolchainPath)) then begin
+    CommandLine := 'install';
+  end else begin
+    CommandLine := 'update';
+  end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU}')) then begin
     CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu';
@@ -225,11 +229,8 @@ begin
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
-    { CommandLine := CommandLine + ' --extra-tools=vctools'; }
     InstallVCTools();
   end;
-
-  CommandLine := CommandLine + ' --extra-crates=ldproxy';
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));

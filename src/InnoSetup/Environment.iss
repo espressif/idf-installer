@@ -49,6 +49,11 @@ begin
   Result := ExpandConstant('{userdesktop}\..\.cargo\bin\');
 end;
 
+function GetRustToolchainPath():String;
+begin
+  Result := ExpandConstant('{userdesktop}\..\.rustup\toolchains\esp\');
+end;
+
 function GetCargoExe():String;
 begin
   Result := GetCargoBinPath() + 'cargo.exe';
