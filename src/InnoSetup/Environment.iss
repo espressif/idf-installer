@@ -74,6 +74,21 @@ begin
   Result := GetCargoBinPath() + 'cargo-espflash.exe';
 end;
 
+function GetCargoGenerateTarGzip():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-generate.tar.gz';
+end;
+
+function GetCargoGenerateTar():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-generate.tar';
+end;
+
+function GetCargoGenerateExe():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-generate.exe';
+end;
+
 function GetLdproxyZip():String;
 begin
   Result := GetCargoBinPath() + 'ldproxy.zip';

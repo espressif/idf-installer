@@ -88,6 +88,7 @@ begin
   ForceDirectories(GetCargoBinPath());
   PrepareIdfPackage(GetCargoEspflashExe(), GetCargoEspflashZip(), '{#CARGO_ESPFLASH_DOWNLOADURL}');
   PrepareIdfPackage(GetLdproxyExe(), GetLdproxyZip(), '{#LDPROXY_DOWNLOADURL}');
+  PrepareIdfPackage(GetCargoGenerateExe(), GetCargoGenerateTarGzip(), '{#CARGO_GENERATE_DOWNLOADURL}');
 end;
 
 procedure PrepareVSBuildTools();
@@ -190,6 +191,21 @@ begin
   DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
 end;
 
+procedure InstallCargoGenerate();
+var
+  CommandLine: String;
+begin
+  if FileExists(GetCargoGenerateExe()) then begin
+    Exit;
+  end;
+
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" e "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoGenerateTarGzip() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoGenerateTar() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
 procedure InstallLdproxy();
 var
   CommandLine: String;
@@ -208,6 +224,7 @@ var
 begin
   InstallCargoEspflash();
   InstallLdproxy();
+  InstallCargoGenerate();
 end;
 
 procedure InstallVCTools();
