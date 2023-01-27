@@ -68,6 +68,7 @@ ComponentDriverSilabs=Silicon Labs - Virtual COM Port for USB CP210x (ESP boards
 ComponentDriverWch=WCH - Virtual COM Port for USB CH343/CH9102 (LilyGo boards)
 ComponentTarget=Chip Targets - more details at https://products.espressif.com/
 ComponentTargetEsp32=ESP32
+ComponentTargetEsp32c=ESP32-C Series
 ComponentTargetEsp32c2=ESP32-C2 (ESP-IDF v5.0+)
 ComponentTargetEsp32c3=ESP32-C3 (ESP-IDF v4.3+)
 ComponentTargetEsp32c6=ESP32-C6 (ESP-IDF v5.1+)

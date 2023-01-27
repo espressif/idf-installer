@@ -83,10 +83,11 @@ begin
   PrepareIdfPackage(GetEspupExe(), GetEspupExe(), '{#ESPUP_DOWNLOADURL}');
 end;
 
-procedure PrepareCargoBinstall();
+procedure PrepareCargoBinaryCrates();
 begin
   ForceDirectories(GetCargoBinPath());
-  PrepareIdfPackage(GetCargoBinstallExe(), GetCargoBinstallZip(), '{#CARGO_BINSTALL_DOWNLOADURL}');
+  PrepareIdfPackage(GetCargoEspflashExe(), GetCargoEspflashZip(), '{#CARGO_ESPFLASH_DOWNLOADURL}');
+  PrepareIdfPackage(GetLdproxyExe(), GetLdproxyZip(), '{#LDPROXY_DOWNLOADURL}');
 end;
 
 procedure PrepareVSBuildTools();
@@ -178,27 +179,35 @@ begin
   end;
 end;
 
-procedure InstallRustBinstall();
+procedure InstallCargoEspflash();
 var
   CommandLine: String;
 begin
-  if FileExists(GetCargoBinstallExe()) then begin
+  if FileExists(GetCargoEspflashExe()) then begin
     Exit;
   end;
-  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoBinstallZip() + '"');
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoEspflashZip() + '"');
   DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
 end;
+
+procedure InstallLdproxy();
+var
+  CommandLine: String;
+begin
+  if FileExists(GetLdproxyExe()) then begin
+    Exit;
+  end;
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetLdProxyZip() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
 
 procedure InstallRustCrates();
 var
   CommandLine: String;
 begin
-  CommandLine := 'binstall -y cargo-generate';
-  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
-  CommandLine := 'binstall -y cargo-espflash';
-  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
-  CommandLine := 'binstall -y ldproxy';
-  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
+  InstallCargoEspflash();
+  InstallLdproxy();
 end;
 
 procedure InstallVCTools();
@@ -240,7 +249,6 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));
-    InstallRustBinstall();
     InstallRustCrates();
   end;
 end;
@@ -301,7 +309,7 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     PrepareEspup();
-    PrepareCargoBinstall();
+    PrepareCargoBinaryCrates();
     if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
       PrepareVSBuildTools();
     end;

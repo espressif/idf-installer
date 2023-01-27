@@ -64,14 +64,24 @@ begin
   Result := GetCargoExe() + ' ' + Command;
 end;
 
-function GetCargoBinstallZip():String;
+function GetCargoEspflashZip():String;
 begin
-  Result := GetCargoBinPath() + 'cargo-binstall.zip';
+  Result := GetCargoBinPath() + 'cargo-espflash.zip';
 end;
 
-function GetCargoBinstallExe():String;
+function GetCargoEspflashExe():String;
 begin
-  Result := GetCargoBinPath() + 'cargo-binstall.exe';
+  Result := GetCargoBinPath() + 'cargo-espflash.exe';
+end;
+
+function GetLdproxyZip():String;
+begin
+  Result := GetCargoBinPath() + 'ldproxy.zip';
+end;
+
+function GetLdproxyExe():String;
+begin
+  Result := GetCargoBinPath() + 'ldproxy.exe';
 end;
 
 function ExecIdfEnv(Parameters: String):String;

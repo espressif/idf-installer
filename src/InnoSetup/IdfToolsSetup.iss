@@ -22,7 +22,8 @@
 
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
 #define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
-#define CARGO_BINSTALL_DOWNLOADURL "https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-pc-windows-msvc.zip"
+#define CARGO_ESPFLASH_DOWNLOADURL "https://github.com/esp-rs/espflash/releases/latest/download/cargo-espflash-x86_64-pc-windows-msvc.zip"
+#define LDPROXY_DOWNLOADURL "https://github.com/esp-rs/embuild/releases/latest/download/ldproxy-x86_64-pc-windows-msvc.zip"
 
 #ifndef PYTHONVERSION
   #define PYTHONVERSION "3.8.7"
@@ -130,9 +131,10 @@
 #define COMPONENT_DRIVER_WCH = "driver/wch"
 #define COMPONENT_TARGET = "target"
 #define COMPONENT_TARGET_ESP32 = "target/esp32"
-#define COMPONENT_TARGET_ESP32_C2 = "target/esp32c2"
-#define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
-#define COMPONENT_TARGET_ESP32_C6 = "target/esp32c6"
+#define COMPONENT_TARGET_ESP32_C = "target/esp32c"
+#define COMPONENT_TARGET_ESP32_C2 = "target/esp32c/esp32c2"
+#define COMPONENT_TARGET_ESP32_C3 = "target/esp32c/esp32c3"
+#define COMPONENT_TARGET_ESP32_C6 = "target/esp32c/esp32c6"
 #define COMPONENT_TARGET_ESP32_S = "target/esp32s"
 #define COMPONENT_TARGET_ESP32_S3 = "target/esp32s/s3"
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
@@ -304,8 +306,8 @@ Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
+;Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
+;Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
 
@@ -323,6 +325,10 @@ Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Typ
 Name: "{#COMPONENT_DRIVER_WCH}"; Description: {cm:ComponentDriverWch}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
+
+#ifndef DISABLE_TARGET_ESP32_C3
+Name: "{#COMPONENT_TARGET_ESP32_C}"; Description: {cm:ComponentTargetEsp32c}; Types: full; Flags: checkablealone
+#endif
 
 #ifndef DISABLE_TARGET_ESP32_C2
 Name: "{#COMPONENT_TARGET_ESP32_C2}"; Description: {cm:ComponentTargetEsp32c2}; Types: custom; Flags: checkablealone
