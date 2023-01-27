@@ -105,7 +105,7 @@ begin
   CmdlineInstallCancel := True;
 end;
 
-function DoCmdlineInstall(caption, description, command: String): Boolean;
+function PerformCmdlineInstall(caption, description, command: String): Boolean;
 var
   CmdlineInstallPage: TOutputProgressWizardPage;
   Res: Integer;
@@ -182,6 +182,11 @@ begin
     CmdlineInstallPage.Free;
     WizardForm.CancelButton.OnClick := PrevCancelButtonOnClick;
   end;
+end;
+
+function DoCmdlineInstall(caption, description, command: String): Boolean;
+begin
+  Result := PerformCmdlineInstall(caption, description, command);
   if not Result then
     RaiseException(CustomMessage('InstallationFailedAtStep') + ' ' + caption);
 end;

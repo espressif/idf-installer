@@ -205,7 +205,9 @@ var
 begin
   { VS Build Tools IDs: https://learn.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-build-tools?view=vs-2022 }
   CommandLine := ' --passive --wait --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows11SDK.22621';
-  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVSBuildToolsCommand(CommandLine));
+  { vs_build_tools requires elevation of privileges and it spawns background process and exits current one. }
+  { In that case we do not wait for error code and continue with the rest of the installation. }
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVSBuildToolsCommand(CommandLine));
 end;
 
 procedure InstallRust();
