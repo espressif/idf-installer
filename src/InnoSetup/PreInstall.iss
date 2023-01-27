@@ -193,8 +193,12 @@ procedure InstallRustCrates();
 var
   CommandLine: String;
 begin
-  CommandLine := 'binstall -y cargo-generate ldproxy cargo-espflash';
-  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
+  CommandLine := 'binstall -y cargo-generate';
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
+  CommandLine := 'binstall -y cargo-espflash';
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
+  CommandLine := 'binstall -y ldproxy';
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetCargoCommand(CommandLine));
 end;
 
 procedure InstallVCTools();
