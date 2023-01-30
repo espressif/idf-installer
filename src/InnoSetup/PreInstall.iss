@@ -97,6 +97,13 @@ begin
   PrepareIdfPackage(GetVCRedistExe(), GetVCRedistExe(), '{#VC_REDIST_DOWNLOADURL}');
 end;
 
+procedure PrepareMinGW();
+begin
+  { Install MinGW on top of MSYS2. }
+  ForceDirectories(GetMsys2Path());
+  PrepareIdfPackage(GetMsys2Exe(), GetMsys2Exe(), '{#MSYS2_DOWNLOADURL}');
+end;
+
 procedure PrepareVSBuildTools();
 begin
   ForceDirectories(GetVSBuildToolsPath());
@@ -257,7 +264,13 @@ procedure InstallMinGW();
 var
   CommandLine: String;
 begin
-  CommandLine := ' --passive --wait --add-package mingw-w64-x86_64-gcc --add-package mingw-w64-x86_64-gdb --add-package mingw-w64-x86_64-gcc-fortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_';
+  { https://github.com/msys2/msys2-installer/blob/main/README.md#cli-usage-examples }
+  CommandLine := '-y -oC:\';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetMsys2Command(CommandLine));
+
+  { Install tool required for runtime }
+  CommandLine := 'C:\msys64\mingw64.exe /bin/bash -c "pacman -Syu --noconfirm; pacman  -S --noconfirm make diffutils tar mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja"';
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
 end;
 
 procedure InstallRust();
@@ -356,6 +369,10 @@ begin
     PrepareEspup();
     if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
       PrepareVSBuildTools();
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
+      PrepareMinGW();
     end;
 
     if (WizardIsComponentSelected('{#COMPONENT_RUST_BINARY_CRATES}')) then begin

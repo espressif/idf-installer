@@ -157,15 +157,10 @@ begin
   Result := True;
 end;
 
-function NeedsAddPathToVCTools(Param: string): boolean;
+function NeedsAddPath(Param: string): boolean;
 var
   OrigPath: string;
 begin
-  if not WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}') then begin
-    Result := False;
-    exit;
-  end;
-
   if RegQueryStringValue(HKEY_LOCAL_MACHINE,
     'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
     'Path', OrigPath)
@@ -188,4 +183,25 @@ begin
   { look for the path with leading and trailing semicolon }
   { Pos() returns 0 if not found }
   Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
+end;
+
+
+function NeedsAddPathToVCTools(Param: string): boolean;
+begin
+  if not WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}') then begin
+    Result := False;
+    exit;
+  end;
+
+  Result := NeedsAddPath(Param);
+end;
+
+function NeedsAddPathToMinGW(Param: string): boolean;
+begin
+  if not WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}') then begin
+    Result := False;
+    exit;
+  end;
+
+  Result := NeedsAddPath(Param);
 end;

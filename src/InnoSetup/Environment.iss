@@ -114,6 +114,21 @@ begin
   Result := GetCargoBinPath() + 'ldproxy.exe';
 end;
 
+function GetMsys2Path():String;
+begin
+  Result := ExpandConstant('{app}\tools\msys2\');
+end;
+
+function GetMsys2Exe():String;
+begin
+  Result := GetMsys2Path() + 'msys2.exe';
+end;
+
+function GetMsys2Command(Command: String):String;
+begin
+  Result := GetMsys2Exe() + ' ' + Command;
+end;
+
 function ExecIdfEnv(Parameters: String):String;
 var
   Command: String;

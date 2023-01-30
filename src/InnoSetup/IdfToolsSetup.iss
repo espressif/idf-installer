@@ -23,6 +23,7 @@
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
 #define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
 #define VC_REDIST_DOWNLOADURL "https://aka.ms/vs/17/release/vc_redist.x64.exe"
+#define MSYS2_DOWNLOADURL "https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe"
 #define CARGO_ESPFLASH_DOWNLOADURL "https://github.com/esp-rs/espflash/releases/latest/download/cargo-espflash-x86_64-pc-windows-msvc.zip"
 #define CARGO_GENERATE_DOWNLOADURL "https://github.com/cargo-generate/cargo-generate/releases/download/v0.17.6/cargo-generate-v0.17.6-x86_64-pc-windows-msvc.tar.gz"
 #define LDPROXY_DOWNLOADURL "https://github.com/esp-rs/embuild/releases/latest/download/ldproxy-x86_64-pc-windows-msvc.zip"
@@ -310,7 +311,7 @@ Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
 Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone exclusive
 Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone exclusive
-Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone dontinheritcheck
 Name: "{#COMPONENT_RUST_BINARY_CRATES}"; Description: {cm:ComponentRustBinaryCrates}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
@@ -408,6 +409,9 @@ Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH
 Root: HKCU; Subkey: "Environment"; \
     ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"; \
     Check: NeedsAddPathToVCTools('C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64')
+Root: HKCU; Subkey: "Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\msys64\mingw64\bin"; \
+    Check: NeedsAddPathToMinGW('C:\msys64\mingw64\bin')
 
 #include "Configuration.iss"
 #include "Utils.iss"
