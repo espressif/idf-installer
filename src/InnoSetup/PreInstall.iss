@@ -91,6 +91,12 @@ begin
   PrepareIdfPackage(GetCargoGenerateExe(), GetCargoGenerateTarGzip(), '{#CARGO_GENERATE_DOWNLOADURL}');
 end;
 
+procedure PrepareVCRedist();
+begin
+  ForceDirectories(GetVCRedistPath());
+  PrepareIdfPackage(GetVCRedistExe(), GetVCRedistExe(), '{#VC_REDIST_DOWNLOADURL}');
+end;
+
 procedure PrepareVSBuildTools();
 begin
   ForceDirectories(GetVSBuildToolsPath());
@@ -217,6 +223,13 @@ begin
   DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
 end;
 
+procedure InstallVCRedist();
+var
+  CommandLine: String;
+begin
+  CommandLine := GetVCRedistCommand('/q /norestart');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
 
 procedure InstallRustCrates();
 var
@@ -240,6 +253,13 @@ begin
   PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVSBuildToolsCommand(CommandLine));
 end;
 
+procedure InstallMinGW();
+var
+  CommandLine: String;
+begin
+  CommandLine := ' --passive --wait --add-package mingw-w64-x86_64-gcc --add-package mingw-w64-x86_64-gdb --add-package mingw-w64-x86_64-gcc-fortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_64-gcc-ada --add-package mingw-w64-x86_64-gcc-libgfortran --add-package mingw-w64-x86_64-gcc-objc --add-package mingw-w64-x86_';
+end;
+
 procedure InstallRust();
 var
   CommandLine: String;
@@ -257,7 +277,7 @@ begin
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
-    CommandLine := CommandLine + ' --extra-tools=mingw';
+    InstallMinGW();
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
@@ -266,6 +286,14 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST_BINARY_CRATES}')) then begin
+    { Crates requires VC Redist to be installed, otherwise no error message is disabled when invoking command. }
+    if not (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+      InstallVCRedist();
+    end;
+
     InstallRustCrates();
   end;
 end;
@@ -326,9 +354,16 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
     PrepareEspup();
-    PrepareCargoBinaryCrates();
     if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
       PrepareVSBuildTools();
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_RUST_BINARY_CRATES}')) then begin
+      if not (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+        PrepareVCRedist();
+      end;
+
+      PrepareCargoBinaryCrates();
     end;
   end;
 

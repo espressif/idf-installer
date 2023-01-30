@@ -56,6 +56,7 @@ ComponentRustGnu=Rust ESP toolchain x86_64-pc-windows-gnu (vužaduje MinGW)
 ComponentRustGnuMinGW=MinGW x86_64
 ComponentRustMsvc=Rust ESP toolchain x86_64-pc-windows-msvc (vyžaduje Windows 10 SDK a MSVC C++)
 ComponentRustMsvcVctools=Windows 10 SDK a MSVC C++
+ComponentRustBinaryCrates=Binárne crates pro Rust (cargo-espflash, cargo-generate, ldproxy)
 ComponentDesktopShortcut=Odkaz na ploche
 ComponentPowerShell=PowerShell
 ComponentPowerShellWindowsTerminal=Windows Terminal rozbaľovacie menu

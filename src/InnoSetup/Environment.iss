@@ -44,6 +44,21 @@ begin
   Result := GetVSBuildToolsExe() + ' ' + Command;
 end;
 
+function GetVCRedistPath():String;
+begin
+  Result := ExpandConstant('{app}\tools\vc_redist\');
+end;
+
+function GetVCRedistExe():String;
+begin
+  Result := GetVCRedistPath() + 'vc_redist.exe';
+end;
+
+function GetVCRedistCommand(Command: String):String;
+begin
+  Result := GetVCRedistExe() + ' ' + Command;
+end;
+
 function GetCargoBinPath():String;
 begin
   Result := ExpandConstant('{userdesktop}\..\.cargo\bin\');

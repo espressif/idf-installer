@@ -22,6 +22,7 @@
 
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
 #define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
+#define VC_REDIST_DOWNLOADURL "https://aka.ms/vs/17/release/vc_redist.x64.exe"
 #define CARGO_ESPFLASH_DOWNLOADURL "https://github.com/esp-rs/espflash/releases/latest/download/cargo-espflash-x86_64-pc-windows-msvc.zip"
 #define CARGO_GENERATE_DOWNLOADURL "https://github.com/cargo-generate/cargo-generate/releases/download/v0.17.6/cargo-generate-v0.17.6-x86_64-pc-windows-msvc.tar.gz"
 #define LDPROXY_DOWNLOADURL "https://github.com/esp-rs/embuild/releases/latest/download/ldproxy-x86_64-pc-windows-msvc.zip"
@@ -117,6 +118,7 @@
 #define COMPONENT_RUST_GNU_MINGW = 'ide/rust/gnu/mingw'
 #define COMPONENT_RUST_MSVC = 'ide/rust/msvc'
 #define COMPONENT_RUST_MSVC_VCTOOLS = 'ide/rust/msvc/vctools'
+#define COMPONENT_RUST_BINARY_CRATES = 'ide/rust/binary_crates'
 #define COMPONENT_TOIT_JAGUAR = 'ide/toitjaguar'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
 #define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
@@ -305,10 +307,11 @@ Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 ; Following languages are supported only in online version
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
-Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone exclusive
 Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
-;Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
-;Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone exclusive
+Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_BINARY_CRATES}"; Description: {cm:ComponentRustBinaryCrates}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
 
