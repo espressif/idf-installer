@@ -469,15 +469,6 @@ begin
   end;
 end;
 
-function TrimTrailingBackslash(Path: String): String;
-begin
-  if (Length(Path) > 0) and (Path[Length(Path)] = '\') then  begin
-    Result := Copy(Path, 1, Length(Path) - 1);
-  end else begin
-    Result := Path;
-  end;
-end;
-
 procedure IDFToolsSetup();
 var
   CmdLine: String;
