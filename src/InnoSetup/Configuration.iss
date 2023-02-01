@@ -207,6 +207,22 @@ begin
   Result := VersionString;
 end;
 
+function TrimTrailingBackslash(Path: String): String;
+begin
+  if (Path[Length(Path)] = '\') then begin
+    Delete(Path, Length(Path), 1);
+  end;
+  Result := Path;
+end;
+
+function AddTrailingBackslash(Path: String): String;
+begin
+  if (Path[Length(Path)] <> '\') then begin
+    Path := Path + '\';
+  end;
+  Result := Path;
+end;
+
 function GetIDFShortVersion(): String;
 begin
   { Transform main or master to x.y }

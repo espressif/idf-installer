@@ -14,11 +14,19 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.18"
+#define MyAppVersion "2.19"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
+
+#define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
+#define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
+#define VC_REDIST_DOWNLOADURL "https://aka.ms/vs/17/release/vc_redist.x64.exe"
+#define MSYS2_DOWNLOADURL "https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe"
+#define CARGO_ESPFLASH_DOWNLOADURL "https://github.com/esp-rs/espflash/releases/latest/download/cargo-espflash-x86_64-pc-windows-msvc.zip"
+#define CARGO_GENERATE_DOWNLOADURL "https://github.com/cargo-generate/cargo-generate/releases/download/v0.17.6/cargo-generate-v0.17.6-x86_64-pc-windows-msvc.tar.gz"
+#define LDPROXY_DOWNLOADURL "https://github.com/esp-rs/embuild/releases/latest/download/ldproxy-x86_64-pc-windows-msvc.zip"
 
 #ifndef PYTHONVERSION
   #define PYTHONVERSION "3.8.7"
@@ -111,6 +119,7 @@
 #define COMPONENT_RUST_GNU_MINGW = 'ide/rust/gnu/mingw'
 #define COMPONENT_RUST_MSVC = 'ide/rust/msvc'
 #define COMPONENT_RUST_MSVC_VCTOOLS = 'ide/rust/msvc/vctools'
+#define COMPONENT_RUST_BINARY_CRATES = 'ide/rust/binary_crates'
 #define COMPONENT_TOIT_JAGUAR = 'ide/toitjaguar'
 #define COMPONENT_POWERSHELL = 'ide/powershell'
 #define COMPONENT_POWERSHELL_WINDOWS_TERMINAL = 'ide/powershell/windowsterminal'
@@ -126,9 +135,10 @@
 #define COMPONENT_DRIVER_WCH = "driver/wch"
 #define COMPONENT_TARGET = "target"
 #define COMPONENT_TARGET_ESP32 = "target/esp32"
-#define COMPONENT_TARGET_ESP32_C2 = "target/esp32c2"
-#define COMPONENT_TARGET_ESP32_C3 = "target/esp32c3"
-#define COMPONENT_TARGET_ESP32_C6 = "target/esp32c6"
+#define COMPONENT_TARGET_ESP32_C = "target/esp32c"
+#define COMPONENT_TARGET_ESP32_C2 = "target/esp32c/esp32c2"
+#define COMPONENT_TARGET_ESP32_C3 = "target/esp32c/esp32c3"
+#define COMPONENT_TARGET_ESP32_C6 = "target/esp32c/esp32c6"
 #define COMPONENT_TARGET_ESP32_S = "target/esp32s"
 #define COMPONENT_TARGET_ESP32_S3 = "target/esp32s/s3"
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
@@ -298,10 +308,11 @@ Name: "{#COMPONENT_IDE}"; Description: {cm:ComponentIde}; Types: full custom;
 ; Following languages are supported only in online version
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_RUST}"; Description: {cm:ComponentRust}; Types: custom
-Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone
-Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_MSVC}"; Description: {cm:ComponentRustMsvc}; Types: custom; Flags: checkablealone exclusive
 Name: "{#COMPONENT_RUST_MSVC_VCTOOLS}"; Description: {cm:ComponentRustMsvcVctools}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_RUST_GNU}"; Description: {cm:ComponentRustGnu}; Types: custom; Flags: checkablealone exclusive
+Name: "{#COMPONENT_RUST_GNU_MINGW}"; Description: {cm:ComponentRustGnuMinGW}; Types: custom; Flags: checkablealone dontinheritcheck
+Name: "{#COMPONENT_RUST_BINARY_CRATES}"; Description: {cm:ComponentRustBinaryCrates}; Types: custom; Flags: checkablealone
 Name: "{#COMPONENT_TOIT_JAGUAR}"; Description: {cm:ComponentToitJaguar}; Types: custom
 #endif
 
@@ -319,6 +330,10 @@ Name: "{#COMPONENT_DRIVER_SILABS}"; Description: {cm:ComponentDriverSilabs}; Typ
 Name: "{#COMPONENT_DRIVER_WCH}"; Description: {cm:ComponentDriverWch}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET}"; Description: {cm:ComponentTarget}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32}"; Description: {cm:ComponentTargetEsp32}; Types: full; Flags: checkablealone
+
+#ifndef DISABLE_TARGET_ESP32_C3
+Name: "{#COMPONENT_TARGET_ESP32_C}"; Description: {cm:ComponentTargetEsp32c}; Types: full; Flags: checkablealone
+#endif
 
 #ifndef DISABLE_TARGET_ESP32_C2
 Name: "{#COMPONENT_TARGET_ESP32_C2}"; Description: {cm:ComponentTargetEsp32c2}; Types: custom; Flags: checkablealone
@@ -391,7 +406,12 @@ Filename: "{app}\idf-env.exe"; \
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH"; \
     ValueData: "{app}"; Flags: preservestringtype createvalueifdoesntexist uninsdeletevalue deletevalue;
-
+Root: HKCU; Subkey: "Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"; \
+    Check: NeedsAddPathToVCTools('C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64')
+Root: HKCU; Subkey: "Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\msys64\mingw64\bin"; \
+    Check: NeedsAddPathToMinGW('C:\msys64\mingw64\bin')
 
 #include "Configuration.iss"
 #include "Utils.iss"

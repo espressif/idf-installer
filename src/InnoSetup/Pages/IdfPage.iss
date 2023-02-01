@@ -190,7 +190,8 @@ begin
     end;
 #endif
 
-    IDFDir := GetIDFPath('');
+    IDFDir := AddTrailingBackslash(GetIDFPath(''));
+    ToolsDir := AddTrailingBackslash(ToolsDir);
     Log('Checking location of ToolsDir ' + ToolsDir + ' is not a subdirectory of ' + IDFDir);
     if Pos(IDFDir, ToolsDir) = 1 then
     begin

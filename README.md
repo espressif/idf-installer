@@ -16,6 +16,7 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Purpose | Size |
 | ------- | ------- | ---- |
+| 2.19 - 2023-02-01 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.19/esp-idf-tools-setup-online-2.19.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.19.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.18 - 2022-12-23 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.18/esp-idf-tools-setup-online-2.18.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.18.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.17 - 2022-12-06 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.17/esp-idf-tools-setup-online-2.17.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.17.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.16 - 2022-08-03 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.16/esp-idf-tools-setup-online-2.16.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.16.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
@@ -27,6 +28,7 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Content | Size |
 | ------- | ------- | ---- |
+| Espressif-IDE v2.8.0 and ESP-IDF 5.0 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.8.0-esp-idf-5.0/espressif-ide-setup-2.8.0-with-esp-idf-5.0.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.8.0-with-esp-idf-5.0.exe) | Espressif-IDE + JDK + ESP-IDF v5.0 | 1 GB |
 | Espressif-IDE v2.7.0 and ESP-IDF 5.0 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.7.0-esp-idf-5.0/espressif-ide-setup-2.7.0-with-esp-idf-5.0.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.7.0-with-esp-idf-5.0.exe) | Espressif-IDE + JDK + ESP-IDF v5.0 | 1 GB |
 | Espressif-IDE v2.7.0 and ESP-IDF 4.4.3 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.7.0-esp-idf-4.4.3/espressif-ide-setup-2.7.0-with-esp-idf-4.4.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.7.0-with-esp-idf-4.4.3.exe) | Espressif-IDE + JDK + ESP-IDF v4.4.3 | 1 GB |
 | Espressif-IDE v2.6.0 [download](https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.6.0/espressif-ide-setup-espressif-ide-2.6.0-with-esp-idf-4.4.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.6.0-with-esp-idf-4.4.2.exe) | Espressif-IDE + JDK + ESP-IDF v4.4.2 | 1 GB |

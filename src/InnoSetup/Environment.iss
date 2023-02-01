@@ -14,6 +14,121 @@ begin
   Result := ExpandConstant('{tmp}\{#IDF_ENV} ') + Command;
 end;
 
+function GetEspupPath():String;
+begin
+  Result := ExpandConstant('{app}\tools\espup\');
+end;
+
+function GetEspupExe():String;
+begin
+  Result := GetEspupPath() + 'espup.exe';
+end;
+
+function GetEspupCommand(Command: String):String;
+begin
+  Result := GetEspupExe() + ' ' + Command;
+end;
+
+function GetVSBuildToolsPath():String;
+begin
+  Result := ExpandConstant('{app}\tools\vs_build_tools\');
+end;
+
+function GetVSBuildToolsExe():String;
+begin
+  Result := GetVSBuildToolsPath() + 'vs_build_tools.exe';
+end;
+
+function GetVSBuildToolsCommand(Command: String):String;
+begin
+  Result := GetVSBuildToolsExe() + ' ' + Command;
+end;
+
+function GetVCRedistPath():String;
+begin
+  Result := ExpandConstant('{app}\tools\vc_redist\');
+end;
+
+function GetVCRedistExe():String;
+begin
+  Result := GetVCRedistPath() + 'vc_redist.exe';
+end;
+
+function GetVCRedistCommand(Command: String):String;
+begin
+  Result := GetVCRedistExe() + ' ' + Command;
+end;
+
+function GetCargoBinPath():String;
+begin
+  Result := ExpandConstant('{userdesktop}\..\.cargo\bin\');
+end;
+
+function GetRustToolchainPath():String;
+begin
+  Result := ExpandConstant('{userdesktop}\..\.rustup\toolchains\esp\');
+end;
+
+function GetCargoExe():String;
+begin
+  Result := GetCargoBinPath() + 'cargo.exe';
+end;
+
+function GetCargoCommand(Command: String):String;
+begin
+  Result := GetCargoExe() + ' ' + Command;
+end;
+
+function GetCargoEspflashZip():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-espflash.zip';
+end;
+
+function GetCargoEspflashExe():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-espflash.exe';
+end;
+
+function GetCargoGenerateTarGzip():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-generate.tar.gz';
+end;
+
+function GetCargoGenerateTar():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-generate.tar';
+end;
+
+function GetCargoGenerateExe():String;
+begin
+  Result := GetCargoBinPath() + 'cargo-generate.exe';
+end;
+
+function GetLdproxyZip():String;
+begin
+  Result := GetCargoBinPath() + 'ldproxy.zip';
+end;
+
+function GetLdproxyExe():String;
+begin
+  Result := GetCargoBinPath() + 'ldproxy.exe';
+end;
+
+function GetMsys2Path():String;
+begin
+  Result := ExpandConstant('{app}\tools\msys2\');
+end;
+
+function GetMsys2Exe():String;
+begin
+  Result := GetMsys2Path() + 'msys2.exe';
+end;
+
+function GetMsys2Command(Command: String):String;
+begin
+  Result := GetMsys2Exe() + ' ' + Command;
+end;
+
 function ExecIdfEnv(Parameters: String):String;
 var
   Command: String;
@@ -351,15 +466,6 @@ begin
     Result := '--targets=' + Copy(Targets, 1, Length(Targets) - 1);
   end else begin
     Result := '';
-  end;
-end;
-
-function TrimTrailingBackslash(Path: String): String;
-begin
-  if (Length(Path) > 0) and (Path[Length(Path)] = '\') then  begin
-    Result := Copy(Path, 1, Length(Path) - 1);
-  end else begin
-    Result := Path;
   end;
 end;
 

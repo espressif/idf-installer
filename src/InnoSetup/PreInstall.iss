@@ -77,6 +77,39 @@ begin
   idpAddFile(DownloadUrl, DistZip);
 end;
 
+procedure PrepareEspup();
+begin
+  ForceDirectories(GetEspupPath());
+  PrepareIdfPackage(GetEspupExe(), GetEspupExe(), '{#ESPUP_DOWNLOADURL}');
+end;
+
+procedure PrepareCargoBinaryCrates();
+begin
+  ForceDirectories(GetCargoBinPath());
+  PrepareIdfPackage(GetCargoEspflashExe(), GetCargoEspflashZip(), '{#CARGO_ESPFLASH_DOWNLOADURL}');
+  PrepareIdfPackage(GetLdproxyExe(), GetLdproxyZip(), '{#LDPROXY_DOWNLOADURL}');
+  PrepareIdfPackage(GetCargoGenerateExe(), GetCargoGenerateTarGzip(), '{#CARGO_GENERATE_DOWNLOADURL}');
+end;
+
+procedure PrepareVCRedist();
+begin
+  ForceDirectories(GetVCRedistPath());
+  PrepareIdfPackage(GetVCRedistExe(), GetVCRedistExe(), '{#VC_REDIST_DOWNLOADURL}');
+end;
+
+procedure PrepareMinGW();
+begin
+  { Install MinGW on top of MSYS2. }
+  ForceDirectories(GetMsys2Path());
+  PrepareIdfPackage(GetMsys2Exe(), GetMsys2Exe(), '{#MSYS2_DOWNLOADURL}');
+end;
+
+procedure PrepareVSBuildTools();
+begin
+  ForceDirectories(GetVSBuildToolsPath());
+  PrepareIdfPackage(GetVSBuildToolsExe(), GetVSBuildToolsExe(), '{#VS_BUILD_TOOLS_DOWNLOADURL}');
+end;
+
 procedure PrepareEmbeddedPython();
 var
   EmbeddedPythonPath:String;
@@ -160,11 +193,95 @@ begin
   end;
 end;
 
+procedure InstallCargoEspflash();
+var
+  CommandLine: String;
+begin
+  if FileExists(GetCargoEspflashExe()) then begin
+    Exit;
+  end;
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoEspflashZip() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
+procedure InstallCargoGenerate();
+var
+  CommandLine: String;
+begin
+  if FileExists(GetCargoGenerateExe()) then begin
+    Exit;
+  end;
+
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" e "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoGenerateTarGzip() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetCargoGenerateTar() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
+procedure InstallLdproxy();
+var
+  CommandLine: String;
+begin
+  if FileExists(GetLdproxyExe()) then begin
+    Exit;
+  end;
+  CommandLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + GetCargoBinPath() + '" -r -aoa "' + GetLdProxyZip() + '"');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
+procedure InstallVCRedist();
+var
+  CommandLine: String;
+begin
+  CommandLine := GetVCRedistCommand('/q /norestart');
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
+procedure InstallRustCrates();
+var
+  CommandLine: String;
+begin
+  InstallCargoEspflash();
+  InstallLdproxy();
+  InstallCargoGenerate();
+end;
+
+procedure InstallVCTools();
+var
+  CommandLine: String;
+  EnvPath: String;
+  VCToolsPath: String;
+begin
+  { VS Build Tools IDs: https://learn.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-build-tools?view=vs-2022 }
+  CommandLine := ' --passive --wait --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows11SDK.22621';
+  { vs_build_tools requires elevation of privileges and it spawns background process and exits current one. }
+  { In that case we do not wait for error code and continue with the rest of the installation. }
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetVSBuildToolsCommand(CommandLine));
+end;
+
+procedure InstallMinGW();
+var
+  CommandLine: String;
+begin
+  { https://github.com/msys2/msys2-installer/blob/main/README.md#cli-usage-examples }
+  CommandLine := '-y -oC:\';
+  DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetMsys2Command(CommandLine));
+
+  { Install tool required for runtime }
+  CommandLine := 'C:\msys64\mingw64.exe /bin/bash -c "pacman -Syu --noconfirm; pacman  -S --noconfirm make diffutils tar mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja"';
+  PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
+end;
+
 procedure InstallRust();
 var
   CommandLine: String;
 begin
-  CommandLine := 'rust install'
+  if (not DirExists(GetRustToolchainPath)) then begin
+    CommandLine := 'install';
+  end else begin
+    CommandLine := 'update';
+  end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU}')) then begin
     CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu';
@@ -173,17 +290,24 @@ begin
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
-    CommandLine := CommandLine + ' --extra-tools=mingw';
+    InstallMinGW();
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
-    CommandLine := CommandLine + ' --extra-tools=vctools';
+    InstallVCTools();
   end;
 
-  CommandLine := CommandLine + ' --extra-crates=ldproxy';
-
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
-    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetIdfEnvCommand(CommandLine));
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST_BINARY_CRATES}')) then begin
+    { Crates requires VC Redist to be installed, otherwise no error message is disabled when invoking command. }
+    if not (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+      InstallVCRedist();
+    end;
+
+    InstallRustCrates();
   end;
 end;
 
@@ -240,6 +364,25 @@ begin
   end;
 
   ForceDirectories(ExpandConstant('{app}\dist'));
+
+  if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    PrepareEspup();
+    if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+      PrepareVSBuildTools();
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
+      PrepareMinGW();
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_RUST_BINARY_CRATES}')) then begin
+      if not (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
+        PrepareVCRedist();
+      end;
+
+      PrepareCargoBinaryCrates();
+    end;
+  end;
 
   PrepareEmbeddedPython();
   PrepareEmbeddedGit();
