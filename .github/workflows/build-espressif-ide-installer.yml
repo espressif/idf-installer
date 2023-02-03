@@ -6,11 +6,11 @@ on:
       espressif_ide_version:
         description: 'Espressif IDE version'
         required: true
-        default: '2.7.0'
+        default: '2.8.0'
       esp_idf_version:
         description: 'ESP-IDF version'
         required: true
-        default: '4.4.3'
+        default: '4.4.4'
 
 jobs:
   build-espressif-ide-installer:
