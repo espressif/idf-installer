@@ -14,7 +14,7 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.19"
+#define MyAppVersion "2.20"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
@@ -41,7 +41,7 @@
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
 #ifndef ESPRESSIFIDEVERSION
-  #define ESPRESSIFIDEVERSION "2.8.0"
+  #define ESPRESSIFIDEVERSION "2.8.1"
 #endif
 
 #define ECLIPSE_INSTALLER "Espressif-IDE-" + ESPRESSIFIDEVERSION + "-win32.win32.x86_64.zip"
