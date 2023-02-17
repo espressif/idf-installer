@@ -57,8 +57,12 @@ function DownloadIdfVersions() {
     Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }
 
+# Get short version of Constraint file.
+# For example, for v5.0.1, return 5.0; for v5.0.0-rc, return 5.0
 function GetConstraintFile() {
-    $ShortVersion = $OfflineBranch -replace "^v" -replace "-.*$"
+    $VersionString = $OfflineBranch -replace "^v" -replace "-.*$"
+    $SplitVersion = $VersionString -split "\."
+    $ShortVersion = $SplitVersion[0] + "." + $SplitVersion[1]
     return "espidf.constraints.v${ShortVersion}.txt"
 }
 
