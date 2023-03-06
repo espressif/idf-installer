@@ -5,7 +5,9 @@ param (
     [ValidateSet('none', 'lzma', 'zip')]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2022-03-14',
+    $IdfPythonWheelsVersion = '3.11-2023-03-05',
+    [String]
+    $IdfPythonVersion = '3.11.2',
     [String]
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
@@ -164,10 +166,10 @@ function PrepareIdfGit {
 }
 
 function PrepareIdfPython {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python\3.8.7 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python\${IdfPythonVersion} `
         -FilePath python.exe `
-        -DistZip idf-python-3.8.7-embed-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-3.8.7-embed-win64.zip
+        -DistZip idf-python-${IdfPythonVersion}-embed-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-${IdfPythonVersion}-embed-win64.zip
 }
 
 function PrepareIdfPythonWheels {
@@ -190,7 +192,7 @@ function PrepareIdfPythonWheels {
 
         $ConstraintFile = GetConstraintFile
 
-        python3 -m pip download --python-version 3.8 `
+        python3 -m pip download --python-version 3.11 `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
@@ -202,7 +204,7 @@ function PrepareIdfPythonWheels {
 
         (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
-        python3 -m pip download --python-version 3.8 `
+        python3 -m pip download --python-version 3.11 `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
