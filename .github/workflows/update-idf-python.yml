@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Download IDF Python
         shell: bash
-        run: curl https://github.com/espressif/idf-python/releases/download/v${{ github.event.inputs.python_version }}/idf-python-${{ github.event.inputs.python_version }}-embed-win64.zip -o python.zip
+        run: curl -L https://github.com/espressif/idf-python/releases/download/v${{ github.event.inputs.python_version }}/idf-python-${{ github.event.inputs.python_version }}-embed-win64.zip -o python.zip
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
         env:
