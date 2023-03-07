@@ -24,3 +24,11 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
         run: aws s3 cp --acl=public-read --no-progress git.zip s3://${{ secrets.DL_BUCKET }}/dl/idf-git/idf-git-${{ github.event.inputs.git_version }}-win64.zip
+      - name: Invalidate cache
+        id: invalidate-index-cache
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DL_DISTRIBUTION_ID }} --paths "/dl/idf-git/idf-git-${{ github.event.inputs.git_version }}-win64.zip"
