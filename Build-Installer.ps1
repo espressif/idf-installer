@@ -9,6 +9,8 @@ param (
     [String]
     $IdfPythonVersion = '3.11.2',
     [String]
+    $GitVersion = '2.39.2',
+    [String]
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
@@ -159,10 +161,10 @@ function PrepareIdfEnv {
 }
 
 function PrepareIdfGit {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.34.2 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\${GitVersion} `
         -FilePath cmd/git.exe `
-        -DistZip idf-git-2.34.2-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.34.2-win64.zip
+        -DistZip idf-git-${GitVersion}-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-${GitVersion}-win64.zip
 }
 
 function PrepareIdfPython {

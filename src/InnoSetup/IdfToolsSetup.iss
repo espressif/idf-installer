@@ -36,7 +36,7 @@
 #define PythonInstallerDownloadURL "https://github.com/espressif/idf-python/releases/download/v" + PYTHONVERSION + "/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.34.2"
+  #define GITVERSION "2.39.2"
 #endif
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
