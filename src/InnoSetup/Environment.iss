@@ -454,6 +454,10 @@ begin
       Targets := Targets + 'esp32-c6,';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_H2}')) then begin
+      Targets := Targets + 'esp32-h2,';
+  end;
+
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S3}')) then begin
       Targets := Targets + 'esp32-s3,';
   end;
