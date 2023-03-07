@@ -348,6 +348,7 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 
 #ifndef DISABLE_TARGET_ESP32_C6
 Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_H}"; Description: {cm:ComponentTargetEsp32h}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_H2}"; Description: {cm:ComponentTargetEsp32h2}; Types: custom; Flags: checkablealone
 #endif
 
