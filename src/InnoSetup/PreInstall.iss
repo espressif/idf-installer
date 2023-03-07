@@ -114,6 +114,10 @@ procedure PrepareEmbeddedPython();
 var
   EmbeddedPythonPath:String;
 begin
+  if (not UseEmbeddedPython) then begin
+    Exit;
+  end;
+
   { Embedded Python always begin with tools since 'app' location is not known. }
   if (Pos('tools',PythonExecutablePath) = 1) then begin
     EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;

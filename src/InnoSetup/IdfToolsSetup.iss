@@ -29,13 +29,14 @@
 #define LDPROXY_DOWNLOADURL "https://github.com/esp-rs/embuild/releases/latest/download/ldproxy-x86_64-pc-windows-msvc.zip"
 
 #ifndef PYTHONVERSION
-  #define PYTHONVERSION "3.8.7"
+  #define PYTHONVERSION "3.11.2"
 #endif
 #define PythonInstallerName "idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 #define PythonInstallerDownloadURL "https://dl.espressif.com/dl/idf-python/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
+;#define PythonInstallerDownloadURL "https://github.com/espressif/idf-python/releases/download/v" + PYTHONVERSION + "/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.34.2"
+  #define GITVERSION "2.39.2"
 #endif
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
@@ -86,7 +87,7 @@
   #define OFFLINE = 'no';
 #endif
 #ifndef PYTHONWHEELSVERSION
-  #define PYTHONWHEELSVERSION = '3.8-2022-01-27'
+  #define PYTHONWHEELSVERSION = '3.11-2023-03-05'
 #endif
 
 ; Tool for managing ESP-IDF environments
