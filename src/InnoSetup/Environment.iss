@@ -29,6 +29,21 @@ begin
   Result := GetEspupExe() + ' ' + Command;
 end;
 
+function GetRustupPath():String;
+begin
+  Result := ExpandConstant('{app}\tools\rustup\');
+end;
+
+function GetRustupExe():String;
+begin
+  Result := GetRustupPath() + 'rustup-init.exe';
+end;
+
+function GetRustupCommand(Command: String):String;
+begin
+  Result := GetRustupExe() + ' ' + Command;
+end;
+
 function GetVSBuildToolsPath():String;
 begin
   Result := ExpandConstant('{app}\tools\vs_build_tools\');

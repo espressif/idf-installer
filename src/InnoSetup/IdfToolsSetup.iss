@@ -21,6 +21,7 @@
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
+#define RUSTUP_DOWNLOADURL "https://win.rustup.rs/x86_64"
 #define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
 #define VC_REDIST_DOWNLOADURL "https://aka.ms/vs/17/release/vc_redist.x64.exe"
 #define MSYS2_DOWNLOADURL "https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe"
