@@ -14,7 +14,7 @@ param (
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
-    $OfflineBranch = 'v4.4.3',
+    $OfflineBranch = 'v5.0.1',
     [String]
     $Python = 'python',
     [Boolean]
@@ -24,7 +24,7 @@ param (
     [String]
     $IdfEnvVersion = '1.2.30',
     [String]
-    $EspressifIdeVersion = '2.7.0',
+    $EspressifIdeVersion = '2.9.0',
     [String]
     $JdkVersion = "jdk17.0.6_10",
     [String]
@@ -240,6 +240,7 @@ function PrepareOfflineBranches {
 
         # Remove hidden attribute from .git. Inno Setup is not able to read it.
         attrib "$BundleDir\.git" -s -h
+        git -C "$BundleDir" submodule foreach --recursive attrib .git -s -h
 
         # Fix repo mode
         git -C "$BundleDir" config --local core.fileMode false
@@ -252,9 +253,9 @@ function PrepareOfflineBranches {
 
         # Allow deleting directories by git clean --force
         # Required when switching between versions which does not have a module present in current branch
-        git -C "$BundleDir" config --local clean.requireForce false
-        git -C "$BundleDir" reset --hard
-        git -C "$BundleDir" submodule foreach git reset --hard
+        #git -C "$BundleDir" config --local clean.requireForce false
+        #git -C "$BundleDir" reset --hard
+        #git -C "$BundleDir" submodule foreach git reset --hard
 
     }
 
