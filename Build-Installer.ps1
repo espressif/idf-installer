@@ -211,7 +211,7 @@ function PrepareIdfPythonWheels {
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
             -d ${WheelsDirectory} `
-            -c "build\$InstallerType\${ConstraintFile}" || FailBuild "Failed to download Python wheels"
+            -c "build\$InstallerType\${ConstraintFile}" || FailBuild -Message "Failed to download Python wheels"
     } else {
         # ESP-IDF v4 and older
         $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
@@ -222,7 +222,7 @@ function PrepareIdfPythonWheels {
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
-            -d ${WheelsDirectory} || FailBuild "Failed to download Python wheels"
+            -d ${WheelsDirectory} || FailBuild -Message "Failed to download Python wheels"
     }
 }
 
@@ -273,9 +273,8 @@ function PrepareOfflineBranches {
 
     Push-Location "$BundleDir"
     if (0 -ne (git status -s | Measure-Object).Count) {
-        "git status not empty. Repository is dirty. Aborting."
         git status
-        Exit 1
+        FailBuild -Message "git status not empty. Repository is dirty. Aborting."
     }
 
     &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive install
@@ -302,8 +301,7 @@ function FindSignTool {
     if (Test-Path -Path $SignTool -PathType Leaf) {
         return $SignTool
     }
-    "signtool.exe not found"
-    Exit 1
+    FailBuild -Message "signtool.exe not found"
 }
 
 function SignInstaller {
@@ -312,13 +310,11 @@ function SignInstaller {
     $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
 
     if ($null -eq $env:CERTIFICATE) {
-        "CERTIFICATE variable not set, unable to sign installer"
-        Exit 1
+        FailBuild -Message "CERTIFICATE variable not set, unable to sign installer"
     }
 
     if ("" -eq $env:CERTIFICATE) {
-        "CERTIFICATE variable is empty, unable to sign installer"
-        Exit 1
+        FailBuild -Message "CERTIFICATE variable is empty, unable to sign installer"
     }
 
     $SignParameters = @("sign", "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile)
@@ -341,8 +337,7 @@ function SignInstaller {
         Remove-Item $CertificateFile
     } else {
         Remove-Item $CertificateFile
-        "Signing failed"
-        Exit 1
+        FailBuild -Message "Signing failed"
     }
 
 }
@@ -463,8 +458,7 @@ if (0 -eq $LASTEXITCODE) {
     $Command
     Get-ChildItem -l build\$OutputFileName
 } else {
-    "Build failed!"
-    Exit 1
+    FailBuild -Message "Build failed!"
 }
 
 if ($true -eq $SignInstaller) {
