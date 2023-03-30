@@ -24,6 +24,10 @@ jobs:
         id: get_branch_version
         run: echo ::set-output name=BRANCH_VERSION::${GITHUB_REF/refs\/tags\/offline-/}
         shell: bash
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
