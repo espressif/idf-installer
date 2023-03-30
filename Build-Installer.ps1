@@ -9,6 +9,8 @@ param (
     [String]
     $IdfPythonVersion = '3.11.2',
     [String]
+    $IdfPythonShortVersion = '3.11',
+    [String]
     $GitVersion = '2.39.2',
     [String]
     [ValidateSet('online', 'offline', 'espressif-ide')]
@@ -174,6 +176,16 @@ function PrepareIdfPython {
         -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-${IdfPythonVersion}-embed-win64.zip
 }
 
+function FailBuild {
+    param (
+        [Parameter()]
+        [String]
+        $Message
+    )
+    Write-Error $Message
+    exit 1
+}
+
 function PrepareIdfPythonWheels {
     $WheelsDirectory = "build\$InstallerType\tools\idf-python-wheels\$IdfPythonWheelsVersion"
     if ( Test-Path -Path $WheelsDirectory -PathType Container ) {
@@ -194,23 +206,23 @@ function PrepareIdfPythonWheels {
 
         $ConstraintFile = GetConstraintFile
 
-        python3 -m pip download --python-version 3.11 `
+        python3 -m pip download --python-version $IdfPythonShortVersion `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
             -d ${WheelsDirectory} `
-            -c "build\$InstallerType\${ConstraintFile}"
+            -c "build\$InstallerType\${ConstraintFile}" || FailBuild "Failed to download Python wheels"
     } else {
         # ESP-IDF v4 and older
         $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
 
         (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
-        python3 -m pip download --python-version 3.11 `
+        python3 -m pip download --python-version $IdfPythonShortVersion `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
-            -d ${WheelsDirectory}
+            -d ${WheelsDirectory} || FailBuild "Failed to download Python wheels"
     }
 }
 
@@ -236,7 +248,7 @@ function PrepareOfflineBranches {
         git -C "$BundleDir" fetch
     } else {
         "Performing full clone."
-        git clone --branch "$OfflineBranch" -q --depth 1 --shallow-submodules --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
+        git clone --branch "$OfflineBranch" -q --single-branch --shallow-submodules --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
 
         # Remove hidden attribute from .git. Inno Setup is not able to read it.
         attrib "$BundleDir\.git" -s -h
