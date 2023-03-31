@@ -18,7 +18,7 @@ param (
     [String]
     $OfflineBranch = 'v5.0.1',
     [String]
-    $Python = 'python',
+    $Python = 'python3.11',
     [Boolean]
     $SignInstaller = $true,
     [String]
@@ -206,7 +206,7 @@ function PrepareIdfPythonWheels {
 
         $ConstraintFile = GetConstraintFile
 
-        python3 -m pip download --python-version $IdfPythonShortVersion `
+        &$Python -m pip download --python-version $IdfPythonShortVersion `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
@@ -218,7 +218,7 @@ function PrepareIdfPythonWheels {
 
         (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
-        python3 -m pip download --python-version $IdfPythonShortVersion `
+        &$Python -m pip download --python-version $IdfPythonShortVersion `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
