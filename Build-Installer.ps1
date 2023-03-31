@@ -5,14 +5,20 @@ param (
     [ValidateSet('none', 'lzma', 'zip')]
     $Compression = 'lzma',
     [String]
-    $IdfPythonWheelsVersion = '3.8-2022-03-14',
+    $IdfPythonWheelsVersion = '3.11-2023-03-05',
+    [String]
+    $IdfPythonVersion = '3.11.2',
+    [String]
+    $IdfPythonShortVersion = '3.11',
+    [String]
+    $GitVersion = '2.39.2',
     [String]
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
     [String]
-    $OfflineBranch = 'v4.4.3',
+    $OfflineBranch = 'v5.0.1',
     [String]
-    $Python = 'python',
+    $Python = 'python3.11',
     [Boolean]
     $SignInstaller = $true,
     [String]
@@ -20,7 +26,7 @@ param (
     [String]
     $IdfEnvVersion = '1.2.30',
     [String]
-    $EspressifIdeVersion = '2.7.0',
+    $EspressifIdeVersion = '2.9.0',
     [String]
     $JdkVersion = "jdk17.0.6_10",
     [String]
@@ -157,17 +163,27 @@ function PrepareIdfEnv {
 }
 
 function PrepareIdfGit {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\2.34.2 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-git\${GitVersion} `
         -FilePath cmd/git.exe `
-        -DistZip idf-git-2.34.2-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-2.34.2-win64.zip
+        -DistZip idf-git-${GitVersion}-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-git/idf-git-${GitVersion}-win64.zip
 }
 
 function PrepareIdfPython {
-    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python\3.8.7 `
+    PrepareIdfPackage -BasePath build\$InstallerType\tools\idf-python\${IdfPythonVersion} `
         -FilePath python.exe `
-        -DistZip idf-python-3.8.7-embed-win64.zip `
-        -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-3.8.7-embed-win64.zip
+        -DistZip idf-python-${IdfPythonVersion}-embed-win64.zip `
+        -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-${IdfPythonVersion}-embed-win64.zip
+}
+
+function FailBuild {
+    param (
+        [Parameter()]
+        [String]
+        $Message
+    )
+    Write-Error $Message
+    exit 1
 }
 
 function PrepareIdfPythonWheels {
@@ -190,23 +206,23 @@ function PrepareIdfPythonWheels {
 
         $ConstraintFile = GetConstraintFile
 
-        python3 -m pip download --python-version 3.8 `
+        &$Python -m pip download --python-version $IdfPythonShortVersion `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
             -d ${WheelsDirectory} `
-            -c "build\$InstallerType\${ConstraintFile}"
+            -c "build\$InstallerType\${ConstraintFile}" || FailBuild -Message "Failed to download Python wheels"
     } else {
         # ESP-IDF v4 and older
         $RequirementsPath = "$BundleDir\requirements.txt" # Fallback to ESP-IDF v4
 
         (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
 
-        python3 -m pip download --python-version 3.8 `
+        &$Python -m pip download --python-version $IdfPythonShortVersion `
             --only-binary=":all:" `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
-            -d ${WheelsDirectory}
+            -d ${WheelsDirectory} || FailBuild -Message "Failed to download Python wheels"
     }
 }
 
@@ -232,10 +248,11 @@ function PrepareOfflineBranches {
         git -C "$BundleDir" fetch
     } else {
         "Performing full clone."
-        git clone --branch "$OfflineBranch" -q --depth 1 --shallow-submodules --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
+        git clone --branch "$OfflineBranch" -q --single-branch --shallow-submodules --recursive https://github.com/espressif/esp-idf.git "$BundleDir"
 
         # Remove hidden attribute from .git. Inno Setup is not able to read it.
         attrib "$BundleDir\.git" -s -h
+        git -C "$BundleDir" submodule foreach --recursive attrib .git -s -h
 
         # Fix repo mode
         git -C "$BundleDir" config --local core.fileMode false
@@ -248,17 +265,16 @@ function PrepareOfflineBranches {
 
         # Allow deleting directories by git clean --force
         # Required when switching between versions which does not have a module present in current branch
-        git -C "$BundleDir" config --local clean.requireForce false
-        git -C "$BundleDir" reset --hard
-        git -C "$BundleDir" submodule foreach git reset --hard
+        #git -C "$BundleDir" config --local clean.requireForce false
+        #git -C "$BundleDir" reset --hard
+        #git -C "$BundleDir" submodule foreach git reset --hard
 
     }
 
     Push-Location "$BundleDir"
     if (0 -ne (git status -s | Measure-Object).Count) {
-        "git status not empty. Repository is dirty. Aborting."
         git status
-        Exit 1
+        FailBuild -Message "git status not empty. Repository is dirty. Aborting."
     }
 
     &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive install
@@ -285,8 +301,7 @@ function FindSignTool {
     if (Test-Path -Path $SignTool -PathType Leaf) {
         return $SignTool
     }
-    "signtool.exe not found"
-    Exit 1
+    FailBuild -Message "signtool.exe not found"
 }
 
 function SignInstaller {
@@ -295,13 +310,11 @@ function SignInstaller {
     $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
 
     if ($null -eq $env:CERTIFICATE) {
-        "CERTIFICATE variable not set, unable to sign installer"
-        Exit 1
+        FailBuild -Message "CERTIFICATE variable not set, unable to sign installer"
     }
 
     if ("" -eq $env:CERTIFICATE) {
-        "CERTIFICATE variable is empty, unable to sign installer"
-        Exit 1
+        FailBuild -Message "CERTIFICATE variable is empty, unable to sign installer"
     }
 
     $SignParameters = @("sign", "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile)
@@ -324,8 +337,7 @@ function SignInstaller {
         Remove-Item $CertificateFile
     } else {
         Remove-Item $CertificateFile
-        "Signing failed"
-        Exit 1
+        FailBuild -Message "Signing failed"
     }
 
 }
@@ -446,8 +458,7 @@ if (0 -eq $LASTEXITCODE) {
     $Command
     Get-ChildItem -l build\$OutputFileName
 } else {
-    "Build failed!"
-    Exit 1
+    FailBuild -Message "Build failed!"
 }
 
 if ($true -eq $SignInstaller) {

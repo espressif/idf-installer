@@ -29,6 +29,21 @@ begin
   Result := GetEspupExe() + ' ' + Command;
 end;
 
+function GetRustupPath():String;
+begin
+  Result := ExpandConstant('{app}\tools\rustup\');
+end;
+
+function GetRustupExe():String;
+begin
+  Result := GetRustupPath() + 'rustup-init.exe';
+end;
+
+function GetRustupCommand(Command: String):String;
+begin
+  Result := GetRustupExe() + ' ' + Command;
+end;
+
 function GetVSBuildToolsPath():String;
 begin
   Result := ExpandConstant('{app}\tools\vs_build_tools\');
@@ -366,7 +381,7 @@ begin
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
 
     if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
-      CmdLine := CmdLine + ' --single-branch  --shallow-submodules ';
+      CmdLine := CmdLine + ' --single-branch --shallow-submodules ';
     end;
 
     if (IsGitRecursive) then begin
@@ -454,6 +469,10 @@ begin
       Targets := Targets + 'esp32-c6,';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_H2}')) then begin
+      Targets := Targets + 'esp32-h2,';
+  end;
+
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S3}')) then begin
       Targets := Targets + 'esp32-s3,';
   end;
@@ -506,8 +525,8 @@ begin
   { Check the support for --targets command}
   TargetSupportTestCommand := '"' + IDFToolsPyCmd + '" install --targets=""';
 
-  { IDFPath not quoted, as it can not contain spaces }
-  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" "--idf-path=' + IdfPathWithBackslashes + '" ' + JSONArg + ' ';
+  { Set IDF Path as environment variable. }
+  IDFToolsPyCmd := PythonExecutablePath + ' "' + IDFToolsPyCmd + '" "--idf-path" "' + IdfPathWithBackslashes + '" ' + JSONArg + ' ';
 
   SetEnvironmentVariable('PYTHONUNBUFFERED', '1');
 
@@ -539,12 +558,8 @@ begin
   Log('Installing tools:' + CmdLine);
   DoCmdlineInstall(CustomMessage('InstallingEspIdfTools'), '', CmdLine);
 
-  CmdLine := PythonExecutablePath + ' -m virtualenv --version';
-  Log('Checking Python virtualenv support:' + CmdLine)
-  DoCmdlineInstall(CustomMessage('CheckingPythonVirtualEnvSupport'), '', CmdLine);
-
   PythonVirtualEnvPath := ExpandConstant('{app}\python_env\')  + GetIDFPythonEnvironmentVersion() + '_env';
-  CmdLine := PythonExecutablePath + ' -m virtualenv "' + PythonVirtualEnvPath + '" -p ' + '"' + PythonExecutablePath + '" --seeder pip';
+  CmdLine := PythonExecutablePath + ' -m venv "' + PythonVirtualEnvPath + '"';
   if (DirExists(PythonVirtualEnvPath)) then begin
     Log('ESP-IDF Python Virtual environment exists, refreshing the environment: ' + CmdLine);
   end else begin

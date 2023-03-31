@@ -232,12 +232,12 @@ begin
     Exit;
   end;
 
-  Command := pythonPath + '-m virtualenv --version';
+  Command := pythonPath + '-m venv --help';
   ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
   if (ResultCode <> 0) then begin
     SystemCheckHint := GetSystemCheckHint(Command, 'SystemCheckRemedyMissingVirtualenv') + #13#10 + pythonPath + '-m pip install --upgrade pip' + #13#10 + pythonPath + '-m pip install virtualenv';
     AddFix(pythonPath + '-m pip install --upgrade pip');
-    AddFix(pythonPath + '-m pip install virtualenv');
+    AddFix(pythonPath + '-m pip install venv');
     Result := False;
     Exit;
   end;
@@ -245,7 +245,7 @@ begin
   VirtualEnvCounter := VirtualEnvCounter + 1;
   VirtualEvnPath := ExpandConstant('{tmp}\') + IntToStr(VirtualEnvCounter) + '-idf-test-venv\';
   VirtualEnvPython := VirtualEvnPath + 'Scripts\python.exe ';
-  Command := pythonPath + '-m virtualenv ' + VirtualEvnPath;
+  Command := pythonPath + '-m venv ' + VirtualEvnPath;
   ResultCode := SystemCheckExec(Command, ExpandConstant('{tmp}'));
   if (ResultCode <> 0) then begin
     SystemCheckHint := GetSystemCheckHint(Command, 'SystemCheckRemedyCreateVirtualenv');

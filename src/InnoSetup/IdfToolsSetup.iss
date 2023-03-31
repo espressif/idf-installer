@@ -14,13 +14,14 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.20"
+#define MyAppVersion "2.21"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
 #define MyAppURL "https://github.com/espressif/esp-idf"
 
 #define ESPUP_DOWNLOADURL "https://github.com/esp-rs/espup/releases/latest/download/espup-x86_64-pc-windows-msvc.exe"
+#define RUSTUP_DOWNLOADURL "https://win.rustup.rs/x86_64"
 #define VS_BUILD_TOOLS_DOWNLOADURL "https://aka.ms/vs/17/release/vs_buildtools.exe"
 #define VC_REDIST_DOWNLOADURL "https://aka.ms/vs/17/release/vc_redist.x64.exe"
 #define MSYS2_DOWNLOADURL "https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe"
@@ -29,19 +30,20 @@
 #define LDPROXY_DOWNLOADURL "https://github.com/esp-rs/embuild/releases/latest/download/ldproxy-x86_64-pc-windows-msvc.zip"
 
 #ifndef PYTHONVERSION
-  #define PYTHONVERSION "3.8.7"
+  #define PYTHONVERSION "3.11.2"
 #endif
 #define PythonInstallerName "idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 #define PythonInstallerDownloadURL "https://dl.espressif.com/dl/idf-python/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
+;#define PythonInstallerDownloadURL "https://github.com/espressif/idf-python/releases/download/v" + PYTHONVERSION + "/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.34.2"
+  #define GITVERSION "2.39.2"
 #endif
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName
 
 #ifndef ESPRESSIFIDEVERSION
-  #define ESPRESSIFIDEVERSION "2.8.1"
+  #define ESPRESSIFIDEVERSION "2.9.0"
 #endif
 
 #define ECLIPSE_INSTALLER "Espressif-IDE-" + ESPRESSIFIDEVERSION + "-win32.win32.x86_64.zip"
@@ -86,7 +88,7 @@
   #define OFFLINE = 'no';
 #endif
 #ifndef PYTHONWHEELSVERSION
-  #define PYTHONWHEELSVERSION = '3.8-2022-01-27'
+  #define PYTHONWHEELSVERSION = '3.11-2023-03-05'
 #endif
 
 ; Tool for managing ESP-IDF environments
@@ -139,6 +141,8 @@
 #define COMPONENT_TARGET_ESP32_C2 = "target/esp32c/esp32c2"
 #define COMPONENT_TARGET_ESP32_C3 = "target/esp32c/esp32c3"
 #define COMPONENT_TARGET_ESP32_C6 = "target/esp32c/esp32c6"
+#define COMPONENT_TARGET_ESP32_H = "target/esp32h"
+#define COMPONENT_TARGET_ESP32_H2 = "target/esp32c/esp32h2"
 #define COMPONENT_TARGET_ESP32_S = "target/esp32s"
 #define COMPONENT_TARGET_ESP32_S3 = "target/esp32s/s3"
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
@@ -345,6 +349,8 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 
 #ifndef DISABLE_TARGET_ESP32_C6
 Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_H}"; Description: {cm:ComponentTargetEsp32h}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_H2}"; Description: {cm:ComponentTargetEsp32h2}; Types: custom; Flags: checkablealone
 #endif
 
 Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone

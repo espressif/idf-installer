@@ -19,7 +19,7 @@ begin
 
   if (UseEmbeddedGit) then begin
     { app is know only in this section, it's not possible to set it in Page }
-    GitPath := ExpandConstant('{app}\tools\idf-git\2.34.2\cmd\');
+    GitPath := ExpandConstant('{app}\tools\idf-git\2.39.2\cmd\');
     GitExecutablePath := GitPath + 'git.exe';
 
     Result := Result + CustomMessage('UsingEmbeddedGit') + ' ' + GitVersion + ':' + NewLine
@@ -93,6 +93,10 @@ begin
 
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C6}')) then begin
     Result := Result + 'ESP32-C6 ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_H2}')) then begin
+    Result := Result + 'ESP32-H2 ';
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_S2}')) then begin

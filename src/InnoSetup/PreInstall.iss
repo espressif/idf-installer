@@ -77,6 +77,12 @@ begin
   idpAddFile(DownloadUrl, DistZip);
 end;
 
+procedure PrepareRustup();
+begin
+  ForceDirectories(GetRustupPath());
+  PrepareIdfPackage(GetRustupExe(), GetRustupExe(), '{#RUSTUP_DOWNLOADURL}');
+end;
+
 procedure PrepareEspup();
 begin
   ForceDirectories(GetEspupPath());
@@ -114,6 +120,10 @@ procedure PrepareEmbeddedPython();
 var
   EmbeddedPythonPath:String;
 begin
+  if (not UseEmbeddedPython) then begin
+    Exit;
+  end;
+
   { Embedded Python always begin with tools since 'app' location is not known. }
   if (Pos('tools',PythonExecutablePath) = 1) then begin
     EmbeddedPythonPath := ExpandConstant('{app}\') + PythonExecutablePath;
@@ -273,9 +283,22 @@ begin
   PerformCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), CommandLine);
 end;
 
+procedure UpdateCargoPath();
+var
+  EnvPath: String;
+begin
+  EnvPath := GetEnv('PATH');
+  if (Pos('cargo\bin', EnvPath) = 0) then begin
+    EnvPath := EnvPath +';' + GetEnv('USERPROFILE') + '\.cargo\bin';
+    SetEnvironmentVariable('PATH', EnvPath);
+  end;
+  ; DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), 'setx PATH "' + EnvPath + '"');
+end;
+
 procedure InstallRust();
 var
   CommandLine: String;
+  RustupCommandLine: String;
 begin
   if (not DirExists(GetRustToolchainPath)) then begin
     CommandLine := 'install';
@@ -283,10 +306,14 @@ begin
     CommandLine := 'update';
   end;
 
+  RustupCommandLine := ' -y --default-toolchain none ';
+
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU}')) then begin
     CommandLine := CommandLine + ' --default-host x86_64-pc-windows-gnu';
+    RustupCommandLine := RustupCommandLine + ' --default-host x86_64-pc-windows-gnu';
   end else if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC}')) then begin
     CommandLine := CommandLine + ' --default-host x86_64-pc-windows-msvc';
+    RustupCommandLine := RustupCommandLine + ' --default-host x86_64-pc-windows-msvc';
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST_GNU_MINGW}')) then begin
@@ -298,6 +325,8 @@ begin
   end;
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetRustupCommand(RustupCommandLine));
+    UpdateCargoPath();
     DoCmdlineInstall(CustomMessage('InstallingRust'), CustomMessage('InstallingRust'), GetEspupCommand(CommandLine));
   end;
 
@@ -366,6 +395,7 @@ begin
   ForceDirectories(ExpandConstant('{app}\dist'));
 
   if (WizardIsComponentSelected('{#COMPONENT_RUST}')) then begin
+    PrepareRustup();
     PrepareEspup();
     if (WizardIsComponentSelected('{#COMPONENT_RUST_MSVC_VCTOOLS}')) then begin
       PrepareVSBuildTools();
