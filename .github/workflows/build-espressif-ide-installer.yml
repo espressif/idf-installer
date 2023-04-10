@@ -6,7 +6,7 @@ on:
       espressif_ide_version:
         description: 'Espressif IDE version'
         required: true
-        default: '2.9.0'
+        default: '2.9.1'
       esp_idf_version:
         description: 'ESP-IDF version'
         required: true
