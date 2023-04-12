@@ -6,19 +6,23 @@ on:
       espressif_ide_version:
         description: 'Espressif IDE version'
         required: true
-        default: '2.9.0'
+        default: '2.9.1'
       esp_idf_version:
         description: 'ESP-IDF version'
         required: true
         default: '5.0.1'
+      python_version:
+        description: 'ESP-IDF version'
+        required: true
+        default: '3.11'
 
 jobs:
   build-espressif-ide-installer:
     name: Build Installer
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Map local long path to new drive
         id: map_path
         shell: pwsh
@@ -26,10 +30,10 @@ jobs:
       - name: Install Inno Setup
         shell: pwsh
         run: choco install innosetup
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '${{ github.event.inputs.python_version }}'
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
@@ -39,7 +43,7 @@ jobs:
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         working-directory: "P:"
-        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ github.event.inputs.esp_idf_version }}" -EspressifIdeVersion "${{ github.event.inputs.espressif_ide_version }}"
+        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ github.event.inputs.esp_idf_version }}" -EspressifIdeVersion "${{ github.event.inputs.espressif_ide_version }}" -Python "python"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download Installer
         run:  Invoke-WebRequest https://github.com/espressif/idf-installer/releases/download/online-2.14/esp-idf-tools-setup-online-2.14.exe -OutFile installer.exe
         shell: pwsh
