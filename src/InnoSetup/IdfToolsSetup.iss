@@ -230,51 +230,7 @@ Source: "{#BUILD}\espidf.constraints.v*.txt"; DestDir: "{app}"; Flags: skipifsou
 Source: "{#BUILD}\frameworks\*"; DestDir: "\\?\{app}\frameworks\"; Components: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
 #endif
 
-#ifdef ESPRESSIFIDE
-Source: "{#BUILD}\tools\amazon-corretto-11-x64-windows-jdk\*"; DestDir: "\\?\{app}\tools\amazon-corretto-11-x64-windows-jdk"; Components: "{#COMPONENT_ECLIPSE_JDK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\espressif-ide\*"; DestDir: "\\?\{app}\tools\espressif-ide"; Components: "{#COMPONENT_ECLIPSE}"; Flags: recursesubdirs skipifsourcedoesntexist;
-#endif
-
-Source: "{#BUILD}\tools\ccache\*"; DestDir: "\\?\{app}\tools\ccache";  Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\cmake\*"; DestDir: "\\?\{app}\tools\cmake"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\dfu-util\*"; DestDir: "\\?\{app}\tools\dfu-util"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\esp32s2ulp-elf\*"; DestDir: "\\?\{app}\tools\esp32s2ulp-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\esp32ulp-elf\*"; DestDir: "\\?\{app}\tools\esp32ulp-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-driver\*"; DestDir: "{app}\tools\idf-driver\"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-exe\*"; DestDir: "\\?\{app}\tools\idf-exe"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-git\*"; DestDir: "{app}\tools\idf-git"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-python\*"; DestDir: "{app}\tools\idf-python\"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\idf-python-wheels\*"; DestDir: "{app}\tools\idf-python-wheels\"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\ninja\*"; DestDir: "\\?\{app}\tools\ninja"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\openocd-esp32\*"; DestDir: "\\?\{app}\tools\openocd-esp32"; Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\xtensa-esp32-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32-elf"; Components: "{#COMPONENT_TARGET_ESP32}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\xtensa-esp32s2-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s2-elf"; Components: "{#COMPONENT_TARGET_ESP32_S2}"; Flags: recursesubdirs skipifsourcedoesntexist;
-
-; GDB RISC-V - ifndef begins with the latest chip def. If installer is not capable of handling the chip in the latest chip
-; then one chip is eliminated from the list
-#ifndef DISABLE_TARGET_ESP32_C6
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_C6} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_C6} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-#else
-#ifndef DISABLE_TARGET_ESP32_C2
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_C2} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-#else
-#ifndef DISABLE_TARGET_ESP32_C3
-Source: "{#BUILD}\tools\riscv32-esp-elf\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\riscv32-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\riscv32-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32_C3} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-#endif
-#endif
-#endif
-
-; GDB - Xtensa
-#ifndef DISABLE_TARGET_ESP32_S3
-Source: "{#BUILD}\tools\xtensa-esp32s3-elf\*"; DestDir: "\\?\{app}\tools\xtensa-esp32s3-elf"; Components: "{#COMPONENT_TARGET_ESP32_S3}"; Flags: recursesubdirs skipifsourcedoesntexist;
-Source: "{#BUILD}\tools\xtensa-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\xtensa-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32} {#COMPONENT_TARGET_ESP32_S2} {#COMPONENT_TARGET_ESP32_S3}; Flags: recursesubdirs skipifsourcedoesntexist;
-#else
-Source: "{#BUILD}\tools\xtensa-esp-elf-gdb\*"; DestDir: "\\?\{app}\tools\xtensa-esp-elf-gdb"; Components: {#COMPONENT_TARGET_ESP32} {#COMPONENT_TARGET_ESP32_S2}; Flags: recursesubdirs skipifsourcedoesntexist;
-#endif
-
+Source: "{#BUILD}\tools\*"; DestDir: "\\?\{app}\tools";  Components: "{#COMPONENT_FRAMEWORK}"; Flags: recursesubdirs skipifsourcedoesntexist;
 
 ; Helper Python files for sanity check of Python environment - used by system_check_page
 Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy

@@ -348,11 +348,20 @@ function CheckInnoSetupInstallation {
         return
     }
     "Inno Setup not found in PATH. Please install as Administrator following dependencies:"
-    "choco install innosetup inno-download-plugin"
-    Exit 1
+    FailBuild -Message "choco install innosetup inno-download-plugin"
+}
+
+function CheckPythonInstallation {
+    if (Get-Command $Python -ErrorAction SilentlyContinue) {
+        "$Python found"
+        return
+    }
+    "$Python not found in PATH. Use parameter -Python to specify custom Python, e.g. just 'python' or install following dependencies:"
+    FailBuild -Message "winget install --id Python.Python.3"
 }
 
 CheckInnoSetupInstallation
+CheckPythonInstallation
 
 if ('espressif-ide' -eq $InstallerType) {
     $EspIdfBranchVersion = $OfflineBranch -replace '^v'
