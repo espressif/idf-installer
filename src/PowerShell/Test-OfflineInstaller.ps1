@@ -11,7 +11,7 @@ param (
     [string]
     $InstallerPath = "build/esp-idf-installer.exe",
     [string]
-    $DestinationPath = "C:\Users\Public\"
+    $DestinationPath = "C:\Users\Public\esp-idf-installer.exe"
 )
 
 # Stop if any command fails
