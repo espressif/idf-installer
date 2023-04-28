@@ -43,7 +43,7 @@ jobs:
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         working-directory: "P:"
-        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ github.event.inputs.esp_idf_version }}" -EspressifIdeVersion "${{ github.event.inputs.espressif_ide_version }}" -Python "python"
+        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ github.event.inputs.esp_idf_version }}" -EspressifIdeVersion "${{ github.event.inputs.espressif_ide_version }}"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

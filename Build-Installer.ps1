@@ -18,7 +18,7 @@ param (
     [String]
     $OfflineBranch = 'v5.0.1',
     [String]
-    $Python = 'python3.11',
+    $Python = 'python',
     [Boolean]
     $SignInstaller = $true,
     [String]
