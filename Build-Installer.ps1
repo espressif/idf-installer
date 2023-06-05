@@ -202,7 +202,10 @@ function PrepareIdfPythonWheels {
     # ESP-IDF v5 - requirements is in tools\requirements\requirements.core.txt
 
     if (Test-Path -Path "$RequirementsPath" -PathType Leaf) {
-        (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
+        # ESP-IDF v5.0 remove the dependency line
+        (Get-Content $RequirementsPath) -replace $regex, '' | Set-Content $Requirements
+        # ESP-IDF v5.0, v5.1 and newer - add the dependency line athe end of the file
+        Add-Content $Requirements "windows-curses"
 
         $ConstraintFile = GetConstraintFile
 
