@@ -497,6 +497,7 @@ var
   BundledIDFToolsPyPath: String;
   JSONArg: String;
   PythonVirtualEnvPath: String;
+  PythonVirtualEnvBin: String;
   ResultCode: Integer;
   TargetSupportTestCommand: String;
 begin
@@ -570,5 +571,12 @@ begin
   CmdLine := IDFToolsPyCmd + ' install-python-env';
   Log('Installing Python environment:' + CmdLine);
   DoCmdlineInstall(CustomMessage('InstallingPythonVirtualEnv'), '', CmdLine);
+
+  { Install addiional wheels which are not covered by default tooling }
+  PythonVirtualEnvBin := GetPythonVirtualEnvPath()
+  CmdLine := PythonVirtualEnvBin + ' -m pip install windows-curses';
+  Log('Installing additional wheels:' + CmdLine);
+  DoCmdlineInstall(CustomMessage('InstallingPythonVirtualEnv'), '', CmdLine);
+
 end;
 
