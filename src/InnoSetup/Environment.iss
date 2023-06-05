@@ -337,7 +337,6 @@ end;
 procedure IDFDownloadInstall();
 var
   CmdLine: String;
-  IDFTempPath: String;
   IDFPath: String;
   NeedToClone: Boolean;
 begin
@@ -357,10 +356,8 @@ begin
       NeedToClone := True;
     end;
 
-    CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + ExpandConstant('{tmp}') + '" -r -aoa "' + IDFZIPFileName + '"');
-    IDFTempPath := ExpandConstant('{tmp}\esp-idf-') + IDFZIPFileVersion;
+    CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + IDFPath + '" -r -aoa "' + IDFZIPFileName + '"');
     Log('Extracting ESP-IDF reference repository: ' + CmdLine);
-    Log('Reference repository path: ' + IDFTempPath);
     DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('SettingUpReferenceRepository'), CmdLine);
   end else begin
     { IDFZIPFileName is not set, meaning that we will rely on 'git clone'. }
@@ -388,15 +385,9 @@ begin
       CmdLine := CmdLine + ' --recursive ';
     end;
 
-    if IDFTempPath <> '' then
-      CmdLine := CmdLine + ' --reference ' + IDFTempPath;
-
     CmdLine := CmdLine + ' ' + GitRepository +' "' + IDFPath + '"';
     Log('Cloning IDF: ' + CmdLine);
     DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
-
-    if IDFTempPath <> '' then
-      GitRepoDissociate(IDFPath);
 
     if (GitUseMirror) then begin
       ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);
@@ -404,29 +395,9 @@ begin
 
   end else begin
 
-    Log('Copying ' + IDFTempPath + ' to ' + IDFPath);
-    if DirExists(IDFPath) then
-    begin
-      if not DirIsEmpty(IDFPath) then
-      begin
-        MessageBox('Destination directory exists and is not empty: ' + IDFPath, mbError, MB_OK);
-        RaiseException('Failed to copy ESP-IDF')
-      end;
-    end;
-
-    { If cmd.exe command argument starts with a quote, the first and last quote chars in the command
-      will be removed by cmd.exe.
-      Keys explanation: /s+/e includes all subdirectories, /i assumes that destination is a directory,
-      /h copies hidden files, /q disables file name logging (making copying faster!)
-    }
-
-    CmdLine := ExpandConstant('cmd.exe /c ""xcopy.exe" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
-    DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('CopyingEspIdf'), CmdLine);
-
     GitRepoFixFileMode(IDFPath);
     GitResetHard(IDFPath);
 
-    DelTree(IDFTempPath, True, True, True);
   end;
 end;
 
@@ -497,7 +468,7 @@ var
   BundledIDFToolsPyPath: String;
   JSONArg: String;
   PythonVirtualEnvPath: String;
-  PythonVirtualEnvBin: String;
+  PipExecutable: String;
   ResultCode: Integer;
   TargetSupportTestCommand: String;
 begin
@@ -573,8 +544,8 @@ begin
   DoCmdlineInstall(CustomMessage('InstallingPythonVirtualEnv'), '', CmdLine);
 
   { Install addiional wheels which are not covered by default tooling }
-  PythonVirtualEnvBin := GetPythonVirtualEnvPath()
-  CmdLine := PythonVirtualEnvBin + ' -m pip install windows-curses';
+  PipExecutable := GetPythonVirtualEnvPipExecutable()
+  CmdLine := PipExecutable + ' install windows-curses';
   Log('Installing additional wheels:' + CmdLine);
   DoCmdlineInstall(CustomMessage('InstallingPythonVirtualEnv'), '', CmdLine);
 

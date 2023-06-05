@@ -256,6 +256,19 @@ begin
   Result := PythonVirtualEnvPath;
 end;
 
+{ Get Path to virtual environment Python executable }
+function GetPythonVirtualEnvExecutable(): String;
+begin
+  Result := GetPythonVirtualEnvPath() + '\python.exe';
+end;
+
+{ Get Path to virtual environment pip executable }
+function GetPythonVirtualEnvPipExecutable(): String;
+begin
+  Result := GetPythonVirtualEnvPath() + '\pip.exe';
+end;
+
+{ Get Path to virtual environment pip executable }
 { Wrap MsgBox function and hide message box in silent mode, otherwise it blocks silent installation. }
 function MessageBox(const Text: String; const Typ: TMsgBoxType; const Buttons: Integer): Integer;
 begin
@@ -299,7 +312,7 @@ begin
   Content := Content + '    "' + IdfId + '": {' + #13#10;
   Content := Content + '      "version": "' + IdfVersion + '",' + #13#10;
   Content := Content + '      "path": "' + IdfPathWithForwardSlashes + '",' + #13#10;
-  Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvPath()) + '/python.exe"' + #13#10;
+  Content := Content + '      "python": "' + GetPathWithForwardSlashes(GetPythonVirtualEnvExecutable()) + #13#10;
   Content := Content + '    }' + #13#10;
   Content := Content + '  }' + #13#10;
   Content := Content + '}' + #13#10;
