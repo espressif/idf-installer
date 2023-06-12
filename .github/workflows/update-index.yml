@@ -13,7 +13,7 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.4.1
         with:
-          args: --verbose --no-progress './README.md' './src/Resources/download/index.html'
+          args: --verbose --no-progress './README.md'
           fail: true
       - name: Upload index.html To dl.espressif.com
         id: upload-index-espressif
