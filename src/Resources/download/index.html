@@ -132,12 +132,58 @@
             }
         </style>
         <script type="text/javascript">
-            function showReleases() {
-                let section = document.getElementById("section-all-releases");
-                section.className = "";
-                let info = document.getElementById("info-show-releases");
-                info.className = "section-hidden";
-            }
+
+;
+
+let installerTitle = {
+    'offline': 'Offline Installer',
+    'online': 'Online Installer',
+    'espressif-ide': 'ESP-IDE',
+}
+
+// Invoke a function when the page loads
+window.onload = () => {
+    // Get the release list element
+    const releaseList = document.getElementById('release-list');
+
+    fetch('releases.json')
+        .then(response => response.json())
+        .then(data => {
+            // Generate the release list
+            data.forEach(release => {
+
+            let description = installerTitle[release.type] + ' v' + release.version;
+            let downloadLink = 'https://github.com/espressif/idf-installer/releases/download/' + release.type + '-' + release.version + '/esp-idf-tools-setup-' + release.type + '-' + release.version + '.exe';
+            let mirrorLink = 'https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-' + release.type + '-' + release.version;
+            let releaseNotesLink = 'https://github.com/espressif/idf-installer/releases/tag/' + release.type + '-' + release.version;
+
+            const listItem = document.createElement('li');
+
+            const versionSpan = document.createElement('span');
+            versionSpan.className = 'release-number';
+            versionSpan.textContent = description;
+            listItem.appendChild(versionSpan);
+
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'release-date';
+            dateSpan.textContent = release.date;
+            listItem.appendChild(dateSpan);
+
+            const downloadSpan = document.createElement('span');
+            downloadSpan.className = 'release-download';
+            downloadSpan.innerHTML = `<span><a href="${downloadLink}">Download</a> / <a href="${mirrorLink}">Mirror</a> - ${release.size}</span>`;
+            listItem.appendChild(downloadSpan);
+
+            const notesSpan = document.createElement('span');
+            notesSpan.className = 'release-notes';
+            notesSpan.innerHTML = `<a href="${releaseNotesLink}">Release Notes</a>`;
+            listItem.appendChild(notesSpan);
+
+            releaseList.appendChild(listItem);
+        });
+
+    });
+};
         </script>
     </head>
     <body>
@@ -234,616 +280,16 @@
 
         <div>
             <h2 class="text-center">Download links to available releases and mirrors.</h2>
-            <!-- <div id="info-show-releases" class="text-center">See of <span class="link" onclick="showReleases();">all available downloads</span>.</div> -->
         </div>
         <div id="section-all-releases">
             <div class="list-row-headings">
-                <span class="release-number">Release version</span>
-                <span class="release-date">Release date</span>
-                <span class="release-download">&nbsp;</span>
-                <span class="release-notes">Release notes</span>
+              <span class="release-number">Release version</span>
+              <span class="release-date">Release date</span>
+              <span class="release-download">&nbsp;</span>
+              <span class="release-notes">Release notes</span>
             </div>
-            <ol class="list-row-container menu">
+            <ol id="release-list" class="list-row-container menu"></ol>
 
-              <!-- Release Offline 5.0.2 -->
-              <li>
-                <span class="release-number">Offline Installer v5.0.2</span>
-                <span class="release-date">2023-05-12</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-5.0.2/esp-idf-tools-setup-offline-5.0.2.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.2.exe">Mirror</a>
-                      - 768 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-5.0.2">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.21 -->
-              <li>
-                <span class="release-number">Online Installer 2.21</span>
-                <span class="release-date">2023-03-31</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.21/esp-idf-tools-setup-online-2.21.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.21.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.21">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.3.5 -->
-              <li>
-                <span class="release-number">Offline Installer v4.3.5</span>
-                <span class="release-date">2023-03-30</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.3.5/esp-idf-tools-setup-offline-4.3.5.exe">Download</a> /
-                        <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.5.exe">Mirror</a>
-                        - 585 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.3.5">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 5.0.1 -->
-              <li>
-                <span class="release-number">Offline Installer v5.0.1</span>
-                <span class="release-date">2023-02-17</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-5.0.1/esp-idf-tools-setup-offline-5.0.1.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.1.exe">Mirror</a>
-                      - 670 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-5.0.1">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.20 -->
-              <li>
-                <span class="release-number">Online Installer 2.20</span>
-                <span class="release-date">2023-02-08</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.20/esp-idf-tools-setup-online-2.20.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.20.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.20">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.9.1 with ESP-IDF 5.0.1 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.9.1 with ESP-IDF v5.0.1</span>
-                <span class="release-date">2023-04-10</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.9.1-with-esp-idf-5.0.1.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.9.1-esp-idf-5.0.1/espressif-ide-setup-2.9.1-with-esp-idf-5.0.1.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.9.1-esp-idf-5.0.1">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.9.0 with ESP-IDF 5.0.1 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.9.0 with ESP-IDF v5.0.1</span>
-                <span class="release-date">2023-03-21</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.9.0-with-esp-idf-5.0.1.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.9.0-esp-idf-5.0.1/espressif-ide-setup-2.9.0-with-esp-idf-5.0.1.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.9.0-esp-idf-5.0.1">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.8.1 with ESP-IDF 5.0 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.8.1 with ESP-IDF v5.0</span>
-                <span class="release-date">2023-02-08</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.8.1-with-esp-idf-5.0.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.8.1-esp-idf-5.0/espressif-ide-setup-2.8.1-with-esp-idf-5.0.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.8.1-esp-idf-5.0">Release Notes</a></span>
-              </li>
-
-
-              <!-- Release Espressif IDE 2.8.1 with ESP-IDF 4.4.4 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.8.1 with ESP-IDF v4.4.4</span>
-                <span class="release-date">2023-02-08</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.8.1-with-esp-idf-4.4.4.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.8.1-esp-idf-4.4.4/espressif-ide-setup-2.8.1-with-esp-idf-4.4.4.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.8.1-esp-idf-4.4.4">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.4.4 -->
-              <li>
-                <span class="release-number">Offline Installer v4.4.4</span>
-                <span class="release-date">2022-02-03</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.4.4/esp-idf-tools-setup-offline-4.4.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.4.exe">Mirror</a>
-                      - 630 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.4.4">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.8.0 with ESP-IDF 4.4.4 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.8.0 with ESP-IDF v4.4.4</span>
-                <span class="release-date">2023-02-03</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.8.0-with-esp-idf-4.4.4.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.8.0-esp-idf-4.4.4/espressif-ide-setup-2.8.0-with-esp-idf-4.4.4.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.8.0-esp-idf-4.4.4">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.8.0 with ESP-IDF 5.0 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.8.0 with ESP-IDF v5.0</span>
-                <span class="release-date">2023-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.8.0-with-esp-idf-5.0.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.8.0-esp-idf-5.0/espressif-ide-setup-2.8.0-with-esp-idf-5.0.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.7.0">Release Notes</a></span>
-              </li>
-
-
-              <!-- Release 2.19 -->
-              <li>
-                <span class="release-number">Online Installer 2.19</span>
-                <span class="release-date">2023-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.19/esp-idf-tools-setup-online-2.19.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.19.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.18">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.7.0 with ESP-IDF 5.0 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.7.0 with ESP-IDF v5.0</span>
-                <span class="release-date">2023-01-12</span>
-                <span class="release-download">
-                    <span><a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.7.0-with-esp-idf-5.0.exe">Download</a> /
-                        <a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.7.0-esp-idf-5.0/espressif-ide-setup-2.7.0-with-esp-idf-5.0.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.7.0">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.18 -->
-              <li>
-                <span class="release-number">Online Installer 2.18</span>
-                <span class="release-date">2022-12-23</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.18/esp-idf-tools-setup-online-2.18.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.18.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.18">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.1.4 -->
-              <li>
-                <span class="release-number">Offline Installer ESP-IDF v4.1.4</span>
-                <span class="release-date">2022-12-13</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.1.4/esp-idf-tools-setup-offline-4.1.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.1.4.exe">Mirror</a>
-                      - 353 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.1.4">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.17 -->
-              <li>
-                <span class="release-number">Online Installer 2.17</span>
-                <span class="release-date">2022-08-03</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.17/esp-idf-tools-setup-online-2.17.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.17.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.17">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 5.0 -->
-              <li>
-                <span class="release-number">Offline Installer v5.0</span>
-                <span class="release-date">2022-12-06</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-5.0/esp-idf-tools-setup-offline-5.0.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.exe">Mirror</a>
-                      - 630 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-5.0">Release Notes</a></span>
-              </li>
-
-              <!-- Release Espressif IDE 2.7.0 with ESP-IDF 4.4.3 -->
-              <li>
-                <span class="release-number">Espressif-IDE 2.7.0 with ESP-IDF v4.4.3</span>
-                <span class="release-date">2022-11-14</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.7.0-esp-idf-4.4.3/espressif-ide-setup-2.7.0-with-esp-idf-4.4.3.exe">Download</a> /
-                        <a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-2.7.0-with-esp-idf-4.4.3.exe">Mirror</a>
-                        - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.7.0">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.4.3 -->
-              <li>
-                <span class="release-number">Offline Installer v4.4.3</span>
-                <span class="release-date">2022-11-09</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.4.3/esp-idf-tools-setup-offline-4.4.3.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.3.exe">Mirror</a>
-                      - 630 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.4.3">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.3.4 -->
-              <li>
-                <span class="release-number">Offline Installer v4.3.4</span>
-                <span class="release-date">2022-10-07</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.3.4/esp-idf-tools-setup-offline-4.3.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.4.exe">Mirror</a>
-                      - 585 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.3.4">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.2.4 -->
-              <li>
-                    <span class="release-number">Offline Installer ESP-IDF v4.2.4</span>
-                    <span class="release-date">2022-10-07</span>
-                    <span class="release-download">
-                        <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.2.4/esp-idf-tools-setup-offline-4.2.4.exe">Download</a> /
-                            <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.4.exe">Mirror</a>
-                            - 376 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.2.4">Release Notes</a></span>
-                </li>
-
-              <!-- Release 2.16 -->
-              <li>
-                <span class="release-number">Online Installer 2.16</span>
-                <span class="release-date">2022-08-03</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.16/esp-idf-tools-setup-online-2.16.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.16.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.16">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.4.2 -->
-              <li>
-                <span class="release-number">Offline Installer v4.4.2</span>
-                <span class="release-date">2022-08-18</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.4.2/esp-idf-tools-setup-offline-4.4.2.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.2.exe">Mirror</a>
-                      - 600 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.4.2">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.3.3 -->
-              <li>
-                <span class="release-number">Offline Installer v4.3.3</span>
-                <span class="release-date">2022-06-13</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.3.3/esp-idf-tools-setup-offline-4.3.3.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.3.exe">Mirror</a>
-                      - 585 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.3.3">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.2.3 -->
-              <li>
-                    <span class="release-number">Offline Installer ESP-IDF v4.2.3</span>
-                    <span class="release-date">2022-03-14</span>
-                    <span class="release-download">
-                        <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.2.3/esp-idf-tools-setup-offline-4.2.3.exe">Download</a> /
-                            <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.3.exe">Mirror</a>
-                            - 376 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.2.3">Release Notes</a></span>
-                </li>
-
-              <!-- Release 2.15 -->
-              <li>
-                <span class="release-number">Online Installer 2.15</span>
-                <span class="release-date">2022-04-20</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.15/esp-idf-tools-setup-online-2.15.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.15.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.15">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.14 -->
-              <li>
-                <span class="release-number">Online Installer 2.14</span>
-                <span class="release-date">2022-03-30</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.14/esp-idf-tools-setup-online-2.14.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.14.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.14">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.4.1 -->
-              <li>
-                <span class="release-number">Offline Installer v4.4.1</span>
-                <span class="release-date">2022-04-20</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.4.1/esp-idf-tools-setup-offline-4.4.1.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.1.exe">Mirror</a>
-                      - 600 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.4.1">Release Notes</a></span>
-              </li>
-
-              <!-- Release Offline 4.1.3 -->
-              <li>
-                <span class="release-number">Offline Installer ESP-IDF v4.1.3</span>
-                <span class="release-date">2022-04-20</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.1.3/esp-idf-tools-setup-offline-4.1.3.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.1.3.exe">Mirror</a>
-                      - 353 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.1.3">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.13 -->
-              <li>
-                <span class="release-number">Online Installer 2.13</span>
-                <span class="release-date">2022-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.13/esp-idf-tools-setup-online-2.13.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.13.exe">Mirror</a>
-                      - 4 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/online-2.13">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Espressif-IDE 2.6.0 with ESP-IDF v4.4.2</span>
-                <span class="release-date">2022-08-12</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.6.0/espressif-ide-setup-espressif-ide-2.6.0-with-esp-idf-4.4.2.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.6.0-with-esp-idf-4.4.2.exe">Mirror</a>
-                      - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.6.0">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Espressif-IDE 2.5.0 with ESP-IDF v4.4</span>
-                <span class="release-date">2022-06-08</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.5.0/espressif-ide-setup-espressif-ide-2.5.0-with-esp-idf-4.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.5.0-with-esp-idf-4.4.exe">Mirror</a>
-                      - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.5.0">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Espressif-IDE 2.4.2 with ESP-IDF v4.4</span>
-                <span class="release-date">2022-03-09</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.4.2/espressif-ide-setup-espressif-ide-2.4.2-with-esp-idf-4.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.4.2-with-esp-idf-4.4.exe">Mirror</a>
-                      - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.4.2">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Espressif-IDE 2.4.1 with ESP-IDF v4.4</span>
-                <span class="release-date">2022-02-17</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.4.1/espressif-ide-setup-espressif-ide-2.4.1-with-esp-idf-4.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.4.1-with-esp-idf-4.4.exe">Mirror</a>
-                      - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.4.0">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Espressif-IDE 2.4.0 with ESP-IDF v4.4</span>
-                <span class="release-date">2022-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/espressif-ide-2.4.0/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-espressif-ide-2.4.0-with-esp-idf-4.4.exe">Mirror</a>
-                      - 1 GB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/espressif-ide-2.4.0">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Offline Installer v4.4</span>
-                <span class="release-date">2022-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.4/esp-idf-tools-setup-offline-4.4.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.4.exe">Mirror</a>
-                      - 600 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.4">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Offline Installer ESP-IDF v4.3.2</span>
-                <span class="release-date">2022-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.3.2/esp-idf-tools-setup-offline-4.3.2.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.2.exe">Mirror</a>
-                      - 570 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.3.2">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Offline Installer ESP-IDF v4.2.2</span>
-                <span class="release-date">2022-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.2.2/esp-idf-tools-setup-offline-4.2.2.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.2.exe">Mirror</a>
-                      - 376 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.2.2">Release Notes</a></span>
-              </li>
-
-              <li>
-                <span class="release-number">Offline Installer ESP-IDF v4.1.2</span>
-                <span class="release-date">2022-02-01</span>
-                <span class="release-download">
-                    <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-4.1.2/esp-idf-tools-setup-offline-4.1.2.exe">Download</a> /
-                      <a href="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.1.2.exe">Mirror</a>
-                      - 353 MB</span>
-                </span>
-                <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-4.1.2">Release Notes</a></span>
-              </li>
-
-              <!-- Release 2.12 -->
-                <li>
-                    <span class="release-number">Installer 2.12</span>
-                    <span class="release-date">2021-11-22</span>
-                    <span class="release-download">
-                        <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.12/esp-idf-tools-setup-online-2.12.exe">Download Online Installer</a> - 3.2 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-2.12">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-2.12/esp-idf-tools-setup-offline-2.12.exe">Download Offline Installer</a> - 1.7 GB</span>
-                    </span>
-                </li>
-
-                <!-- Release 2.11 -->
-                <li>
-                    <span class="release-number">Installer 2.11</span>
-                    <span class="release-date">2021-09-23</span>
-                    <span class="release-download">
-                        <span><a href="https://github.com/espressif/idf-installer/releases/download/online-2.11/esp-idf-tools-setup-online-2.11.exe">Download Online Installer</a> - 3.2 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-2.11">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <span><a href="https://github.com/espressif/idf-installer/releases/download/offline-2.11/esp-idf-tools-setup-offline-2.11.exe">Download Offline Installer</a> - 1.5 GB</span>
-                    </span>
-                </li>
-
-                <!-- Release 2.10 -->
-                <li>
-                    <span class="release-number">Installer 2.10</span>
-                    <span class="release-date">2021-08-10</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.10.exe">Download Online Installer</a> - 3.2 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/releases/tag/offline-2.10">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.9.exe">Download Offline Installer</a> - 1.5 GB</span>
-                    </span>
-                </li>
-
-                <!-- Release 2.9 -->
-                <li>
-                    <span class="release-number">Installer 2.9</span>
-                    <span class="release-date">2021-06-15</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.9.exe">Download Online Installer</a> - 3.2 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/wiki/Release-notes-2.9">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.9.exe">Download Offline Installer</a> - 1.5 GB</span>
-                    </span>
-                </li>
-
-                <!-- Release 2.8 -->
-                <li>
-                    <span class="release-number">Installer 2.8</span>
-                    <span class="release-date">2021-05-03</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.8.exe">Download Online Installer</a> - 3.2 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/wiki/Release-notes-2.8">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.8.exe">Download Offline Installer</a> - 1.3 GB</span>
-                    </span>
-                </li>
-                <!-- Release 2.7 -->
-                <li>
-                    <span class="release-number">Installer 2.7</span>
-                    <span class="release-date">2021-04-08</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.7.exe">Download Online Installer</a> - 3.1 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/wiki/Release-notes-2.7">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">Installer 2.6</span>
-                    <span class="release-date">2021-03-09</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.6.exe">Download Online Installer</a> - 2.1 MB</span>
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/wiki/Release-notes-2.6">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <span><a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.6.exe">Download Offline Installer</a> - 1.2 GB</span>
-                    </span>
-                </li>
-                <li>
-                    <span class="release-number">Installer 2.5</span>
-                    <span class="release-date">2020-09-02</span>
-                    <span class="release-download">
-                        <a href="https://dl.espressif.com/dl/esp-idf-tools-setup-online-2.5.exe">Download Online Installer</a> - 19 MB
-                    </span>
-                    <span class="release-notes"><a href="https://github.com/espressif/idf-installer/wiki/Release-notes-2.5">Release Notes</a></span>
-                </li>
-                <li>
-                    <span class="release-number">&nbsp;</span>
-                    <span class="release-date">&nbsp;</span>
-                    <span class="release-download">
-                        <a href="https://dl.espressif.com/dl/esp-idf-tools-setup-offline-2.5.exe">Download Offline Installer</a> - 793 MB
-                    </span>
-                    <span class="release-notes">&nbsp;</span>
-                </li>
-
-            </ol>
 
         </div>
         <div class="footer text-center">
