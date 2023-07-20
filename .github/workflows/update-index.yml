@@ -13,7 +13,7 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.4.1
         with:
-          args: --verbose --no-progress './README.md' './src/Resources/download/index.html'
+          args: --verbose --no-progress './README.md'
           fail: true
       - name: Upload index.html To dl.espressif.com
         id: upload-index-espressif
@@ -23,6 +23,7 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
           aws s3 cp --acl=public-read --no-progress ./src/Resources/download/index.html s3://${{ secrets.DL_BUCKET }}/dl/esp-idf/index.html
+          aws s3 cp --acl=public-read --no-progress ./src/Resources/download/releases.json s3://${{ secrets.DL_BUCKET }}/dl/esp-idf/releases.json
       - name: Invalidate cache
         id: invalidate-index-cache
         env:
@@ -30,4 +31,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DL_DISTRIBUTION_ID }} --paths "/dl/esp-idf/index.html" "/dl/esp-idf/"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DL_DISTRIBUTION_ID }} --paths "/dl/esp-idf/index.html" "/dl/esp-idf/" "/dl/esp-idf/releases.json"
+

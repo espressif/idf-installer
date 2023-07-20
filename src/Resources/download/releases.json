@@ -1,0 +1,284 @@
+[
+    {
+        "version": "5.1",
+        "type": "offline",
+        "date": "2023-07-20",
+        "size": "768 MB"
+    },
+    {
+        "version": "5.0.3",
+        "type": "offline",
+        "date": "2023-07-20",
+        "size": "768 MB"
+    },
+    {
+        "version": "4.2.5",
+        "type": "offline",
+        "date": "2022-10-07",
+        "size": "376 MB"
+    },
+    {
+        "version": "2.22",
+        "type": "online",
+        "date": "2023-07-20",
+        "size": "4 MB"
+    },
+    {
+        "version": "2.10.0-with-esp-idf-5.0.2",
+        "type": "espressif-ide",
+        "date": "2023-07-01",
+        "size": "1 GB"
+    },
+    {
+        "version": "4.4.5",
+        "type": "offline",
+        "date": "2023-06-09",
+        "size": "760 MB"
+    },
+    {
+        "version": "5.0.2",
+        "type": "offline",
+        "date": "2023-05-12",
+        "size": "768 MB"
+    },
+    {
+        "version": "2.21",
+        "type": "online",
+        "date": "2023-03-31",
+        "size": "4 MB"
+    },
+    {
+        "version": "4.3.5",
+        "type": "offline",
+        "date": "2023-03-30",
+        "size": "585 MB"
+    },
+    {
+        "version": "5.0.1",
+        "type": "offline",
+        "date": "2023-02-17",
+        "size": "670 MB"
+    },
+    {
+        "version": "2.20",
+        "type": "online",
+        "date": "2023-02-08",
+        "size": "4 MB"
+    },
+    {
+        "version": "2.9.1-with-esp-idf-5.0.1",
+        "type": "espressif-ide",
+        "date": "2023-04-10",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.9.0-with-esp-idf-5.0.1",
+        "type": "espressif-ide",
+        "date": "2023-03-21",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.8.1-with-esp-idf-5.0",
+        "type": "espressif-ide",
+        "date": "2023-02-08",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.8.1-with-esp-idf-4.4.4",
+        "type": "espressif-ide",
+        "date": "2023-02-08",
+        "size": "1 GB"
+    },
+    {
+        "version": "4.4.4",
+        "type": "offline",
+        "date": "2022-02-03",
+        "size": "630 MB"
+    },
+    {
+        "version": "2.8.0-with-esp-idf-4.4.4",
+        "type": "espressif-ide",
+        "date": "2023-02-03",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.8.0-with-esp-idf-5.0",
+        "type": "espressif-ide",
+        "date": "2023-02-01",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.19",
+        "type": "online",
+        "date": "2023-02-01",
+        "size": "4 MB"
+    },
+    {
+        "version": "2.7.0-with-esp-idf-5.0",
+        "type": "espressif-ide",
+        "date": "2023-01-12",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.18",
+        "type": "online",
+        "date": "2022-12-23",
+        "size": "4 MB"
+    },
+    {
+        "version": "4.1.4",
+        "type": "offline",
+        "date": "2022-12-13",
+        "size": "353 MB"
+    },
+    {
+        "version": "2.17",
+        "type": "online",
+        "date": "2022-08-03",
+        "size": "4 MB"
+    },
+    {
+        "version": "5.0",
+        "type": "offline",
+        "date": "2022-12-06",
+        "size": "630 MB"
+    },
+    {
+        "version": "2.7.0-with-esp-idf-4.4.3",
+        "type": "espressif-ide",
+        "date": "2022-11-14",
+        "size": "1 GB"
+    },
+    {
+        "version": "4.4.3",
+        "type": "offline",
+        "date": "2022-11-09",
+        "size": "630 MB"
+    },
+    {
+        "version": "4.3.4",
+        "type": "offline",
+        "date": "2022-10-07",
+        "size": "585 MB"
+    },
+    {
+        "version": "4.2.4",
+        "type": "offline",
+        "date": "2022-10-07",
+        "size": "376 MB"
+    },
+    {
+        "version": "2.16",
+        "type": "online",
+        "date": "2022-08-03",
+        "size": "4 MB"
+    },
+    {
+        "version": "4.4.2",
+        "type": "offline",
+        "date": "2022-08-18",
+        "size": "600 MB"
+    },
+    {
+        "version": "4.3.3",
+        "type": "offline",
+        "date": "2022-06-13",
+        "size": "585 MB"
+    },
+    {
+        "version": "4.2.3",
+        "type": "offline",
+        "date": "2022-03-14",
+        "size": "376 MB"
+    },
+    {
+        "version": "2.15",
+        "type": "online",
+        "date": "2022-04-20",
+        "size": "4 MB"
+    },
+    {
+        "version": "2.14",
+        "type": "online",
+        "date": "2022-03-30",
+        "size": "4 MB"
+    },
+    {
+        "version": "4.4.1",
+        "type": "offline",
+        "date": "2022-04-20",
+        "size": "600 MB"
+    },
+    {
+        "version": "4.1.3",
+        "type": "offline",
+        "date": "2022-04-20",
+        "size": "353 MB"
+    },
+    {
+        "version": "2.13",
+        "type": "online",
+        "date": "2022-02-01",
+        "size": "4 MB"
+    },
+    {
+        "version": "2.6.0-with-esp-idf-4.4.2",
+        "type": "espressif-ide",
+        "date": "2022-08-12",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.5.0-with-esp-idf-4.4",
+        "type": "espressif-ide",
+        "date": "2022-06-08",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.4.2-with-esp-idf-4.4",
+        "type": "espressif-ide",
+        "date": "2022-03-09",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.4.1-with-esp-idf-4.4",
+        "type": "espressif-ide",
+        "date": "2022-02-17",
+        "size": "1 GB"
+    },
+    {
+        "version": "2.4.0-with-esp-idf-4.4",
+        "type": "espressif-ide",
+        "date": "2022-02-01",
+        "size": "1 GB"
+    },
+    {
+        "version": "4.4",
+        "type": "offline",
+        "date": "2022-02-01",
+        "size": "600 MB"
+    },
+    {
+        "version": "4.3.2",
+        "type": "offline",
+        "date": "2022-02-01",
+        "size": "570 MB"
+    },
+    {
+        "version": "4.2.2",
+        "type": "offline",
+        "date": "2022-02-01",
+        "size": "376 MB"
+    },
+    {
+        "version": "4.1.2",
+        "type": "offline",
+        "date": "2022-02-01",
+        "size": "353 MB"
+    },
+    {
+        "version": "2.12",
+        "type": "online",
+        "date": "2021-11-22",
+        "size": "3.2 MB"
+    }
+]

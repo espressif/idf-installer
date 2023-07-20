@@ -18,7 +18,7 @@ param (
     [String]
     $OfflineBranch = 'v5.0.1',
     [String]
-    $Python = 'python3.11',
+    $Python = 'python',
     [Boolean]
     $SignInstaller = $true,
     [String]
@@ -202,7 +202,10 @@ function PrepareIdfPythonWheels {
     # ESP-IDF v5 - requirements is in tools\requirements\requirements.core.txt
 
     if (Test-Path -Path "$RequirementsPath" -PathType Leaf) {
-        (Get-Content $RequirementsPath) -replace $regex, 'windows-curses' | Set-Content $Requirements
+        # ESP-IDF v5.0 remove the dependency line
+        (Get-Content $RequirementsPath) -replace $regex, '' | Set-Content $Requirements
+        # ESP-IDF v5.0, v5.1 and newer - add the dependency line athe end of the file
+        Add-Content $Requirements "windows-curses"
 
         $ConstraintFile = GetConstraintFile
 
@@ -348,11 +351,20 @@ function CheckInnoSetupInstallation {
         return
     }
     "Inno Setup not found in PATH. Please install as Administrator following dependencies:"
-    "choco install innosetup inno-download-plugin"
-    Exit 1
+    FailBuild -Message "choco install innosetup inno-download-plugin"
+}
+
+function CheckPythonInstallation {
+    if (Get-Command $Python -ErrorAction SilentlyContinue) {
+        "$Python found"
+        return
+    }
+    "$Python not found in PATH. Use parameter -Python to specify custom Python, e.g. just 'python' or install following dependencies:"
+    FailBuild -Message "winget install --id Python.Python.3"
 }
 
 CheckInnoSetupInstallation
+CheckPythonInstallation
 
 if ('espressif-ide' -eq $InstallerType) {
     $EspIdfBranchVersion = $OfflineBranch -replace '^v'
