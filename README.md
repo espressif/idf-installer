@@ -16,6 +16,7 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Purpose | Size |
 | ------- | ------- | ---- |
+| 2.22 - 2023-07-20 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.22/esp-idf-tools-setup-online-2.22.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.22.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.21 - 2023-03-31 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.21/esp-idf-tools-setup-online-2.21.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.21.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.20 - 2023-02-08 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.20/esp-idf-tools-setup-online-2.20.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.20.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.19 - 2023-02-01 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.19/esp-idf-tools-setup-online-2.19.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.19.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
@@ -50,6 +51,8 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Content | Size |
 | ------- | ------- | ---- |
+| ESP-IDF v5.1 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.1/esp-idf-tools-setup-offline-5.1.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.1.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2, ESP32-C6, ESP32-H2 | 780 MB |
+| ESP-IDF v5.0.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.0.3/esp-idf-tools-setup-offline-5.0.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2 | 780 MB |
 | ESP-IDF v5.0.2 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.0.2/esp-idf-tools-setup-offline-5.0.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.2.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2 | 780 MB |
 | ESP-IDF v5.0.1 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.0.1/esp-idf-tools-setup-offline-5.0.1.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.1.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2 | 670 MB |
 | ESP-IDF v5.0 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.0/esp-idf-tools-setup-offline-5.0.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.0.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2 | 670 MB |
@@ -61,6 +64,7 @@ ESP32-C3 | 570 MB |
 | ESP-IDF v4.3.4 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.3.4/esp-idf-tools-setup-offline-4.3.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.4.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3,
 ESP32-C3 | 570 MB |
 | ESP-IDF v4.3.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.3.3/esp-idf-tools-setup-offline-4.3.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.3.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3 | 570 MB |
+| ESP-IDF v4.2.5 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.2.5/esp-idf-tools-setup-offline-4.2.5.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.5.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 376 MB |
 | ESP-IDF v4.2.4 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.2.4/esp-idf-tools-setup-offline-4.2.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.4.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 376 MB |
 | ESP-IDF v4.2.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.2.3/esp-idf-tools-setup-offline-4.2.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.2.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 376 MB |
 | ESP-IDF v4.1.4 [download](https://github.com/espressif/idf-installer/releases/download/offline-4.1.4/esp-idf-tools-setup-offline-4.1.4.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-4.1.4.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2 | 353 MB |

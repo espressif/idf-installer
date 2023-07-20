@@ -1,5 +1,35 @@
 [
     {
+        "version": "5.1",
+        "type": "offline",
+        "date": "2023-07-20",
+        "size": "768 MB"
+    },
+    {
+        "version": "5.0.3",
+        "type": "offline",
+        "date": "2023-07-20",
+        "size": "768 MB"
+    },
+    {
+        "version": "4.2.5",
+        "type": "offline",
+        "date": "2022-10-07",
+        "size": "376 MB"
+    },
+    {
+        "version": "2.22",
+        "type": "online",
+        "date": "2023-07-20",
+        "size": "4 MB"
+    },
+    {
+        "version": "2.10.0-with-esp-idf-5.0.2",
+        "type": "espressif-ide",
+        "date": "2023-07-01",
+        "size": "1 GB"
+    },
+    {
         "version": "4.4.5",
         "type": "offline",
         "date": "2023-06-09",
