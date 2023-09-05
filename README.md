@@ -157,7 +157,7 @@ The installation is pefromed by [idf-env.exe driver install --espressif --ftdi -
 The tool is downloading and installing following drivers:
 
   - Espressif JTAG: https://dl.espressif.com/dl/idf-driver/idf-driver-esp32-usb-jtag-2021-07-15.zip
-  - FTDI: https://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.28%20WHQL%20Certified.zip
+  - FTDI: https://www.ftdichip.com/Driver/CDM/CDM%20v2.12.28%20WHQL%20Certified.zip
   - Silabs: https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip
   - WCH: https://www.wch.cn/downloads/CH341SER_ZIP.html
 
