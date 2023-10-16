@@ -1,6 +1,8 @@
 name: build-offline-installer
 
 on:
+  workflow_dispatch:
+  
   push:
     tags:
       - offline-*
