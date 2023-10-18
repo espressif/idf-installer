@@ -12,7 +12,7 @@ on:
         required: true
         default: '5.0.1'
       python_version:
-        description: 'ESP-IDF version'
+        description: 'Python version'
         required: true
         default: '3.11'
 
@@ -23,6 +23,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Inputs Logged
+        run: |
+          echo "Received Espressif IDE Version: ${{ github.event.inputs.espressif_ide_version }}"
+          echo "Received ESP-IDF Version: ${{ github.event.inputs.esp_idf_version }}"
+          echo "Received Python Version: ${{ github.event.inputs.python_version }}"
       - name: Map local long path to new drive
         id: map_path
         shell: pwsh
