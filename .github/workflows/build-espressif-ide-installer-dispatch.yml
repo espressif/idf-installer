@@ -1,0 +1,17 @@
+name: build-espressif-ide-installer-dispatch
+
+on:
+  repository_dispatch:
+    types: [trigger-action]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use input
+        run: |
+          echo "Received input: ${{ github.event.client_payload.input_name }}"
