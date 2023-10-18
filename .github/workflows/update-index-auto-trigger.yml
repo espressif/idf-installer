@@ -5,7 +5,7 @@ on:
     types:
       - published
   pull_request: 
-    types: [edited, opened]
+
 
 jobs:
   update-index:
