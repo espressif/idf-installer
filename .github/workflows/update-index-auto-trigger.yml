@@ -1,7 +1,11 @@
 name: update-index-auto-trigger-release-publish
 
 on:
-  workflow_dispatch
+  release:
+    types:
+      - published
+  pull_request: 
+    types: [edited, opened]
 
 jobs:
   update-index:
