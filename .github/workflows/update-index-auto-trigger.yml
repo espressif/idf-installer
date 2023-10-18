@@ -1,0 +1,47 @@
+name: update-index-auto-trigger-release-publish
+
+on:
+  workflow_dispatch
+
+jobs:
+  update-index:
+    name: Update index.html
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.4.1
+        with:
+          args: --verbose --no-progress './README.md'
+          fail: true
+      - name: Get assets download URL
+        id: get-url
+        run: |
+            ASSET_URL=$(curl -sH "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets | \
+            jq -r '.[0].browser_download_url')
+            echo "::set-output name=asset_url::$ASSET_URL"
+
+      - name: Update the tags from release
+        run: |
+          clear
+
+      # - name: Upload index.html To dl.espressif.com
+      #   id: upload-index-espressif
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      #   run: |
+      #     aws s3 cp --acl=public-read --no-progress ./src/Resources/download/index.html s3://${{ secrets.DL_BUCKET }}/dl/esp-idf/index.html
+      #     aws s3 cp --acl=public-read --no-progress ./src/Resources/download/releases.json s3://${{ secrets.DL_BUCKET }}/dl/esp-idf/releases.json
+      # - name: Invalidate cache
+      #   id: invalidate-index-cache
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      #   run: |
+      #     aws cloudfront create-invalidation --distribution-id ${{ secrets.DL_DISTRIBUTION_ID }} --paths "/dl/esp-idf/index.html" "/dl/esp-idf/" "/dl/esp-idf/releases.json"
+
