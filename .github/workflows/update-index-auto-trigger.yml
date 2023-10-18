@@ -27,9 +27,9 @@ jobs:
             jq -r '.[0].browser_download_url')
             echo "::set-output name=asset_url::$ASSET_URL"
 
-      - name: Update the tags from release
-        run: |
-          clear
+      # - name: Update the tags from release
+      #   run: |
+      #     clear
 
       # - name: Upload index.html To dl.espressif.com
       #   id: upload-index-espressif
