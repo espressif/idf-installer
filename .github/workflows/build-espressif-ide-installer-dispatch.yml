@@ -15,3 +15,4 @@ jobs:
       - name: Use input
         run: |
           echo "Received input: ${{ github.event.client_payload.ide_version }}"
+          echo "Received input: ${{ github.event.client_payload.idf_version }}"
