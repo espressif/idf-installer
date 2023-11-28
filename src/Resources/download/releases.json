@@ -18,6 +18,18 @@
         "size": "585 MB"
     },
     {
+        "version": "2.11.1-with-esp-idf-5.1.2",
+        "type": "espressif-ide",
+        "date": "2023-11-28",
+        "size": "1 GB"
+    },
+    {
+        "version": "5.1.2",
+        "type": "offline",
+        "date": "2023-11-28",
+        "size": "880 MB"
+    },
+    {
         "version": "5.1.1",
         "type": "offline",
         "date": "2023-08-23",
