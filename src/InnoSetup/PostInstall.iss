@@ -211,6 +211,8 @@ begin
     new value to be visible to this process. }
   SetEnvironmentVariable('IDF_TOOLS_PATH', ExpandConstant('{app}'));
 
+  SetEnvironmentVariable('IDF_COMPONENT_STORAGE_URL',  GetPathWithForwardSlashes(ExpandConstant('file:///{app}/registry;default')));
+
   ExtractTemporaryFile('7za.exe');
 
   if (IsOfflineMode) then begin

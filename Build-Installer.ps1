@@ -287,6 +287,20 @@ function PrepareOfflineBranches {
     Get-ChildItem "$BundleDir" -recurse -force | Where-Object { $_.Attributes -match "ReparsePoint" }
 }
 
+function PrepareIdfComponents {
+    $ComponentsDirectory = "build\$InstallerType\registry"
+    if ( Test-Path -Path $ComponentsDirectory -PathType Container ) {
+        "$ComponentsDirectory exists. Using cached content."
+        return
+    }
+    mkdir $ComponentsDirectory
+
+    Push-Location "$BundleDir\examples"
+    # Run command from idf-component-manager
+    compote registry sync --recursive $ComponentsDirectory
+    Pop-Location
+}
+
 function FindSignTool {
     $SignTool = "signtool.exe"
     if (Get-Command $SignTool -ErrorAction SilentlyContinue) {
@@ -448,6 +462,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     "${OfflineBranch}" > $Versions
     PrepareOfflineBranches
     PrepareIdfPythonWheels
+    PrepareIdfComponents
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
     $IsccParameters += '/DJDKVERSION=' + $JdkVersion
