@@ -441,3 +441,14 @@ cp file.ini file.isl
 ```
 
 - add BOM header using Save function in Visual Studio Code
+
+## Bundle Git
+
+Repackage of Git for Windows. Git for Windows is provided in ```.7z.exe``` format, the workflow with script repackages it to ```.zip``` format and uploads it to Espressif's download server where it is used by IDF-installer.
+
+### How to use bundle Git
+
+* Check the version of Git on the website https://git-scm.com/download/win
+* Use the version as input into the manual workflow run
+* Run the workflow ```.github/workflow/bundle-git.yaml`
+* On success the Git version will be on Espressif's download server
