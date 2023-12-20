@@ -13,8 +13,7 @@ $7z = 'C:/Program Files/7-Zip/7z.exe'
 "Test if directory [$7z] exists"
 if (Test-Path -Path $7z) {
     "Path exists!"
-    7z x git.7z.exe
-    Rename-Item -Path "git" -NewName ${GitDirectory}
+    7z x git.7z.exe -o${GitDirectory}
 } else {
     "Path doesn't exist."
     # Install 7zip PS module
