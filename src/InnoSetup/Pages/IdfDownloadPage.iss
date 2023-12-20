@@ -38,9 +38,9 @@ begin
   else if WildCardMatch(Version, 'v*-rc*') then
     Result := 'pre-release version'
   else if WildCardMatch(Version, 'v*') then
-    Result := 'release version'
+    Result := 'release version - .zip archive download'
   else if WildCardMatch(Version, 'release/v*') then
-    Result := 'release branch'
+    Result := 'release branch - git clone'
   else if WildCardMatch(Version, 'master') then
     Result := 'development branch'
   else
