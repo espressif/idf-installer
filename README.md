@@ -16,6 +16,7 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Purpose | Size |
 | ------- | ------- | ---- |
+| 2.24 - 2023-12-21 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.24/esp-idf-tools-setup-online-2.24.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.24.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.23 - 2023-07-20 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.23/esp-idf-tools-setup-online-2.23.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.23.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.22 - 2023-07-20 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.22/esp-idf-tools-setup-online-2.22.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.22.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
 | 2.21 - 2023-03-31 - Online Installer [download](https://github.com/espressif/idf-installer/releases/download/online-2.21/esp-idf-tools-setup-online-2.21.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-2.21.exe) | Deploy ESP-IDF, Espressif-IDE and support for other languages | 4 MB |
