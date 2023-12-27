@@ -1,5 +1,11 @@
 [
     {
+        "version": "2.12.0-with-esp-idf-5.1.2",
+        "type": "espressif-ide",
+        "date": "2023-12-23",
+        "size": "1 GB"
+    },
+    {
         "version": "2.24",
         "type": "online",
         "date": "2023-12-21",
