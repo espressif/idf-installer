@@ -295,10 +295,8 @@ function PrepareIdfComponents {
     }
     mkdir $ComponentsDirectory
 
-    Push-Location "$BundleDir\examples"
     # Run command from idf-component-manager
     compote registry sync --recursive $ComponentsDirectory
-    Pop-Location
 }
 
 function FindSignTool {
@@ -374,7 +372,7 @@ function CheckPythonInstallation {
         return
     }
     "$Python not found in PATH. Use parameter -Python to specify custom Python, e.g. just 'python' or install following dependencies:"
-    FailBuild -Message "winget install --id Python.Python.3"
+    FailBuild -Message "winget install --id Python.Python.3.11"
 }
 
 CheckInnoSetupInstallation
