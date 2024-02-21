@@ -293,10 +293,12 @@ function PrepareIdfComponents {
         "$ComponentsDirectory exists. Using cached content."
         return
     }
-    mkdir $ComponentsDirectory
 
-    # Run command from idf-component-manager
-    compote registry sync --recursive $ComponentsDirectory
+    # Install compote command
+    &$Python -m pip install idf-component-manager
+
+    $env:IDF_PATH="$BundleDir"
+    &$Compote registry sync --recursive $ComponentsDirectory
 }
 
 function FindSignTool {
