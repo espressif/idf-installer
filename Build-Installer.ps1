@@ -294,6 +294,7 @@ function PrepareIdfComponents {
         return
     }
 
+    $Compote = "compote"
     # Install compote command
     &$Python -m pip install idf-component-manager
 
