@@ -60,7 +60,7 @@ function DownloadIdfVersions() {
         return
     }
     "Downloading idf_versions.txt..."
-    Invoke-WebRequest -O $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
+    Invoke-WebRequest -OutFile $Versions https://dl.espressif.com/dl/esp-idf/idf_versions.txt
 }
 
 # Get short version of Constraint file.
@@ -76,7 +76,7 @@ function PrepareConstraints {
     $ConstraintFile = GetConstraintFile
     $ConstraintUrl = "https://dl.espressif.com/dl/esp-idf/$ConstraintFile"
     "Downloading $ConstraintUrl"
-    Invoke-WebRequest -O "build\$InstallerType\${ConstraintFile}" $ConstraintUrl
+    Invoke-WebRequest -OutFile "build\$InstallerType\${ConstraintFile}" $ConstraintUrl
 }
 
 function PrepareIdfPackage {
@@ -108,7 +108,7 @@ function PrepareIdfPackage {
     "Checking existence of dist: $FullDistZipPath"
     if (-Not(Test-Path -Path $FullDistZipPath -PathType Leaf)) {
         "Downloading from $DownloadUrl to $FullDistZipPath"
-        Invoke-WebRequest -O $FullDistZipPath $DownloadUrl
+        Invoke-WebRequest -OutFile $FullDistZipPath $DownloadUrl
     }
 
     if ("" -ne $StripDirectory) {
@@ -139,7 +139,7 @@ function PrepareIdfFile {
     }
 
     "Downloading: $DownloadUrl"
-    Invoke-WebRequest -O $FullFilePath $DownloadUrl
+    Invoke-WebRequest -OutFile $FullFilePath $DownloadUrl
 }
 
 function PrepareIdfCmdlinerunner {
