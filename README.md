@@ -57,6 +57,7 @@ Note: Online Installer is recommended way of the installation.
 
 | Version | Content | Size |
 | ------- | ------- | ---- |
+| ESP-IDF v5.1.3 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.1.3/esp-idf-tools-setup-offline-5.1.3.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.1.3.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2, ESP32-C6, ESP32-H2 | 1.37 GB |
 | ESP-IDF v5.1.2 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.1.2/esp-idf-tools-setup-offline-5.1.2.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.1.2.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2, ESP32-C6, ESP32-H2 | 880 MB |
 | ESP-IDF v5.1.1 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.1.1/esp-idf-tools-setup-offline-5.1.1.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.1.1.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2, ESP32-C6, ESP32-H2 | 880 MB |
 | ESP-IDF v5.1 [download](https://github.com/espressif/idf-installer/releases/download/offline-5.1/esp-idf-tools-setup-offline-5.1.exe)/[mirror](https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-5.1.exe) | ESP-IDF + Toolchains for ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C2, ESP32-C6, ESP32-H2 | 780 MB |
