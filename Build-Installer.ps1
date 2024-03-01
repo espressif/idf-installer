@@ -287,6 +287,21 @@ function PrepareOfflineBranches {
     Get-ChildItem "$BundleDir" -recurse -force | Where-Object { $_.Attributes -match "ReparsePoint" }
 }
 
+function PrepareIdfComponents {
+    $ComponentsDirectory = "build\$InstallerType\registry"
+    if ( Test-Path -Path $ComponentsDirectory -PathType Container ) {
+        "$ComponentsDirectory exists. Using cached content."
+        return
+    }
+
+    $Compote = "compote"
+    # Install compote command
+    &$Python -m pip install idf-component-manager
+
+    $env:IDF_PATH="$BundleDir"
+    &$Compote registry sync --recursive $ComponentsDirectory
+}
+
 function FindSignTool {
     $SignTool = "signtool.exe"
     if (Get-Command $SignTool -ErrorAction SilentlyContinue) {
@@ -360,7 +375,7 @@ function CheckPythonInstallation {
         return
     }
     "$Python not found in PATH. Use parameter -Python to specify custom Python, e.g. just 'python' or install following dependencies:"
-    FailBuild -Message "winget install --id Python.Python.3"
+    FailBuild -Message "winget install --id Python.Python.3.11"
 }
 
 CheckInnoSetupInstallation
@@ -448,6 +463,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     "${OfflineBranch}" > $Versions
     PrepareOfflineBranches
     PrepareIdfPythonWheels
+    PrepareIdfComponents
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
     $IsccParameters += '/DJDKVERSION=' + $JdkVersion
