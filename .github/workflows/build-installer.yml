@@ -1,0 +1,112 @@
+name: build-installer-any
+
+on:
+    workflow_dispatch:
+        inputs:
+            installer_type:
+                type: choice
+                description: 'Installer Type'
+                required: true
+                options:
+                    - offline
+                    - espressif-ide
+                    - online
+            esp_idf_version:
+                description: 'ESP-IDF version (e.g. 5.2 or 5.2.1)'
+                required: false
+                default: ''
+            espressif_ide_version:
+                description: 'Espressif IDE version (e.g. 2.0.0)'
+                required: false
+                default: ''
+            online_installer_version:
+                description: 'Online Installer version (e.g. 2.0)'
+                required: false
+                default: ''
+
+env:
+    INSTALLER_TYPE: ${{ inputs.installer_type }}
+    ESP_IDF_VERSION: ${{ inputs.esp_idf_version }}
+    ESPRESSIF_IDE_VERSION: ${{ inputs.espressif_ide_version }}
+    ONLINE_INSTALLER_VERSION: ${{ inputs.online_installer_version }}
+
+jobs:
+    build-installer-online:
+        name: Build Online Installer
+        if: ${{ inputs.installer_type }} == 'online'
+        uses: espressif/idf-installer/.github/workflows/build-online-installer.yml@main
+        with:
+            online_installer_version: ${{ inputs.online_installer_version }}
+        secrets: inherit
+
+    build-installer-offline:
+        name: Build Offline Installer
+        if: ${{ inputs.installer_type }} == 'offline'
+        uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@main
+        with:
+            esp_idf_version: ${{ inputs.esp_idf_version}}
+        secrets: inherit
+
+    build-installer-ide:
+        name: Build IDE Installer
+        if: ${{ inputs.installer_type }} == 'espressif-ide'
+        uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@main
+        with:
+            esp_idf_version: ${{ inputs.esp_idf_version }}
+            espressif_ide_version: ${{ inputs.espressif_ide_version }}
+        secrets: inherit
+
+    update-docs-files:
+        needs: build-installer-ide
+        name: Create ${{ inputs.installer_type}} installer release PR
+        if: ${{ needs.build-installer-ide.result }} == 'success' || ${{ needs.build-installer-offline.result }} == 'success' || ${{ needs.build-installer-online.result }} == 'success'
+        runs-on: windows-latest
+        strategy:
+            fail-fast: false
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.11'
+
+            - name: Download artifacts
+              uses: actions/download-artifact@v4
+              with:
+                name: installer-size
+                path: ./
+            
+            - name: Get size of online installer and Update docs files
+              run: |
+                echo "Instaler size from variable is $(Get-Content variables.txt)"
+
+                $size_bytes = [int]$(Get-Content variables.txt)
+                # Check if the content is larger than 100000
+                if ($size_bytes -gt 9999999) {
+                    $result = [math]::Round($size_bytes / 1000000000,2)
+                    $installer_size = "$result GB"
+                    echo "INSTALLER_SIZE: $installer_size"
+                } else {
+                    $result = [math]::Round($size_bytes / 1000000,2)
+                    $installer_size = "$result MB"
+                    echo "INSTALLER_SIZE: $installer_size"
+                }
+
+                python scripts/docs_update_release.py $installer_size
+
+            - name: Delete variables.txt
+              run: |
+                Remove-Item -Path variables.txt -Force
+
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v6
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                commit-message: 'Release ${{ env.INSTALLER_TYPE }} installer ${{env.ESPRESSIF_IDE_VERSION}}${{env.ONLINE_INSTALLER_VERSION}} with ESP-IDF v${{ env.ESP_IDF_VERSION }}'
+                title: 'Release ${{ env.INSTALLER_TYPE }} installer ${{env.ESPRESSIF_IDE_VERSION}}${{env.ONLINE_INSTALLER_VERSION}} with ESP-IDF v${{ env.ESP_IDF_VERSION }}'
+                body: '- Updated docs files'
+                branch: 'release-${{ env.INSTALLER_TYPE }}-installer'
+                delete-branch: true
+                base: 'main'
