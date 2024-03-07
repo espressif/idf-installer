@@ -1,20 +1,14 @@
 name: build-espressif-ide-installer
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      espressif_ide_version:
-        description: 'Espressif IDE version'
-        required: true
-        default: '2.9.1'
       esp_idf_version:
-        description: 'ESP-IDF version'
         required: true
-        default: '5.0.1'
-      python_version:
-        description: 'Python version'
+        type: string
+      espressif_ide_version:
         required: true
-        default: '3.11'
+        type: string
 
 jobs:
   build-espressif-ide-installer:
@@ -22,12 +16,11 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Inputs Logged
         run: |
           echo "Received Espressif IDE Version: ${{ github.event.inputs.espressif_ide_version }}"
           echo "Received ESP-IDF Version: ${{ github.event.inputs.esp_idf_version }}"
-          echo "Received Python Version: ${{ github.event.inputs.python_version }}"
       - name: Map local long path to new drive
         id: map_path
         shell: pwsh
@@ -36,9 +29,9 @@ jobs:
         shell: pwsh
         run: choco install innosetup
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '${{ github.event.inputs.python_version }}'
+          python-version: '3.11'
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
@@ -48,15 +41,15 @@ jobs:
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         working-directory: "P:"
-        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ github.event.inputs.esp_idf_version }}" -EspressifIdeVersion "${{ github.event.inputs.espressif_ide_version }}"
+        run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ inputs.esp_idf_version }}" -EspressifIdeVersion "${{ inputs.espressif_ide_version }}"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: espressif-ide-${{ github.event.inputs.espressif_ide_version }}-esp-idf-${{ github.event.inputs.esp_idf_version }}
-          release_name: Release of Espressif IDE ${{ github.event.inputs.espressif_ide_version }} with ESP-IDF ${{ github.event.inputs.esp_idf_version }}
+          tag_name: espressif-ide-${{ inputs.espressif_ide_version }}-esp-idf-${{ inputs.esp_idf_version }}
+          release_name: Release of Espressif IDE ${{ inputs.espressif_ide_version }} with ESP-IDF ${{ inputs.esp_idf_version }}
           draft: true
           prerelease: true
       - name: Upload Release Asset To Github
@@ -66,8 +59,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-${{ github.event.inputs.esp_idf_version }}-signed.exe
-          asset_name: espressif-ide-setup-${{ github.event.inputs.espressif_ide_version }}-with-esp-idf-${{ github.event.inputs.esp_idf_version }}.exe
+          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
+          asset_name: espressif-ide-setup-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe
           asset_content_type: application/octet-stream
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
@@ -76,4 +69,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/espressif-ide-setup-espressif-ide-with-esp-idf-${{ github.event.inputs.esp_idf_version }}-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/espressif-ide-setup-${{ github.event.inputs.espressif_ide_version }}-with-esp-idf-${{ github.event.inputs.esp_idf_version }}.exe
+        run: aws s3 cp --acl=public-read --no-progress ./build/espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/espressif-ide-setup-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe

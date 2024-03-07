@@ -1,9 +1,12 @@
 name: build-online-installer
 
 on:
-  push:
-    tags:
-      - online-*
+  workflow_call:
+    inputs:
+      online_installer_version:
+        required: true
+        type: string
+
 
 jobs:
   build-online-installer:
@@ -11,14 +14,14 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo "VERSION=online-${{ inputs.online_installer_version }}" >> $GITHUB_OUTPUT
         shell: bash
       - name: Get the installer type
         id: get_installer_type
-        run: echo ::set-output name=INSTALLER_TYPE::${${{ steps.get_version.outputs.VERSION }}//-*}
+        run: echo "INSTALLER_TYPE=${${{ steps.get_version.outputs.VERSION }}//-*}" >> $GITHUB_OUTPUT
         shell: bash
       - name: Install Inno Setup Download plugin
         shell: pwsh
