@@ -1,11 +1,15 @@
 name: build-offline-installer
 
 on:
-  workflow_dispatch:
-  
-  push:
-    tags:
-      - offline-*
+  workflow_call:
+    inputs:
+      esp_idf_version:
+        required: true
+        type: string
+
+env:
+  IDF_BRANCH: ${{ inputs.esp_idf_version }}
+  VERSION: 'offline-${{ inputs.esp_idf_version }}'
 
 jobs:
   build-offline-installer:
@@ -13,42 +17,46 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        shell: bash
-      - name: Get the installer type
-        id: get_installer_type
-        run: echo ::set-output name=INSTALLER_TYPE::${${{ steps.get_version.outputs.VERSION }}//-*}
-        shell: bash
-      - name: Get version for branch
-        id: get_branch_version
-        run: echo ::set-output name=BRANCH_VERSION::${GITHUB_REF/refs\/tags\/offline-/}
-        shell: bash
+        uses: actions/checkout@v4
+
       - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
+
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
-        run: .\Build-Installer.ps1 -InstallerType offline -OfflineBranch v${{ steps.get_branch_version.outputs.BRANCH_VERSION }}
+        run: .\Build-Installer.ps1 -InstallerType offline -OfflineBranch v${{ env.IDF_BRANCH }}
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.VERSION }}-esp-idf-v${{ env.IDF_BRANCH }}
+          release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
+
+      - name: Get installer size and store it to file
+        run: |
+          echo $(Get-ItemProperty -Path .\build\esp-idf-tools-setup-offline-signed.exe | Select-Object -ExpandProperty Length) > variables.txt
+          echo "Instaler size from variable is $(Get-Content variables.txt)"
+        
+      - name: Upload artifacts of installer size
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-size
+          path: ./variables.txt
+
       - name: Upload Release Asset To Github
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -57,8 +65,9 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/esp-idf-tools-setup-offline-signed.exe
-          asset_name: esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
+          asset_name: esp-idf-tools-setup-${{ env.VERSION }}.exe
           asset_content_type: application/octet-stream
+
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
         env:
@@ -66,4 +75,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-offline-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
+        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-offline-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ env.VERSION }}.exe

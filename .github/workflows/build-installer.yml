@@ -1,0 +1,115 @@
+name: build-installer-any
+
+on:
+    workflow_dispatch:
+        inputs:
+            installer_type:
+                type: choice
+                description: 'Installer Type'
+                required: true
+                options:
+                    - offline
+                    - espressif-ide
+                    - online
+            esp_idf_version:
+                description: 'ESP-IDF version (e.g. 5.2 or 5.2.1)'
+                required: false
+                default: '5.2.1'
+            espressif_ide_version:
+                description: 'Espressif IDE version (e.g. 2.0.0)'
+                required: false
+                default: ''
+            online_installer_version:
+                description: 'Online Installer version (e.g. 2.0)'
+                required: false
+                default: ''
+    pull_request:   # TODO Remove this once the workflow is tested
+
+env:
+    INSTALLER_TYPE: "offline" #${{ inputs.installer_type }}
+    ESP_IDF_VERSION: "4.4.7"  #${{ inputs.esp_idf_version }}
+    ESPRESSIF_IDE_VERSION: #${{ inputs.espressif_ide_version }}
+    ONLINE_INSTALLER_VERSION: "" #${{ inputs.online_installer_version }}
+
+jobs:
+    # build-installer-online:
+    #     #needs: update-docs-files
+    #     name: Build Online Installer
+    #     #if: ${{ env.INSTALLER_TYPE }} == 'online'
+    #     uses: espressif/idf-installer/.github/workflows/build-online-installer.yml@feat/automatic_installer_release # TODO
+    #     with:
+    #         online_installer_version: ${{ inputs.online_installer_version }}
+    #     secrets: inherit
+
+    build-installer-offline:
+        #needs: update-docs-files
+        name: Build Offline Installer
+        # if: ${{ env.INSTALLER_TYPE }} == 'offline'
+        uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@feat/automatic_installer_release # TODO
+        with:
+            esp_idf_version: "4.4.7"
+        secrets: inherit
+
+    # build-installer-ide:
+    #     needs: update-docs-files
+    #     name: Build IDE Installer
+    #     if: ${{ env.INSTALLER_TYPE }} == 'espressif-ide'
+    #     uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@feat/automatic_installer_release # TODO
+    #     with:
+    #         esp_idf_version: ${{ env.ESP_IDF_VERSION }}
+    #         espressif_ide_version: ${{ env.ESPRESSIF_IDE_VERSION }}
+    #     secrets: inherit
+
+    update-docs-files:
+        needs: build-installer-offline
+        name: Build ${{ inputs.installer_type}} Installer 
+        runs-on: windows-latest
+        strategy:
+            fail-fast: false
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.11'
+
+            - name: Download artifacts
+              uses: actions/download-artifact@v4
+              with:
+                name: installer-size
+                path: ./
+            
+            - name: Get size of online installer and Update docs files
+              run: |
+                echo "Instaler size from variable is $(Get-Content variables.txt)"
+
+                $size_bytes = [int]$(Get-Content variables.txt)
+                # Check if the content is larger than 100000
+                if ($size_bytes -gt 9999999) {
+                    $result = [math]::Round($size_bytes / 1000000000,2)
+                    $installer_size = "$result GB"
+                    echo "INSTALLER_SIZE: $installer_size"
+                } else {
+                    $result = [math]::Round($size_bytes / 1000000,2)
+                    $installer_size = "$result MB"
+                    echo "INSTALLER_SIZE: $installer_size"
+                }
+
+                python scripts/docs_update_release.py $installer_size
+
+            - name: Delete variables.txt
+              run: |
+                Remove-Item -Path variables.txt -Force
+
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v6
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                commit-message: 'Release ${{ env.INSTALLER_TYPE }} installer ${{env.ESPRESSIF_IDE_VERSION}}${{env.ONLINE_INSTALLER_VERSION}} with ESP-IDF v${{ env.ESP_IDF_VERSION }}'
+                title: 'Release ${{ env.INSTALLER_TYPE }} installer ${{env.ESPRESSIF_IDE_VERSION}}${{env.ONLINE_INSTALLER_VERSION}} with ESP-IDF v${{ env.ESP_IDF_VERSION }}'
+                body: '- Updated docs files'
+                branch: 'release-${{ env.INSTALLER_TYPE }}-installer'
+                delete-branch: true
+                base: 'main'
