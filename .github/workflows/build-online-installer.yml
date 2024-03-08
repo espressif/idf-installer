@@ -1,9 +1,14 @@
 name: build-online-installer
 
 on:
-  push:
-    tags:
-      - online-*
+  workflow_call:
+    inputs:
+      online_installer_version:
+        required: true
+        type: string
+
+env:
+  VERSION: 'online-${{ inputs.online_installer_version }}'
 
 jobs:
   build-online-installer:
@@ -11,34 +16,42 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        shell: bash
-      - name: Get the installer type
-        id: get_installer_type
-        run: echo ::set-output name=INSTALLER_TYPE::${${{ steps.get_version.outputs.VERSION }}//-*}
-        shell: bash
+        uses: actions/checkout@v4
+
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: ./src/PowerShell/Install-IdpSetup.ps1
+
       - name: Build Installer
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
         run: .\Build-Installer.ps1 -InstallerType online
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
+
+      - name: Get installer size and store it to file
+        run: |
+          echo $(Get-ItemProperty -Path .\build\esp-idf-tools-setup-online-signed.exe | Select-Object -ExpandProperty Length) > variables.txt
+          echo "Instaler size from variable is $(Get-Content variables.txt)"
+          echo "Instaler size from file is $(Get-ItemProperty -Path .\build\esp-idf-tools-setup-online-signed.exe | Select-Object -ExpandProperty Length) Bytes"
+      
+      - name: Upload artifacts of installer size
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-size
+          path: ./variables.txt
+
       - name: Upload Release Asset To Github
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -47,7 +60,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/esp-idf-tools-setup-online-signed.exe
-          asset_name: esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
+          asset_name: esp-idf-tools-setup-${{ env.VERSION }}.exe
           asset_content_type: application/octet-stream
       - name: Upload Release Asset To dl.espressif.com
         id: upload-release-asset-espressif
@@ -56,4 +69,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-online-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ steps.get_version.outputs.VERSION }}.exe
+        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-online-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ env.VERSION }}.exe
