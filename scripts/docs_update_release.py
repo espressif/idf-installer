@@ -5,15 +5,12 @@ import re
 
 from datetime import date
 
+# Global constants with paths for files to be changed
 RELEASES_JSON_PATH = "./src/Resources/download/releases.json"
 INDEX_PATH = "./src/Resources/download/index.html"
 INNO_SETUP_PATH = "./src/InnoSetup/IdfToolsSetup.iss"
 
-
-if len(argv) < 2:
-    raise SystemExit("ERROR: Installer size is not passed as an argument")
-
-# Environment variables from GitHub Actions
+# Environment variables from GitHub Actions (environmental variables of the runner)
 installer_type: str = environ.get('INSTALLER_TYPE', '')                  # espressif-ide, offline, online
 installer_size: str = argv[1]                                            # e.g. '1.69 GB'
 idf_version = environ.get('ESP_IDF_VERSION', '')                         # e.g. '4.4.7'
@@ -21,20 +18,7 @@ ide_version = environ.get('ESPRESSIF_IDE_VERSION', '')                   # e.g. 
 online_installer_version = environ.get('ONLINE_INSTALLER_VERSION', '')   # e.g. '2.25'
 
 
-if not idf_version:
-    raise SystemExit("ERROR: IDF version is not provided")
-
-# cast IDF version to list
-match = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?$', idf_version)
-if match:
-    idf_version:list = [match.group(1),  match.group(2), match.group(3) if match.group(3) else None]
-
-print(f"IDF version: {idf_version}")
-
-new_idf_version = f"{idf_version[0]}.{idf_version[1]}{f'.{idf_version[2]}' if idf_version[2] else ''}"
-
-
-def _resolve_installer_type() -> str:
+def _resolve_installer_type(new_idf_version: str) -> str:
     """Resolve the type of the installer
         and return the string of new entry for the index.html
     """
@@ -71,6 +55,9 @@ def _resolve_installer_type() -> str:
                     </form>
                 </div>"""
     
+    """ Installer types acquired from environmental variable of the runner - the same names as with the tags used
+        (No possible way to choose different type - list of options in workflow)
+    """
     if installer_type == 'espressif-ide':
         return new_entry_ide
     elif installer_type == 'offline':
@@ -79,7 +66,7 @@ def _resolve_installer_type() -> str:
         return new_entry_online
 
 
-def update_index():
+def update_index(new_idf_version: str):
     """Update the index.html file with the new release of the installer"""
     try:
         with open(path.abspath(INDEX_PATH), "r") as index_file:
@@ -89,9 +76,9 @@ def update_index():
 
     # find every element with the class "download-button"
     elements = []
-    for i in range(0, len(index_lines)):
-        if index_lines[i].strip() == '<div class="download-button">':
-            elements.append([i, index_lines[i:i+10]])
+    for i, line in enumerate(index_lines):
+        if line.strip() == '<div class="download-button">':
+            elements.append([i, index_lines[i:i+10]])   # TODO guess the number dynamically ... regex probably
             i += 10 # skip the next 10 lines (the length of the element with the class "download-button")
 
     # choose the elements that contain the installer type
@@ -109,7 +96,7 @@ def update_index():
         print(f"This element will be replaced:\n{element_to_replace}")
 
         index_data = ''.join(index_lines)
-        return index_data.replace(element_to_replace, _resolve_installer_type())
+        return index_data.replace(element_to_replace, _resolve_installer_type(new_idf_version))
 
 
     # replace the first occurrence of the offline installer button
@@ -126,7 +113,7 @@ def update_index():
             first_occurrence = selected_elements[0][0]
 
             print(f"First occurrence on line {first_occurrence} - adding new installer button here")
-            index_data = index_lines[0:first_occurrence-1] + list(_resolve_installer_type()+'\n') + index_lines[first_occurrence:]
+            index_data = index_lines[0:first_occurrence-1] + list(_resolve_installer_type(new_idf_version)+'\n') + index_lines[first_occurrence:]
             new_index_data = ''.join(index_data)
     else:   # replace the first occurrence of the other installer type button
         new_index_data = _replace_installer_button(selected_elements[0])
@@ -140,7 +127,7 @@ def update_index():
 
 
 
-def update_releases_json():
+def update_releases_json(new_idf_version: str):
     """Update the releases.json file with the new release of the installer"""
     try:
         with open(path.abspath(RELEASES_JSON_PATH), "r") as releases_file:
@@ -189,7 +176,25 @@ def update_inno_setup():
 
 
 def main():
-    """Performs the update of all necessary files for the new release of the installer"""    
+    """Performs the update of all necessary files for the new release of the installer"""   
+    if len(argv) < 2:
+        raise SystemExit("ERROR: Installer size is not passed as an argument")
+
+    if not idf_version:
+        raise SystemExit("ERROR: IDF version is not provided")
+    
+    # cast IDF version to list
+    # regex parsing IDF version which should be in format 5.3 or 5.3.0 (The PATCH number is not mandatory just MAJOR and MINOR) 
+    match = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?$', idf_version)
+    if match:
+        idf_version:list = [match.group(1),  match.group(2), match.group(3) if match.group(3) else None]
+    else:
+        raise SystemExit(f"ERROR: IDF version was not resolved correctly, expected format: MAJOR.MINOR(.PATCH) given string {idf_version}")
+
+    print(f"IDF version: {idf_version}")
+
+    new_idf_version = f"{idf_version[0]}.{idf_version[1]}{f'.{idf_version[2]}' if idf_version[2] else ''}"
+
     if ide_version and not re.match(r'(\d+\.\d+\.\d+)', ide_version):
         raise SystemExit(f"ERROR: IDE version is not in correct format (it should be 'X.Y.Z')")
     
@@ -202,12 +207,13 @@ def main():
     if installer_type == 'espressif-ide' and ide_version == '':
         raise SystemExit(f"ERROR: esp_ide_version or espressif_ide_version is not provided")
 
-    update_releases_json()
+    update_releases_json(new_idf_version)
 
+    # Update App or IDE version if the installer type is not offline
     if installer_type != 'offline':
         update_inno_setup()
 
-    update_index()
+    update_index(new_idf_version)
 
     print("Files update done!")
 
