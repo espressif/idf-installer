@@ -1,6 +1,12 @@
 [
     {
         "version": "4.4.7",
+        "type": "espressif-ide",
+        "date": "2024-03-11",
+        "size": "1.24 GB"
+    },
+    {
+        "version": "4.4.7",
         "type": "offline",
         "date": "2024-03-08",
         "size": "0.9 GB"
