@@ -29,6 +29,8 @@ env:
     ESP_IDF_VERSION: ${{ inputs.esp_idf_version }}
     ESPRESSIF_IDE_VERSION: ${{ inputs.espressif_ide_version }}
     ONLINE_INSTALLER_VERSION: ${{ inputs.online_installer_version }}
+    # Based on this defined supported IDF versions are created installer buttons in index.html from releases.json
+    SUPPORTED_IDF_VERSIONS: ('5.2', '4.4', '5.1', '5.0')
 
 jobs:
     build-installer-online:
@@ -57,9 +59,9 @@ jobs:
         secrets: inherit
 
     update-docs-files:
-        needs: build-installer-ide
+        needs: [build-installer-online, build-installer-offline, build-installer-ide]
         name: Create ${{ inputs.installer_type}} installer release PR
-        if: ${{ needs.build-installer-ide.result }} == 'success' || ${{ needs.build-installer-offline.result }} == 'success' || ${{ needs.build-installer-online.result }} == 'success'
+        if: ${{ always() }} && (${{ needs.build-installer-ide.result }} == 'success' || ${{ needs.build-installer-offline.result }} == 'success' || ${{ needs.build-installer-online.result }} == 'success')
         runs-on: windows-latest
         strategy:
             fail-fast: false
@@ -77,6 +79,9 @@ jobs:
               with:
                 name: installer-size
                 path: ./
+            
+            - name: Install script requirements
+              run: pip install -r scripts/requirements.txt
             
             - name: Get size of online installer and Update docs files
               run: |
@@ -100,6 +105,11 @@ jobs:
               run: |
                 Remove-Item -Path variables.txt -Force
 
+            - name: Put current date into a variable
+              run: |
+                $DATE=& Get-Date -format yyyy-MM-dd
+                echo "DATE=$DATE" >> $env:GITHUB_ENV
+
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v6
               with:
@@ -107,6 +117,7 @@ jobs:
                 commit-message: 'Release ${{ env.INSTALLER_TYPE }} installer ${{env.ESPRESSIF_IDE_VERSION}}${{env.ONLINE_INSTALLER_VERSION}} with ESP-IDF v${{ env.ESP_IDF_VERSION }}'
                 title: 'Release ${{ env.INSTALLER_TYPE }} installer ${{env.ESPRESSIF_IDE_VERSION}}${{env.ONLINE_INSTALLER_VERSION}} with ESP-IDF v${{ env.ESP_IDF_VERSION }}'
                 body: '- Updated docs files'
-                branch: 'release-${{ env.INSTALLER_TYPE }}-installer'
+                branch: 'release-${{ env.INSTALLER_TYPE }}${{ env.ESP_IDF_VERSION }}-installer'
                 delete-branch: true
                 base: 'main'
+                reviewers: georgik, jakub-kocka

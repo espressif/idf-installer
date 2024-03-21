@@ -1,0 +1,2 @@
+# Template engine for creating index.html in src/Resources/download/index.html from template in scripts/templates/template_index.html
+Jinja2 ~= 3.1
