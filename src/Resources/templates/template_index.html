@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://use.fontawesome.com/0d786601d8.js"></script>
+        <style type="text/css">
+            body, h1, h2 {
+                font-family: Roboto,ff-tisa-web-pro,Arial,sans-serif;
+                font-weight: 100;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .download-button{
+                color:white;
+                margin-bottom: 2em;
+                font-size:1rem;
+                min-width:12em;
+                background-color:#0066BB;
+                cursor: pointer;
+                border: none;
+                text-align: center;
+                display: block;
+                margin-left: auto;
+                margin-right: auto
+            }
+            .download-form {
+                width: 100%;
+            }
+            #section-download {
+                margin: auto;
+                width: 20%;
+            }
+            #section-all-releases {
+                width: 100%;
+            }
+            .section-hidden {
+                display: none;
+            }
+            .link {
+                cursor: pointer;
+                color: darkblue;
+                text-decoration: underline;
+            }
+            button {
+                width: 100%;
+                border: none;
+                background-color:#0066BB;
+                color:white;
+                cursor: pointer;
+                padding:1em;
+            }
+            .button-online {
+              background-color: green;
+            }
+            .button-offline {
+                background-color:#003388;
+            }
+            .list-row-headings {
+                font-family: SourceSansProBold,Arial,sans-serif;
+                padding: .5em .5em .4em .75em;
+                margin-right: 1.25em;
+            }
+            .list-row-container {
+               border: 1px solid #caccce;
+               height: 16.75em;
+               overflow-y: scroll;
+            }
+            .menu {
+                margin-left: 0;
+                list-style: none;
+                list-style-image: none;
+            }
+            .release-date {
+                width: 20%;
+                display: inline-block;
+                margin-right: -4px;
+                vertical-align: middle;
+            }
+            .release-number {
+                width: 20%;
+                display: inline-block;
+                margin-right: -4px;
+                vertical-align: middle;
+            }
+            .release-download {
+                width: 30%;
+                display: inline-block;
+                margin-right: -4px;
+                vertical-align: middle;
+            }
+            .release-notes {
+                width: 20%;
+                display: inline-block;
+                margin-right: -4px;
+                vertical-align: middle;
+            }
+            .list-row-container li {
+                padding: .5em .5em .4em .75em;
+                margin-right: 0;
+            }
+            .menu {
+                padding: 0;
+            }
+            .swimlane {
+                margin-bottom: 2rem;
+                background-color: #f5f5f5;
+                padding: 2em;
+            }
+            .instructions {
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+            .footer {
+                padding: 2em 0;
+                width: 100%;
+                color: white;
+                background-color: #333;
+                position: absolute;
+                left: 0;
+                margin-top: 2em;
+            }
+            .footer a {
+                color:white;
+            }
+            .footer a:visited {
+                color: lightyellow;
+            }
+            .footer-item {
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+        </style>
+        <script type="text/javascript">
+
+;
+
+let installerTitle = {
+    'offline': 'Offline Installer',
+    'online': 'Online Installer',
+    'espressif-ide': 'ESP-IDE',
+}
+
+// Invoke a function when the page loads
+window.onload = () => {
+    // Get the release list element
+    const releaseList = document.getElementById('release-list');
+
+    fetch('releases.json')
+        .then(response => response.json())
+        .then(data => {
+            // Generate the release list
+            data.forEach(release => {
+
+            let description = installerTitle[release.type] + ' v' + release.version;
+            let downloadLink = 'https://github.com/espressif/idf-installer/releases/download/' + release.type + '-' + release.version + '/esp-idf-tools-setup-' + release.type + '-' + release.version + '.exe';
+            let mirrorLink = 'https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-' + release.type + '-' + release.version;
+            let releaseNotesLink = 'https://github.com/espressif/idf-installer/releases/tag/' + release.type + '-' + release.version;
+
+            const listItem = document.createElement('li');
+
+            const versionSpan = document.createElement('span');
+            versionSpan.className = 'release-number';
+            versionSpan.textContent = description;
+            listItem.appendChild(versionSpan);
+
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'release-date';
+            dateSpan.textContent = release.date;
+            listItem.appendChild(dateSpan);
+
+            const downloadSpan = document.createElement('span');
+            downloadSpan.className = 'release-download';
+            downloadSpan.innerHTML = `<span><a href="${downloadLink}">Download</a> / <a href="${mirrorLink}">Mirror</a> - ${release.size}</span>`;
+            listItem.appendChild(downloadSpan);
+
+            const notesSpan = document.createElement('span');
+            notesSpan.className = 'release-notes';
+            notesSpan.innerHTML = `<a href="${releaseNotesLink}">Release Notes</a>`;
+            listItem.appendChild(notesSpan);
+
+            releaseList.appendChild(listItem);
+        });
+
+    });
+};
+        </script>
+    </head>
+    <body>
+        <h1 class="text-center">ESP-IDF Windows Installer Download</h1>
+        <h2 class="text-center">Open Source IoT Development Framework for ESP32</h2>
+        <div id="section-download">
+		{# Download buttons are updated according to releases.json by index_updater.py script #}
+		{# LATEST RELEASES (online and espressif_ide) ARE CONSIDERED THE MOST TOP ONES OF THE FILE #}
+		{# offline installer releases are automatically sorted and displayed buttons are BASED on SUPPORTED_IDF_VERSIONS variable in workflow #}
+            <div class="download-button">
+                <form class="download-form" method="get" action="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-online-{{ online.version }}.exe">
+                    <button class="button-online">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div>Universal Online Installer {{ online.version }}</div>
+                        <div>Windows 10, 11</div>
+                        <div>Size: {{ online.size }}</div>
+                    </button>
+                </form>
+            </div>
+
+            <div class="download-button">
+                <form method="get" action="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-{{ espressif_ide.version }}-with-esp-idf-{{ espressif_ide.idf_version }}.exe">
+                    <button class="button-espressif-ide">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div>Espressif-IDE {{ espressif_ide.version }} with ESP-IDF v{{ espressif_ide.idf_version }} - Offline Installer</div>
+                        <div>Windows 10, 11</div>
+                        <div>Size: {{ espressif_ide.size }}</div>
+                    </button>
+                </form>
+            </div>
+
+		{% for button in offline_buttons %}
+	        <div class="download-button">
+                <form method="get" action="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-offline-{{ button['version'] }}.exe">
+                    <button class="button-offline">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div>ESP-IDF v{{ button['version'] }} - Offline Installer</div>
+                        <div>Windows 10, 11</div>
+                        <div>Size: {{ button['size'] }}</div>
+                    </button>
+                </form>
+            </div>
+		{% endfor %}
+
+        </div>
+        <div class="instructions">
+            Installation instructions: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html">ESP-IDF documentation</a>
+            and <a href="https://www.youtube.com/watch?v=byVPAfodTyY">Espressif Systems Youtube channel</a>.
+        </div>
+
+
+        <div class="swimlane">
+            <h2 class="text-center">Want new installer features sooner?</h2>
+            <div class="text-center">Get <a href="https://github.com/espressif/idf-installer/releases">Beta version</a>.</div>
+        </div>
+
+        <div>
+            <h2 class="text-center">Download links to available releases and mirrors.</h2>
+        </div>
+        <div id="section-all-releases">
+            <div class="list-row-headings">
+              <span class="release-number">Release version</span>
+              <span class="release-date">Release date</span>
+              <span class="release-download">&nbsp;</span>
+              <span class="release-notes">Release notes</span>
+            </div>
+            <ol id="release-list" class="list-row-container menu"></ol>
+
+
+        </div>
+        <div class="footer text-center">
+            <span class="footer-item">
+                <a href="https://github.com/espressif/idf-installer/issues">ESP-IDF Windows Installer Support</a>
+            </span>
+            <span class="footer-item">
+                <a href="https://github.com/espressif/esp-idf">ESP-IDF GitHub</a>
+            </span>
+        </div>
+    </body>
+</html>

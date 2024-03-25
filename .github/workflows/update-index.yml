@@ -1,7 +1,12 @@
 name: update-index
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+
+  pull_request:
+    branches:
+      - release-offline-installer, release-online-installer, release-espressif-ide-installer
+    types: [closed]
 
 jobs:
   update-index:
