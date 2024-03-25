@@ -29,7 +29,7 @@ jobs:
         shell: pwsh
         run: .\Build-Installer.ps1 -InstallerType online
 
-      - name: Create Release TODO
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:

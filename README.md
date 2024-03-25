@@ -365,3 +365,14 @@ Repackage of Git for Windows. Git for Windows is provided in ```.7z.exe``` forma
 * Use the version as input into the manual workflow run
 * Run the workflow ```.github/workflow/bundle-git.yaml`
 * On success the Git version will be on Espressif's download server
+
+## Automatic release of IDF Windows Installer
+
+There is workflow for the automatic release of IDF Windows installer (build-installer-any), in this workflow few parameters has to be specified:
+
+* Installer Type - choose the installer type (offline, online, espressif-ide)
+* ESP-IDF version - needed for offline installer type, version of ESP-IDF in the format `X.Y` or `X.Y.Z`
+* Espressif IDE version - needed for espressif-ide installer type, version of ESP-IDE in the format `X.Y.Z`
+* Online Installer version - needed for online installer type, version of online installer (application) in the format `X.Y`
+
+The offline installer buttons on the index page are created based on the variable `SUPPORTED_IDF_VERSIONS` which has to be edited in the workflow file if the change is needed.
