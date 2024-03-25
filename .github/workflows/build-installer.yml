@@ -35,7 +35,7 @@ env:
 jobs:
     build-installer-online:
         name: Build Online Installer
-        if: ${{ inputs.installer_type }} == 'online'
+        if: ${{ github.env.INSTALLER_TYPE }} == 'online'
         uses: espressif/idf-installer/.github/workflows/build-online-installer.yml@main
         with:
             online_installer_version: ${{ inputs.online_installer_version }}
@@ -43,7 +43,7 @@ jobs:
 
     build-installer-offline:
         name: Build Offline Installer
-        if: ${{ inputs.installer_type }} == 'offline'
+        if: ${{ github.env.INSTALLER_TYPE }} == 'offline'
         uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version}}
@@ -51,7 +51,7 @@ jobs:
 
     build-installer-ide:
         name: Build IDE Installer
-        if: ${{ inputs.installer_type }} == 'espressif-ide'
+        if: ${{ github.env.INSTALLER_TYPE }} == 'espressif-ide'
         uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version }}
@@ -60,7 +60,7 @@ jobs:
 
     update-docs-files:
         needs: [build-installer-online, build-installer-offline, build-installer-ide]
-        name: Create ${{ inputs.installer_type}} installer release PR
+        name: Create ${{ github.env.INSTALLER_TYPE }} installer release PR
         if: ${{ always() }} && (${{ needs.build-installer-ide.result }} == 'success' || ${{ needs.build-installer-offline.result }} == 'success' || ${{ needs.build-installer-online.result }} == 'success')
         runs-on: windows-latest
         strategy:
