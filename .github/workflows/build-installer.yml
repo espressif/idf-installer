@@ -35,7 +35,7 @@ env:
 jobs:
     build-installer-online:
         name: Build Online Installer
-        if: ${{ github.env.INSTALLER_TYPE }} == 'online'
+        if: inputs.installer_type == 'online'
         uses: espressif/idf-installer/.github/workflows/build-online-installer.yml@main
         with:
             online_installer_version: ${{ inputs.online_installer_version }}
@@ -43,7 +43,7 @@ jobs:
 
     build-installer-offline:
         name: Build Offline Installer
-        if: ${{ github.env.INSTALLER_TYPE }} == 'offline'
+        if: inputs.installer_type == 'offline'
         uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version}}
@@ -51,7 +51,7 @@ jobs:
 
     build-installer-ide:
         name: Build IDE Installer
-        if: ${{ github.env.INSTALLER_TYPE }} == 'espressif-ide'
+        if: inputs.installer_type == 'espressif-ide'
         uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version }}

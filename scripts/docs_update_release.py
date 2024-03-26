@@ -160,7 +160,7 @@ def main():
     supported_idf_versions = eval(environ.get('SUPPORTED_IDF_VERSIONS', "('5.2', '4.4', '5.1', '5.0')"))    # e.g. ('5.2', '4.4', '5.1', '5.0')
     supported_idf_versions = list(supported_idf_versions)
 
-    if not idf_version:
+    if not idf_version and installer_type != 'online':
         raise SystemExit("ERROR: IDF version is not provided")
     
     # cast IDF version to list
