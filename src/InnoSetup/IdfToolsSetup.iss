@@ -14,7 +14,7 @@
 #ifdef VERSION
 #define MyAppVersion VERSION
 #else
-#define MyAppVersion "2.24"
+#define MyAppVersion "2.25"
 #endif
 
 #define MyAppPublisher "Espressif Systems (Shanghai) Co. Ltd."
@@ -37,7 +37,7 @@
 ;#define PythonInstallerDownloadURL "https://github.com/espressif/idf-python/releases/download/v" + PYTHONVERSION + "/idf-python-" + PYTHONVERSION + "-embed-win64.zip"
 
 #ifndef GITVERSION
-  #define GITVERSION "2.43.0"
+  #define GITVERSION "2.44.0"
 #endif
 #define GitInstallerName "idf-git-" + GITVERSION + "-win64.zip"
 #define GitInstallerDownloadURL "https://dl.espressif.com/dl/idf-git/" + GitInstallerName

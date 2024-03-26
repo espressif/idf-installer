@@ -11,7 +11,7 @@ param (
     [String]
     $IdfPythonShortVersion = '3.11',
     [String]
-    $GitVersion = '2.43.0',
+    $GitVersion = '2.44.0',
     [String]
     [ValidateSet('online', 'offline', 'espressif-ide')]
     $InstallerType = 'online',
