@@ -270,9 +270,9 @@ begin
   Log('Setting core.fileMode on repository: ' + CmdLine);
   DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingFileMode'), CmdLine);
 
-  Log('Setting core.fileMode on repository for submodules: ' + CmdLine);
   CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach --recursive git config --local core.fileMode false';
-  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingFileModeInSubmodules'), CmdLine);
+  Log('Setting core.fileMode on repository for submodules: ' + CmdLine);
+  PerformCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingFileModeInSubmodules'), CmdLine);
 end;
 
 { Run git reset --hard in the repo and in the submodules, to fix the newlines. }
@@ -289,9 +289,9 @@ begin
   Log('Resetting the repository: ' + CmdLine);
   DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingNewLines'), CmdLine);
 
-  Log('Resetting the submodules: ' + CmdLine);
   CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach git reset --hard';
-  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingNewLinesInSubmodules'), CmdLine);
+  Log('Resetting the submodules: ' + CmdLine);
+  PerformCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('UpdatingNewLinesInSubmodules'), CmdLine);
 end;
 
 { Run git clean - clean leftovers after switching between tags }
