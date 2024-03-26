@@ -165,15 +165,18 @@ def main():
     
     # cast IDF version to list
     # regex parsing IDF version which should be in format 5.3 or 5.3.0 (The PATCH number is not mandatory just MAJOR and MINOR) 
-    match = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?$', idf_version)
-    if match:
-        idf_version:list = [match.group(1),  match.group(2), match.group(3) if match.group(3) else None]
+    if installer_type != 'online':
+        match = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?$', idf_version)
+        if match:
+            idf_version:list = [match.group(1),  match.group(2), match.group(3) if match.group(3) else None]
+        else:
+            raise SystemExit(f"ERROR: IDF version was not resolved correctly, expected format: MAJOR.MINOR(.PATCH) given string {idf_version}")
+
+        print(f"IDF version: {idf_version}")
+
+        new_idf_version = f"{idf_version[0]}.{idf_version[1]}{f'.{idf_version[2]}' if idf_version[2] else ''}"
     else:
-        raise SystemExit(f"ERROR: IDF version was not resolved correctly, expected format: MAJOR.MINOR(.PATCH) given string {idf_version}")
-
-    print(f"IDF version: {idf_version}")
-
-    new_idf_version = f"{idf_version[0]}.{idf_version[1]}{f'.{idf_version[2]}' if idf_version[2] else ''}"
+        new_idf_version = ''
 
     if ide_version and not re.match(r'(\d+\.\d+\.\d+)', ide_version):
         raise SystemExit(f"ERROR: IDE version is not in correct format (it should be 'X.Y.Z') which '{ide_version}' is not")
