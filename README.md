@@ -368,7 +368,7 @@ Repackage of Git for Windows. Git for Windows is provided in ```.7z.exe``` forma
 
 ## Automatic release of IDF Windows Installer
 
-There is workflow for the automatic release of IDF Windows installer (build-installer-any), in this workflow few parameters has to be specified:
+There is the workflow for the automatic release of IDF Windows installer (build-installer-any), in this workflow few parameters have to be specified:
 
 * Installer Type - choose the installer type (offline, online, espressif-ide)
 * ESP-IDF version - needed for offline installer type, version of ESP-IDF in the format `X.Y` or `X.Y.Z`
@@ -376,3 +376,5 @@ There is workflow for the automatic release of IDF Windows installer (build-inst
 * Online Installer version - needed for online installer type, version of online installer (application) in the format `X.Y`
 
 The offline installer buttons on the index page are created based on the variable `SUPPORTED_IDF_VERSIONS` which has to be edited in the workflow file if the change is needed.
+
+This workflow will edit all necessary files and create PR, after the PR is reviewed and merged the workflow for updating the index.html is triggered and release will be available on the web page.
