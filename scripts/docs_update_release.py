@@ -165,7 +165,7 @@ def main():
     
     # cast IDF version to list
     # regex parsing IDF version which should be in format 5.3 or 5.3.0 (The PATCH number is not mandatory just MAJOR and MINOR) 
-    if installer_type != 'offline':
+    if installer_type != 'online':
         match = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?$', idf_version)
         if match:
             idf_version:list = [match.group(1),  match.group(2), match.group(3) if match.group(3) else None]
