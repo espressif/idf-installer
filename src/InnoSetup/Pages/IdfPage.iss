@@ -177,6 +177,7 @@ begin
     begin
       MessageBox(CustomMessage('SpacesInPathNotSupported') + #13#10 +
              CustomMessage('ChooseDifferentDirectory'), mbError, MB_OK);
+      Result := False;
       exit;
     end;
 
