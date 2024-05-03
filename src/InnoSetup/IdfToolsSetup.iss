@@ -335,6 +335,8 @@ Type: filesandordirs; Name: "{app}\dist"
 Type: filesandordirs; Name: "{app}\releases"
 Type: filesandordirs; Name: "{app}\tools"
 Type: filesandordirs; Name: "{app}\python_env"
+Type: filesandordirs; Name: "{app}"
+Type: filesandordirs; Name: "{autostartmenu}\Programs\ESP-IDF"
 ;Type: files; Name: "{group}\{#IDFCmdExeShortcutFile}"
 ;Type: files; Name: "{group}\{#IDFPsShortcutFile}"
 ;Type: files; Name: "{autodesktop}\{#IDFCmdExeShortcutFile}"
@@ -366,6 +368,7 @@ Filename: "{app}\idf-env.exe"; Parameters: "antivirus exclusion add --all"; Flag
 
 
 [UninstallRun]
+Filename: "{cmd}"; Parameters: "/C del /q ""{autodesktop}\ESP-IDF*PowerShell*"" ""{autodesktop}\ESP-IDF*CMD*"""
 Filename: "{app}\idf-env.exe"; \
   Parameters: "antivirus exclusion remove --all"; \
   WorkingDir: {app}; Flags: runhidden
