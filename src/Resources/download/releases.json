@@ -1,5 +1,11 @@
 [
     {
+        "version": "2.26",
+        "type": "online",
+        "date": "2024-06-06",
+        "size": "4.24 MB"
+    },
+    {
         "version": "3.0.0-with-esp-idf-5.2.2",
         "type": "espressif-ide",
         "date": "2024-06-06",
