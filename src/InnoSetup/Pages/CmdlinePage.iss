@@ -115,6 +115,7 @@ var
   LogText, LeftOver: String;
   Memo: TNewMemo;
   PrevCancelButtonOnClick: TNotifyEvent;
+  MaxIterations: Integer;
 begin
   CmdlineInstallPage := CreateOutputProgressPage('', '')
   CmdlineInstallPage.Caption := caption;
@@ -147,7 +148,13 @@ begin
       Log('ProcStart failed');
       ExitCode := -2;
     end;
-    while (ExitCode = -1) and not CmdlineInstallCancel do
+    
+    { Following number MaxIterations is not hard defined }
+    { it only has to be based on execution times of the instructions inside the loop and CPU ticks }
+    { to fulfill this need heuristic technique was applied to define this number }
+    { also, it has been taken into mind the loop has to exit within 5 minutes which is probably the maximal time user would wait }
+    MaxIterations := 40000;
+    while (ExitCode = -1) and not CmdlineInstallCancel and not (MaxIterations = 0) do
     begin
       ExitCode := ProcGetExitCode(Handle);
       SetLength(LogTextAnsi, 4096);
@@ -160,6 +167,7 @@ begin
       end;
       CmdlineInstallPage.SetProgress(0, 100);
       Sleep(10);
+      MaxIterations := MaxIterations - 1;
     end;
     ProcEnd(Handle);
   finally
