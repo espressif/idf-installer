@@ -438,6 +438,8 @@ begin
   if not IsGithubSiteReachable then begin
     SystemLog(' ' + CustomMessage('SystemCheckAlternativeMirror') + ' Gitee.com');
     IsGiteeSiteReachable := VerifySiteCertificate('https://gitee.com/EspressifSystems/esp-idf');
+    SystemLog(' ' + CustomMessage('SystemCheckAlternativeMirror') + ' Jihulab.com');
+    IsJihulabSiteReachable := VerifySiteCertificate('https://jihulab.com/esp-mirror/espressif/esp-idf');
   end;
   IsAmazonS3SiteReachable := VerifySiteCertificate('https://www.s3.amazonaws.com/');
 end;

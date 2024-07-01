@@ -39,6 +39,7 @@ var
     IsGithubSiteReachable: Boolean;
     IsAmazonS3SiteReachable: Boolean;
     IsGiteeSiteReachable: Boolean;
+    IsJihulabSiteReachable: Boolean;
 
 function GetConfigurationString(Key: String; Default: String):String;
 var Value: String;

@@ -150,7 +150,9 @@
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
-#define COMPONENT_OPTIMIZATION_GITEE_MIRROR = 'optimization/gitee_mirror'
+#define COMPONENT_OPTIMIZATION_GIT_MIRROR = 'optimization/git_mirror'
+#define COMPONENT_OPTIMIZATION_GIT_MIRROR_JIHULAB = 'optimization/git_mirror/jihulab_mirror'
+#define COMPONENT_OPTIMIZATION_GIT_MIRROR_GITEE = 'optimization/git_mirror/gitee_mirror'
 #define COMPONENT_OPTIMIZATION_GIT_SHALLOW = 'optimization/git_shallow'
 
 [Setup]
@@ -326,7 +328,9 @@ Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; 
 #if OFFLINE == 'no'
 Name: "{#COMPONENT_OPTIMIZATION}"; Description: {cm:ComponentOptimization}; Types: custom;
 Name: "{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}"; Description: {cm:ComponentOptimizationEspressifDownload}; Types: full custom; Flags: checkablealone
-Name: "{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}"; Description: {cm:ComponentOptimizationGiteeMirror}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_OPTIMIZATION_GIT_MIRROR}"; Description: {cm:ComponentOptimizationGitMirror}; Types: custom;
+Name: "{#COMPONENT_OPTIMIZATION_GIT_MIRROR_JIHULAB}"; Description: {cm:ComponentOptimizationJihulabMirror}; Types: custom; Flags: checkablealone exclusive
+Name: "{#COMPONENT_OPTIMIZATION_GIT_MIRROR_GITEE}"; Description: {cm:ComponentOptimizationGiteeMirror}; Types: custom; Flags: checkablealone exclusive
 Name: "{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}"; Description: {cm:ComponentOptimizationGitShallow}; Types: full custom; Flags: checkablealone
 #endif
 

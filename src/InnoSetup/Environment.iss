@@ -371,11 +371,19 @@ begin
   if NeedToClone then
   begin
 
-    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}')) then begin
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_MIRROR_GITEE}')) then begin
         GitUseMirror := True;
         IsGitRecursive := False;
         GitRepository := 'https://gitee.com/EspressifSystems/esp-idf.git';
         GitSubmoduleUrl := 'https://gitee.com/esp-submodules/';
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_MIRROR_JIHULAB}')) then begin
+        { The jihulab using same relative path as the official mirror,
+          process the same way as from the GitHub }
+        GitUseMirror := False;
+        IsGitRecursive := True;
+        GitRepository := 'https://jihulab.com/esp-mirror/espressif/esp-idf.git';
     end;
 
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;

@@ -112,8 +112,11 @@ begin
   if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}')) then begin
     Result := Result + 'Assets (Espressif); ';
   end;
-  if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GITEE_MIRROR}')) then begin
+  if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_MIRROR_GITEE}')) then begin
     Result := Result + 'Mirror (Gitee.com); ';
+  end;
+  if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_MIRROR_JIHULAB}')) then begin
+    Result := Result + 'Mirror (jihulab.com); ';
   end;
   if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_SHALLOW}')) then begin
     Result := Result + 'Shallow (Git) ';
