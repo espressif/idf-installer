@@ -154,7 +154,7 @@ window.onload = () => {
 
             let description = installerTitle[release.type] + ' v' + release.version;
             let downloadLink = 'https://github.com/espressif/idf-installer/releases/download/' + release.type + '-' + release.version + '/esp-idf-tools-setup-' + release.type + '-' + release.version + '.exe';
-            let mirrorLink = 'https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-' + release.type + '-' + release.version;
+            let mirrorLink = 'https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-' + release.type + '-' + release.version + '.exe';
             let releaseNotesLink = 'https://github.com/espressif/idf-installer/releases/tag/' + release.type + '-' + release.version;
 
             const listItem = document.createElement('li');
@@ -205,7 +205,7 @@ window.onload = () => {
             </div>
 
             <div class="download-button">
-                <form method="get" action="https://dl.espressif.com/dl/idf-installer/espressif-ide-setup-3.0.0-with-esp-idf-5.2.2.exe">
+                <form method="get" action="https://dl.espressif.com/dl/idf-installer/esp-idf-tools-setup-espressif-ide-3.0.0-with-esp-idf-5.2.2.exe">
                     <button class="button-espressif-ide">
                         <i class="fa fa-download" aria-hidden="true"></i>
                         <div>Espressif-IDE 3.0.0 with ESP-IDF v5.2.2 - Offline Installer</div>
