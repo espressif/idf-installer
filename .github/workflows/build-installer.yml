@@ -30,7 +30,7 @@ env:
     ESPRESSIF_IDE_VERSION: ${{ inputs.espressif_ide_version }}
     ONLINE_INSTALLER_VERSION: ${{ inputs.online_installer_version }}
     # Based on this defined supported IDF versions are created installer buttons in index.html from releases.json
-    SUPPORTED_IDF_VERSIONS: ('5.2', '4.4', '5.1', '5.0')
+    SUPPORTED_IDF_VERSIONS: ('5.2', '4.4', '5.1', '5.0', '5.3')
 
 jobs:
     build-installer-online:
