@@ -489,6 +489,10 @@ begin
       Targets := Targets + 'esp32-s2,';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_P4}')) then begin
+      Targets := Targets + 'esp32-p4,';
+  end;
+
   if (Length(Targets) > 1) then begin
     Result := '--targets=' + Copy(Targets, 1, Length(Targets) - 1);
   end else begin

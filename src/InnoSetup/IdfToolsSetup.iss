@@ -148,6 +148,8 @@
 #define COMPONENT_TARGET_ESP32_S = "target/esp32s"
 #define COMPONENT_TARGET_ESP32_S3 = "target/esp32s/s3"
 #define COMPONENT_TARGET_ESP32_S2 = "target/esp32s/s2"
+#define COMPONENT_TARGET_ESP32_P = "target/esp32p"
+#define COMPONENT_TARGET_ESP32_P4 = "target/esp32p/p4"
 #define COMPONENT_OPTIMIZATION = 'optimization'
 #define COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD = 'optimization/espressif_download'
 #define COMPONENT_OPTIMIZATION_GIT_MIRROR = 'optimization/git_mirror'
@@ -311,7 +313,7 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 #endif
 
 #ifndef DISABLE_TARGET_ESP32_C6
-Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: custom; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_H}"; Description: {cm:ComponentTargetEsp32h}; Types: full; Flags: checkablealone
 Name: "{#COMPONENT_TARGET_ESP32_H2}"; Description: {cm:ComponentTargetEsp32h2}; Types: custom; Flags: checkablealone
 #endif
@@ -323,6 +325,11 @@ Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; 
 Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; Types: full; Flags: checkablealone
 #endif
 
+#ifndef DISABLE_TARGET_ESP32_P4
+Name: "{#COMPONENT_TARGET_ESP32_P}"; Description: {cm:ComponentTargetEsp32p}; Types: full; Flags: checkablealone
+
+Name: "{#COMPONENT_TARGET_ESP32_P4}"; Description: {cm:ComponentTargetEsp32p4}; Types: full; Flags: checkablealone
+#endif
 
 ; Following optimization are supported only in online version
 #if OFFLINE == 'no'

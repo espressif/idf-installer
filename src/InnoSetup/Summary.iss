@@ -107,6 +107,10 @@ begin
     Result := Result + 'ESP32-S3 ';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_P4}')) then begin
+    Result := Result + 'ESP32-P4 ';
+  end;
+
   Result := Result + NewLine;
   Result := Result + CustomMessage('SummaryOptimization') + ': ';
   if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_ESPRESSIF_DOWNLOAD}')) then begin
