@@ -417,15 +417,22 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
         $IsccParameters += '/DDISABLE_TARGET_ESP32_S3'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C2'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
     }
 
     if (($OfflineBranch -like 'v4.3*') -or ($OfflineBranch -like 'v4.4*') ){
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C2'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
     }
 
     if ($OfflineBranch -like 'v5.0*') {
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
+    }
+
+    if (($OfflineBranch -like 'v5.1*') -or ($OfflineBranch -like 'v5.2*') ){
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
     }
 
     if ($Compression -eq 'none') {
