@@ -470,7 +470,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     "${OfflineBranch}" > $Versions
     PrepareOfflineBranches
     PrepareIdfPythonWheels
-    PrepareIdfComponents
+    #PrepareIdfComponents
 } elseif ('online' -eq $InstallerType) {
     DownloadIdfVersions
     $IsccParameters += '/DJDKVERSION=' + $JdkVersion

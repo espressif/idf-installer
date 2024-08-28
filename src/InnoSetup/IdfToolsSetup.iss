@@ -243,7 +243,7 @@ Source: "..\Python\system_check\system_check_download.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_subprocess.py"; Flags: dontcopy
 Source: "..\Python\system_check\system_check_virtualenv.py"; Flags: dontcopy
 
-Source: "{#BUILD}\registry\*"; DestDir: "\\?\{app}\registry\"; Components: "{#COMPONENT_REGISTRY}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
+;Source: "{#BUILD}\registry\*"; DestDir: "\\?\{app}\registry\"; Components: "{#COMPONENT_REGISTRY}"; Flags: recursesubdirs createallsubdirs skipifsourcedoesntexist;
 
 [Types]
 Name: "full"; Description: {cm:InstallationFull}
@@ -253,7 +253,7 @@ Name: "custom"; Description: {cm:InstallationCustom}; Flags: iscustom
 [Components]
 Name: "{#COMPONENT_FRAMEWORK}"; Description: "Frameworks"; Types: full minimal custom;
 
-Name: "{#COMPONENT_REGISTRY}"; Description: "IDF components"; Types: full custom;
+;Name: "{#COMPONENT_REGISTRY}"; Description: "IDF components"; Types: full custom;
 
 #ifdef FRAMEWORK_ESP_IDF
 Name: "{#COMPONENT_FRAMEWORK_ESP_IDF}"; Description: "ESP-IDF {#FRAMEWORK_ESP_IDF}"; Types: full custom; Flags: checkablealone
@@ -387,8 +387,8 @@ Filename: "{app}\idf-env.exe"; \
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_TOOLS_PATH"; \
     ValueData: "{app}"; Flags: preservestringtype createvalueifdoesntexist uninsdeletevalue deletevalue;
-Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_COMPONENT_STORAGE_URL"; \
-    ValueData: "file:///{code:GetPathWithForwardSlashes|{app}}/registry;default"; Flags: preservestringtype createvalueifdoesntexist uninsdeletevalue deletevalue;
+;Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "IDF_COMPONENT_STORAGE_URL"; \
+    ;ValueData: "file:///{code:GetPathWithForwardSlashes|{app}}/registry;default"; Flags: preservestringtype createvalueifdoesntexist uninsdeletevalue deletevalue;
 Root: HKCU; Subkey: "Environment"; \
     ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"; \
     Check: NeedsAddPathToVCTools('C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64')
