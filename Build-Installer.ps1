@@ -244,6 +244,9 @@ function PrepareIdfEclipse {
 
 function PrepareIdfDriver {
     &".\build\$InstallerType\lib\idf-env.exe" driver download --espressif --ftdi --silabs --wch
+    if ($LASTEXITCODE -ne 0) {
+        FailBuild -Message "Command failed with exit code: $LASTEXITCODE. Aborting."
+    }
 }
 
 function PrepareOfflineBranches {
