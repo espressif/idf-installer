@@ -345,8 +345,16 @@ begin
   { If there is a release archive to download, IDFZIPFileName and IDFZIPFileVersion will be set.
     See GetIDFZIPFileVersion function.
   }
+  NeedToClone := False;
 
-  if IDFZIPFileName <> '' then
+  if WildCardMatch(IDFDownloadVersion, 'release*') then
+  begin
+    { Instead of downloading .zip archive and then fast forward, performing clone for the release branches }
+    NeedToClone := True;
+    Log('Performing full clone for the release branch.');
+  end;
+  
+  if (not NeedToClone) and (IDFZIPFileName <> '') then
   begin
     if IDFZIPFileVersion <> IDFDownloadVersion then
     begin
