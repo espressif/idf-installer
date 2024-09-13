@@ -35,6 +35,7 @@ SystemCheckApplyFixesConsent=是否要应用经过建议修复的命令，以更
 SystemCheckFixesSuccessful=修复应用成功。
 SystemCheckFixesFailed=修复应用失败。请参阅完整日志。
 SystemCheckNotCompleteConsent=系统检查尚未完成。您想要跳过检查进行下一步吗？
+SystemCheckOldOS=不再支援該作業系統。請注意，安裝程式可能無法如預期般運作。
 SystemCheckRootCertificates=检查证书
 SystemCheckRootCertificateWarning=无法加载来自服务器 的数据。
 SystemCheckForLongPathsEnabled=检查 Windows 注册表中的“启用长路径”

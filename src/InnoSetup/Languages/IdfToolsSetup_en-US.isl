@@ -35,6 +35,7 @@ SystemCheckApplyFixesConsent=Do you want to apply the commands with the suggeste
 SystemCheckFixesSuccessful=Successful application of Fixes.
 SystemCheckFixesFailed=Failed application of Fixes. Please refer to the Full log.
 SystemCheckNotCompleteConsent=System check is not complete. Do you want to proceed by skipping checks?
+SystemCheckOldOS=The OS is no longer supported. Please note that the installer may not work as expected.
 SystemCheckRootCertificates=Checking certificates
 SystemCheckRootCertificateWarning=Unable to load data from server.
 SystemCheckForLongPathsEnabled=Checking "Long Paths Enabled" in Windows registry

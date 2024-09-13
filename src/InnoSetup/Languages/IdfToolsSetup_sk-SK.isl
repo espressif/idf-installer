@@ -35,6 +35,7 @@ SystemCheckApplyFixesConsent=Chcete spustiť aplikovanie opráv Vášho prostred
 SystemCheckFixesSuccessful=Aplikovanie opráv bolo úspešné.
 SystemCheckFixesFailed=Aplikovanie opráv sa nepodarilo. Detailné informácie sú dostupné pod tlačidlom Detaily.
 SystemCheckNotCompleteConsent=Kontrola systému ešte nie je hotová. Chcete kontrolu ukončiť a pokračovať bez kontroly?
+SystemCheckOldOS=Operačný systém už nie je podporovaný. Upozorňujeme, že inštalačný program nemusí fungovať podľa očakávania.
 SystemCheckRootCertificates=Kontrola certifikátov
 SystemCheckRootCertificateWarning=Nie je možné spojiť sa so serverom.
 SystemCheckForLongPathsEnabled=Kontrola podpory pre "Dlhé cesty" vo Windows registroch

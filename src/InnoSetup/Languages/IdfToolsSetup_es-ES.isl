@@ -36,6 +36,7 @@ SystemCheckApplyFixesConsent=Quiere aplicar los comandos con los arreglos sugeri
 SystemCheckFixesSuccessful=Los arreglos se han aplicado con éxito.
 SystemCheckFixesFailed=Ha fallado la aplicación de arreglos. Consulte el log completo.
 SystemCheckNotCompleteConsent=Verificación del sistema no está completa. Quiere proceder saltando la verificación?
+SystemCheckOldOS=El sistema operativo ya no es compatible. Tenga en cuenta que es posible que el instalador no funcione como se espera.
 SystemCheckRootCertificates=Verificando certificados
 SystemCheckRootCertificateWarning=No es posible carga data del servidor
 SystemCheckForLongPathsEnabled=Verificando "Long Paths Enabled" en el registro de Windows

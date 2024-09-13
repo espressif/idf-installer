@@ -364,6 +364,8 @@ end;
 
 { Process user request to stop system checks. }
 function SystemCheckStopRequest():Boolean;
+var
+  Version: TWindowsVersion;
 begin
   { In case of stopped check by user, procees to next/previous step. }
   if (SystemCheckState = SYSTEM_CHECK_STATE_STOPPED) then begin
@@ -381,6 +383,10 @@ begin
 
   if (SystemCheckState = SYSTEM_CHECK_STATE_COMPLETE) then begin
     Result := True;
+    GetWindowsVersionEx(Version);
+    if (Version.Major < 10) then begin
+      MessageBox(CustomMessage('SystemCheckOldOS'), mbConfirmation, MB_OK)
+    end;
   end else begin
     Result := False;
   end;
