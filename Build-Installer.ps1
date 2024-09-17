@@ -176,6 +176,30 @@ function PrepareIdfPython {
         -DownloadUrl https://dl.espressif.com/dl/idf-python/idf-python-${IdfPythonVersion}-embed-win64.zip
 }
 
+function PrepareIdfDocumentation {
+    $FullFilePath = ".\build\$InstallerType\IDFdocumentation.pdf"
+    $DownloadUrl = "https://docs.espressif.com/projects/esp-idf/en/stable/esp32/esp-idf-en-$OfflineBranch-esp32.pdf"
+
+    if (Test-Path -Path $FullFilePath -PathType Leaf) {
+        "$FullFilePath found."
+        return
+    }
+
+    "Downloading: $DownloadUrl"
+    try {
+	    $Request = Invoke-WebRequest $DownloadUrl -OutFile $FullFilePath -MaximumRedirection 0
+        [int]$StatusCode = $Request.StatusCode
+    }
+    catch {
+        [int]$StatusCode = $_.Exception.Response.StatusCode
+    }
+
+
+    if ($StatusCode -eq 302) {
+        FailBuild -Message "Failed to download documentation from $DownloadUrl. Status code: $StatusCode"
+    }
+}
+
 function FailBuild {
     param (
         [Parameter()]
@@ -458,6 +482,7 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     PrepareIdfDriver
     PrepareIdfGit
     PrepareIdfPython
+    PrepareIdfDocumentation
     if ('espressif-ide' -eq $InstallerType) {
         $IsccParameters += '/DESPRESSIFIDE=yes'
         $IsccParameters += '/DAPPNAME=Espressif-IDE'

@@ -88,6 +88,7 @@ InstallationMinimal=Minimálna inštalácia
 InstallationCustom=Vlastná inštalácia
 RunInstallGit=Inštalácia Git-u
 RunEclipse=Spustiť Espressif-IDE
+PointToDocumentation=Začnite s ESP-IDF - dokumentácia
 RunPowerShell=Spustiť ESP-IDF PowerShell Environment
 RunCmd=Spustiť ESP-IDF Command Prompt Environment
 InstallationCancelled=Inštalácia bola zrušená.

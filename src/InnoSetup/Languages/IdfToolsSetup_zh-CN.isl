@@ -88,6 +88,7 @@ InstallationMinimal=最小化安装
 InstallationCustom=自定义安装
 RunInstallGit=安装 Git
 RunEclipse=运行 Espressif-IDE 环境
+PointToDocumentation=開始使用 ESP-IDF - 文件
 RunPowerShell=运行 ESP-IDF PowerShell 环境
 RunCmd=运行 ESP-IDF 命令提示符环境
 InstallationCancelled=安装已取消。

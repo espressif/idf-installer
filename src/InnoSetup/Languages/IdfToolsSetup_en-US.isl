@@ -88,6 +88,7 @@ InstallationMinimal=Minimal installation
 InstallationCustom=Custom installation
 RunInstallGit=Installing Git
 RunEclipse=Run Espressif-IDE
+PointToDocumentation=Get started with the ESP-IDF - documentation
 RunPowerShell=Run ESP-IDF PowerShell Environment
 RunCmd=Run ESP-IDF Command Prompt Environment
 InstallationCancelled=Installation has been cancelled.
