@@ -95,7 +95,7 @@ def update_index(releases, supported_idf_versions):
 
 
 
-def update_releases_json(new_idf_version: str, installer_type: str, online_installer_version: str, installer_size: str):
+def update_releases_json(new_idf_version: str, installer_type: str, online_installer_version: str,  ide_version: str, installer_size: str):
     """Update the releases.json file with the new release of the installer"""
     try:
         with open(path.abspath(RELEASES_JSON_PATH), "r") as releases_file:
@@ -108,8 +108,15 @@ def update_releases_json(new_idf_version: str, installer_type: str, online_insta
     except json.JSONDecodeError as e:
         raise SystemExit(f"Error parsing json: {e}")
 
+    if installer_type == 'online':
+        version = str(online_installer_version)
+    elif installer_type == 'offline':
+        version = str(new_idf_version)
+    elif installer_type == 'espressif-ide':
+        version = f'{ide_version}-with-esp-idf-{str(new_idf_version)}'
+    
     releases_json.insert(0, {
-            "version": str(new_idf_version) if installer_type != 'online' else str(online_installer_version),
+            "version": version,
             "type": str(installer_type),
             "date": str(date.today()),
             "size": str(installer_size)
@@ -190,7 +197,7 @@ def main():
     if installer_type == 'espressif-ide' and ide_version == '':
         raise SystemExit(f"ERROR: esp_ide_version or espressif_ide_version is not provided")
 
-    releases_json = update_releases_json(new_idf_version, installer_type, online_installer_version, installer_size)
+    releases_json = update_releases_json(new_idf_version, installer_type, online_installer_version, ide_version, installer_size)
 
     # Update App or IDE version if the installer type is not offline
     if installer_type != 'offline':

@@ -309,3 +309,29 @@ function IsCmdInstalled(): Boolean;
 begin
   Result := ((not SetupAborted) and (WizardIsTaskSelected('CreateLinkDeskCmd') or WizardIsTaskSelected('CreateLinkStartCmd')));
 end;
+
+// Installation completed check
+var
+  InstallSuccess: Boolean;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  // This event is called when the setup moves to a new step
+  if CurStep = ssPostInstall then
+  begin
+    // Set InstallSuccess to True after the installation has finished.
+    InstallSuccess := True;
+  end;
+end;
+
+function IsInstallSuccess: Boolean;
+begin
+  Result := InstallSuccess;
+end;
+
+<event('InitializeWizard')>
+procedure InitializeInstallSuccessVar;
+begin
+  // Initialize InstallSuccess to False
+  InstallSuccess := False;
+end;

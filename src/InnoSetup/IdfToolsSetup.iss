@@ -230,6 +230,10 @@ Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json"
 Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\espidf.constraints.v*.txt"; DestDir: "{app}"; Flags: skipifsourcedoesntexist;
+; IDF Documentation
+#if OFFLINE == 'yes'
+Source: "{#BUILD}\IDFdocumentation.pdf"; DestDir: "{app}";
+#endif
 
 ; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
 #ifdef FRAMEWORK_ESP_IDF
@@ -370,8 +374,16 @@ Filename: "{app}\dist\{#GitInstallerName}"; Parameters: "/silent /tasks="""" /no
 ;Filename: "{autodesktop}\{#IDFEclipseShortcutFile}"; Flags: runascurrentuser postinstall shellexec; Description: {cm:RunEclipse}; Components: "{#COMPONENT_ECLIPSE_DESKTOP}"
 ;#endif
 
-Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: {cm:RunPowerShell}; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"
-Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: {cm:RunCmd}; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}";
+Filename: "{code:GetLauncherPathPowerShell}"; Flags: postinstall shellexec; Description: {cm:RunPowerShell}; Components: "{#COMPONENT_POWERSHELL_DESKTOP} {#COMPONENT_CMD_STARTMENU}"; Check: IsInstallSuccess;
+Filename: "{code:GetLauncherPathCMD}"; Flags: postinstall shellexec; Description: {cm:RunCmd}; Components: "{#COMPONENT_CMD_DESKTOP} {#COMPONENT_CMD_STARTMENU}"; Check: IsInstallSuccess;
+
+#if OFFLINE == 'no'
+Filename: "cmd"; Parameters: "/c start https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/index.html"; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess;
+#endif
+
+#if OFFLINE == 'yes'
+Filename: "cmd"; Parameters: "/c start """" ""{app}\IDFdocumentation.pdf"""; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess;
+#endif
 
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
 ; Please, keep this in mind when making changes to the item's description - WD checkbox is to be disabled on systems without the Windows Defender installed
