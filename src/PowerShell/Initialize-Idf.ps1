@@ -29,7 +29,7 @@ if ("" -eq $IdfId) {
     } else {
         $IDF_PATH=$env:IDF_PATH
     }
-    $PythonCommand=idf-env config get --property python --idf-path "$IDF_PATH\"
+    $PythonCommand=idf-env config get --property python --idf-path "$IDF_PATH"
 } else {
     $PythonCommand=idf-env config get --property python --idf-id ${IdfId}
     $IDF_PATH=idf-env config get --property path --idf-id ${IdfId}
