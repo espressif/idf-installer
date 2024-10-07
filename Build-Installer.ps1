@@ -178,7 +178,7 @@ function PrepareIdfPython {
 
 function PrepareIdfDocumentation {
     $FullFilePath = ".\build\$InstallerType\IDFdocumentation.pdf"
-    $DownloadUrl = "https://docs.espressif.com/projects/esp-idf/en/stable/esp32/esp-idf-en-$OfflineBranch-esp32.pdf"
+    $DownloadUrl = "https://docs.espressif.com/projects/esp-idf/en/$OfflineBranch/esp32/esp-idf-en-$OfflineBranch-esp32.pdf"
 
     if (Test-Path -Path $FullFilePath -PathType Leaf) {
         "$FullFilePath found."
