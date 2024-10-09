@@ -229,22 +229,6 @@ begin
 end;
 
 {
-  Replacement of the '--dissociate' flag of 'git clone', to support older versions of Git.
-  '--reference' is supported for submodules since git 2.12, but '--dissociate' only from 2.18.
-}
-procedure GitRepoDissociate(Path: String);
-var
-  CmdLine: String;
-begin
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' repack -d -a'
-  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('RepackingRepository'), CmdLine);
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach git repack -d -a'
-  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('RepackingRepository'), CmdLine);
-
-  FindFileRecursive(Path + '\.git', 'alternates', @RemoveAlternatesFile);
-end;
-
-{
   Initialize submodules - required to call when switching branches in existing repo.
   E.g. created by offline installer
 }
@@ -345,18 +329,17 @@ begin
   { If there is a release archive to download, IDFZIPFileName and IDFZIPFileVersion will be set.
     See GetIDFZIPFileVersion function.
   }
+  NeedToClone := False;
 
-  if IDFZIPFileName <> '' then
+  if WildCardMatch(IDFDownloadVersion, 'release*') then
   begin
-    if IDFZIPFileVersion <> IDFDownloadVersion then
-    begin
-      { The version of .zip file downloaded is not the same as the version the user has requested.
-        Will use 'git clone --reference' to obtain the correct version, using the contents
-        of the .zip file as reference.
-      }
-      NeedToClone := True;
-    end;
-
+    { Instead of downloading .zip archive and then fast forward, performing clone for the release branches }
+    NeedToClone := True;
+    Log('Performing full clone for the release branch.');
+  end;
+  
+  if (not NeedToClone) and (IDFZIPFileName <> '') then
+  begin
     CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + ExpandConstant('{tmp}') + '" -r -aoa "' + IDFZIPFileName + '"');
     IDFTempPath := ExpandConstant('{tmp}\esp-idf-') + IDFZIPFileVersion;
     Log('Extracting ESP-IDF reference repository: ' + CmdLine);
@@ -402,9 +385,6 @@ begin
     CmdLine := CmdLine + ' ' + GitRepository +' "' + IDFPath + '"';
     Log('Cloning IDF: ' + CmdLine);
     DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
-
-    if IDFTempPath <> '' then
-      GitRepoDissociate(IDFPath);
 
     if (GitUseMirror) then begin
       ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);

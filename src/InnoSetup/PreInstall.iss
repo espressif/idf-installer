@@ -431,7 +431,11 @@ begin
 
   if not IDFUseExisting then
   begin
-    IDFAddDownload();
+    if WildCardMatch(IDFDownloadVersion, 'v*') then
+    { Do not download .zip archive for release branches }
+    begin
+      IDFAddDownload();
+    end;
   end;
 
   { Update path to current instance of Git. }
