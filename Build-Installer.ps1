@@ -308,6 +308,7 @@ function PrepareOfflineBranches {
     }
 
     &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive install
+    &$Python tools\idf_tools.py --tools-json tools/tools.json --non-interactive install esp-clang
     Pop-Location
 
     # Remove symlinks which are not supported on Windws, unfortunatelly -c core.symlinks=false does not work
