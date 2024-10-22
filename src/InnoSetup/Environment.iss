@@ -574,11 +574,6 @@ begin
   CmdLine := IDFToolsPyCmd + ' --non-interactive install esp-clang';
   Log('Installing esp-clang:' + CmdLine);
   DoCmdlineInstall(CustomMessage('InstallingEspClangd'), '', CmdLine);
-  if (ResultCode = 1) then begin
-    Log("Clang installed");
-  end else begin
-    Log("Failed to install clang");
-  end;
 
   PythonVirtualEnvPath := ExpandConstant('{app}\python_env\')  + GetIDFPythonEnvironmentVersion() + '_env';
   CmdLine := PythonExecutablePath + ' -m venv "' + PythonVirtualEnvPath + '"';
