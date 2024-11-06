@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
+          asset_path: .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
           asset_name: esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe
           asset_content_type: application/octet-stream
 
@@ -89,4 +89,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe
+        run: aws s3 cp --acl=public-read --no-progress .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe
