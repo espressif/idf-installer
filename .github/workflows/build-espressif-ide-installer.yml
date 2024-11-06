@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
+          asset_path: .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
           asset_name: esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe
           asset_content_type: application/octet-stream
 
