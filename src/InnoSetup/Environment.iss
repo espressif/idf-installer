@@ -163,43 +163,12 @@ begin
   DoCmdlineInstall(CustomMessage('InstallingDrivers'), CustomMessage('InstallingDrivers'), GetIdfEnvCommand('driver install ' + DriverList));
 end;
 
-function GetIDFZIPFileVersion(Version: String): String;
-var
-  ReleaseVerPart: String;
-  i: Integer;
-  Found: Boolean;
-begin
-  if WildCardMatch(Version, 'v*') or WildCardMatch(Version, 'v*-rc*') then
-    Result := Version
-  else if Version = 'master' then
-    Result := ''
-  else if WildCardMatch(Version, 'release/v*') then
-  begin
-    ReleaseVerPart := Version;
-    Log('ReleaseVerPart=' + ReleaseVerPart)
-    Delete(ReleaseVerPart, 1, Length('release/'));
-    Log('ReleaseVerPart=' + ReleaseVerPart)
-    Found := False;
-    for i := 0 to GetArrayLength(IDFDownloadAvailableVersions) - 1 do
-    begin
-      if Pos(ReleaseVerPart, IDFDownloadAvailableVersions[i]) = 1 then
-      begin
-        Result := IDFDownloadAvailableVersions[i];
-        Found := True;
-        break;
-      end;
-    end;
-    if not Found then
-      Result := '';
-  end;
-  Log('GetIDFZIPFileVersion(' + Version + ')=' + Result);
-end;
-
 procedure IDFAddDownload();
+{ Download zip archive - only for .zip options (otherwise using git clone) }
 var
   Url, MirrorUrl: String;
 begin
-  IDFZIPFileVersion := GetIDFZIPFileVersion(IDFDownloadVersion);
+  IDFZIPFileVersion := IDFDownloadVersion;
 
   Log('IDFZIPFileVersion: ' + IDFZIPFileVersion);
 
@@ -226,22 +195,6 @@ procedure RemoveAlternatesFile(Path: String);
 begin
   Log('Removing ' + Path);
   DeleteFile(Path);
-end;
-
-{
-  Replacement of the '--dissociate' flag of 'git clone', to support older versions of Git.
-  '--reference' is supported for submodules since git 2.12, but '--dissociate' only from 2.18.
-}
-procedure GitRepoDissociate(Path: String);
-var
-  CmdLine: String;
-begin
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' repack -d -a'
-  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('RepackingRepository'), CmdLine);
-  CmdLine := GitExecutablePath + ' -C ' + Path + ' submodule foreach git repack -d -a'
-  DoCmdlineInstall(CustomMessage('FinishingEspIdfInstallation'), CustomMessage('RepackingRepository'), CmdLine);
-
-  FindFileRecursive(Path + '\.git', 'alternates', @RemoveAlternatesFile);
 end;
 
 {
@@ -345,18 +298,17 @@ begin
   { If there is a release archive to download, IDFZIPFileName and IDFZIPFileVersion will be set.
     See GetIDFZIPFileVersion function.
   }
+  NeedToClone := False;
 
-  if IDFZIPFileName <> '' then
+  if WildCardMatch(IDFDownloadVersion, 'release*') then
   begin
-    if IDFZIPFileVersion <> IDFDownloadVersion then
-    begin
-      { The version of .zip file downloaded is not the same as the version the user has requested.
-        Will use 'git clone --reference' to obtain the correct version, using the contents
-        of the .zip file as reference.
-      }
-      NeedToClone := True;
-    end;
-
+    { Instead of downloading .zip archive and then fast forward, performing clone for the release branches }
+    NeedToClone := True;
+    Log('Performing full clone for the release branch.');
+  end;
+  
+  if (not NeedToClone) and (IDFZIPFileName <> '') then
+  begin
     CmdLine := ExpandConstant('"{tmp}\7za.exe" x "-o' + ExpandConstant('{tmp}') + '" -r -aoa "' + IDFZIPFileName + '"');
     IDFTempPath := ExpandConstant('{tmp}\esp-idf-') + IDFZIPFileVersion;
     Log('Extracting ESP-IDF reference repository: ' + CmdLine);
@@ -396,15 +348,9 @@ begin
       CmdLine := CmdLine + ' --recursive ';
     end;
 
-    if IDFTempPath <> '' then
-      CmdLine := CmdLine + ' --reference ' + IDFTempPath;
-
     CmdLine := CmdLine + ' ' + GitRepository +' "' + IDFPath + '"';
     Log('Cloning IDF: ' + CmdLine);
     DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
-
-    if IDFTempPath <> '' then
-      GitRepoDissociate(IDFPath);
 
     if (GitUseMirror) then begin
       ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);
