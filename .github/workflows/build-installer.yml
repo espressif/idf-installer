@@ -52,7 +52,7 @@ jobs:
     build-installer-ide:
         name: Build IDE Installer
         if: inputs.installer_type == 'espressif-ide'
-        uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@fix/ide_installer_upload # TODO change !!!
+        uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version }}
             espressif_ide_version: ${{ inputs.espressif_ide_version }}
