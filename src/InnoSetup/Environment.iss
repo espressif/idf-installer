@@ -293,6 +293,7 @@ var
   IDFTempPath: String;
   IDFPath: String;
   NeedToClone: Boolean;
+  ResultCode: Integer;
 begin
   IDFPath := IDFDownloadPath;
   { If there is a release archive to download, IDFZIPFileName and IDFZIPFileVersion will be set.
@@ -336,6 +337,10 @@ begin
         GitUseMirror := False;
         IsGitRecursive := True;
         GitRepository := 'https://jihulab.com/esp-mirror/espressif/esp-idf.git';
+        { Some submodules's submodule using absolute github url, redirect to jihulab }
+        if Exec(GitExecutablePath, + ' config --global url.https://jihulab.com/esp-mirror.insteadOf https://github.com', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then begin
+          Log('Git URLs redirect to jihulab.com succeeded');
+        end;
     end;
 
     CmdLine := GitExecutablePath + ' clone --progress -b ' + IDFDownloadVersion;
@@ -350,7 +355,25 @@ begin
 
     CmdLine := CmdLine + ' ' + GitRepository +' "' + IDFPath + '"';
     Log('Cloning IDF: ' + CmdLine);
-    DoCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine);
+
+    if PerformCmdlineInstall(CustomMessage('DownloadingEspIdf'), CustomMessage('UsingGitToClone'), CmdLine) then begin
+      Log('Git clone completed');
+    end else begin
+      if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_MIRROR_JIHULAB}')) then begin
+        { Unset the redirect url before the exception return }
+        if Exec(GitExecutablePath, + ' config --global --unset url.https://jihulab.com/esp-mirror.insteadOf', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then begin
+          Log('Git URLs redirect to jihulab.com removed');
+        end;
+      end;
+      RaiseException(CustomMessage('InstallationFailedAtStep') + ' ' + CustomMessage('DownloadingEspIdf'));
+    end;
+
+    if (WizardIsComponentSelected('{#COMPONENT_OPTIMIZATION_GIT_MIRROR_JIHULAB}')) then begin
+      { Unset the redirect url after the clone }
+      if Exec(GitExecutablePath, + ' config --global --unset url.https://jihulab.com/esp-mirror.insteadOf', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then begin
+        Log('Git URLs redirect to jihulab.com removed');
+      end;
+    end;
 
     if (GitUseMirror) then begin
       ApplyIdfMirror(IDFPath, GitRepository, GitSubmoduleUrl);
