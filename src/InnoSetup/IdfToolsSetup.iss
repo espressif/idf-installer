@@ -232,7 +232,7 @@ Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\espidf.constraints.v*.txt"; DestDir: "{app}"; Flags: skipifsourcedoesntexist;
 ; IDF Documentation
 #if OFFLINE == 'yes'
-Source: "{#BUILD}\IDFdocumentation.pdf"; DestDir: "{app}";
+Source: "{#BUILD}\IDFdocumentation.html"; DestDir: "{app}";
 #endif
 
 ; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
@@ -382,7 +382,7 @@ Filename: "cmd"; Parameters: "/c start https://docs.espressif.com/projects/esp-i
 #endif
 
 #if OFFLINE == 'yes'
-Filename: "cmd"; Parameters: "/c start """" ""{app}\IDFdocumentation.pdf"""; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess;
+Filename: "cmd"; Parameters: "/c start """" ""{app}\IDFdocumentation.html"""; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess;
 #endif
 
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
