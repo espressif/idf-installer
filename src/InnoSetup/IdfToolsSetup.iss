@@ -171,6 +171,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={sd}\Espressif
 UsePreviousAppDir=no
+DiskSpanning=no
 DirExistsWarning=no
 DefaultGroupName=ESP-IDF
 DisableProgramGroupPage=yes
