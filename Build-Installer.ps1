@@ -541,6 +541,14 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
     $IsccParameters += '/DJDKARTIFACTVERSION=' + $JdkArtifactVersion
     $IsccParameters += '/DESPRESSIFIDE=yes'
     $IsccParameters += '/DOFFLINE=no'
+    
+    # Extract version from $env:VERSION (defined in CI job in format: "online-X.Y.Z")
+    # Not filled version results in string "online-"
+    $RawVersion = $env:VERSION
+    if ($RawVersion -match '^online-(.+)$') {
+        $CleanVersion = $Matches[1]
+        $IsccParameters += '/DVERSION=' + $CleanVersion
+    }
 } else {
     $IsccParameters += '/DOFFLINE=no'
 }
