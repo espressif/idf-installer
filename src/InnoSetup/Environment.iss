@@ -539,8 +539,12 @@ begin
 
   Log('Installing tools:' + CmdLine);
   DoCmdlineInstall(CustomMessage('InstallingEspIdfTools'), '', CmdLine);
-  CmdLine := IDFToolsPyCmd + ' install esp-clang';
-  DoCmdlineInstall(CustomMessage('InstallingEspIdfTools'), '', CmdLine);
+  
+  { Only install esp-clang if the selected version does not contain 'v5.0' }
+  if (Pos('v5.0', IDFDownloadVersion) = 0) then begin
+    CmdLine := IDFToolsPyCmd + ' install esp-clang';
+    DoCmdlineInstall(CustomMessage('InstallingEspIdfTools'), '', CmdLine);
+  end;
 
   PythonVirtualEnvPath := ExpandConstant('{app}\python_env\')  + GetIDFPythonEnvironmentVersion() + '_env';
   CmdLine := PythonExecutablePath + ' -m venv "' + PythonVirtualEnvPath + '"';
