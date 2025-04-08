@@ -319,11 +319,11 @@ Name: "{#COMPONENT_TARGET_ESP32_C3}"; Description: {cm:ComponentTargetEsp32c3}; 
 
 #ifndef DISABLE_TARGET_ESP32_C6
 Name: "{#COMPONENT_TARGET_ESP32_C6}"; Description: {cm:ComponentTargetEsp32c6}; Types: full; Flags: checkablealone
-Name: "{#COMPONENT_TARGET_ESP32_H}"; Description: {cm:ComponentTargetEsp32h}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_H}"; Description: {cm:ComponentTargetEsp32h}; Types: full;
 Name: "{#COMPONENT_TARGET_ESP32_H2}"; Description: {cm:ComponentTargetEsp32h2}; Types: custom; Flags: checkablealone
 #endif
 
-Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_S}"; Description: {cm:ComponentTargetEsp32s}; Types: full;
 Name: "{#COMPONENT_TARGET_ESP32_S2}"; Description: {cm:ComponentTargetEsp32s2}; Types: full; Flags: checkablealone
 
 #ifndef DISABLE_TARGET_ESP32_S3
@@ -331,7 +331,7 @@ Name: "{#COMPONENT_TARGET_ESP32_S3}"; Description: {cm:ComponentTargetEsp32s3}; 
 #endif
 
 #ifndef DISABLE_TARGET_ESP32_P4
-Name: "{#COMPONENT_TARGET_ESP32_P}"; Description: {cm:ComponentTargetEsp32p}; Types: full; Flags: checkablealone
+Name: "{#COMPONENT_TARGET_ESP32_P}"; Description: {cm:ComponentTargetEsp32p}; Types: full;
 
 Name: "{#COMPONENT_TARGET_ESP32_P4}"; Description: {cm:ComponentTargetEsp32p4}; Types: full; Flags: checkablealone
 #endif
