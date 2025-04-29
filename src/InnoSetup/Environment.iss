@@ -198,7 +198,7 @@ begin
 end;
 
 {
-  Initialize submodules - required to call when switching branches in existing repo.
+  Initialize submodules
   E.g. created by offline installer
 }
 procedure GitUpdateSubmodules(Path: String);
@@ -287,6 +287,9 @@ begin
   DoCmdlineInstall(CustomMessage('UpdatingSubmodules'), CustomMessage('UpdatingSubmodules'), Command);
 end;
 
+{
+  Note: This procedure is not invoked for offline installer
+}
 procedure IDFDownloadInstall();
 var
   CmdLine: String;
@@ -399,9 +402,6 @@ begin
 
     CmdLine := ExpandConstant('cmd.exe /c ""xcopy.exe" /s /e /i /h /q "' + IDFTempPath + '" "' + IDFPath + '""');
     DoCmdlineInstall(CustomMessage('ExtractingEspIdf'), CustomMessage('CopyingEspIdf'), CmdLine);
-
-    GitRepoFixFileMode(IDFPath);
-    GitResetHard(IDFPath);
 
     DelTree(IDFTempPath, True, True, True);
   end;

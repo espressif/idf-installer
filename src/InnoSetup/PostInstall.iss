@@ -238,6 +238,9 @@ begin
         end;
       end;
 
+      GitRepoFixFileMode(IDFDownloadPath);
+      GitResetHard(IDFDownloadPath);
+      GitUpdateSubmodules(IDFDownloadPath);
       IDFToolsSetup();
       SaveIdfConfiguration(ExpandConstant('{app}\esp_idf.json'));
     end;
