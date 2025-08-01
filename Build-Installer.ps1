@@ -398,7 +398,7 @@ function SignInstaller {
         FailBuild -Message "CERTIFICATE variable is empty, unable to sign installer"
     }
 
-    $SignParameters = @("sign", "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile)
+    $SignParameters = @("sign", "/td", 'sha256', "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile)
     if ($env:CERTIFICATE_PASSWORD) {
         "CERTIFICATE_PASSWORD detected, using the password"
         $SignParameters += "/p"
