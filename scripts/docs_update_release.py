@@ -164,7 +164,7 @@ def main():
     ide_version = environ.get('ESPRESSIF_IDE_VERSION', '')                   # e.g. '2.13.69'
     online_installer_version = environ.get('ONLINE_INSTALLER_VERSION', '')   # e.g. '2.25'
 
-    supported_idf_versions = eval(environ.get('SUPPORTED_IDF_VERSIONS', "('5.2', '5.1', '5.0', '5.3')"))    # e.g. ('5.2', '4.4', '5.1', '5.0')
+    supported_idf_versions = eval(environ.get('SUPPORTED_IDF_VERSIONS', "('5.2', '5.1', '5.3', '5.4', '5.5')"))    # e.g. ('5.2', '4.4', '5.1', '5.0')
     supported_idf_versions = list(supported_idf_versions)
 
     if not idf_version and installer_type != 'online':
