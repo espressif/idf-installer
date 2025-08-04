@@ -1,5 +1,11 @@
 [
     {
+        "version": "5.5",
+        "type": "offline",
+        "date": "2025-08-01",
+        "size": "1.56 GB"
+    },
+    {
         "version": "5.4.2",
         "type": "offline",
         "date": "2025-07-31",
