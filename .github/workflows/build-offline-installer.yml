@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -26,7 +26,9 @@ jobs:
 
       - name: Install Inno Setup Download plugin
         shell: pwsh
-        run: Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT; Sleep 5
+        run: |
+          Write-Output $(pwd)
+          Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
 
       - name: Build Installer
         env:
@@ -50,7 +52,6 @@ jobs:
         run: |
           echo $(Get-ItemProperty -Path .\build\esp-idf-tools-setup-offline-signed.exe | Select-Object -ExpandProperty Length) > variables.txt
           echo "Instaler size from variable is $(Get-Content variables.txt)"
-        
       - name: Upload artifacts of installer size
         uses: actions/upload-artifact@v4
         with:
