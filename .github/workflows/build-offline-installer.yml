@@ -14,7 +14,7 @@ env:
 jobs:
   build-offline-installer:
     name: Build Installer
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -24,11 +24,20 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup inno-download-plugin
+
       - name: Install Inno Setup Download plugin
         shell: pwsh
         run: |
-          Write-Output $(pwd)
-          Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe; .\idpsetup.exe /SILENT
+          $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+          Write-Output "Running as Administrator: $isAdmin"
+          Write-Output "Downloading Inno Download Plugin..."
+          Invoke-WebRequest -Uri https://github.com/espressif/inno-download-plugin/releases/download/v1.5.1/idpsetup-1.5.1.exe -OutFile idpsetup.exe
+          Write-Output "Installing Inno Download Plugin..."
+          .\idpsetup.exe /SP- /SUPPRESSMSGBOXES
+          Write-Output "Installation completed."
 
       - name: Build Installer
         env:
