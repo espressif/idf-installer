@@ -36,7 +36,7 @@ jobs:
     build-installer-online:
         name: Build Online Installer
         if: inputs.installer_type == 'online'
-        uses: espressif/idf-installer/.github/workflows/build-online-installer.yml
+        uses: espressif/idf-installer/.github/workflows/build-online-installer.yml@main
         with:
             online_installer_version: ${{ inputs.online_installer_version }}
         secrets: inherit
@@ -44,15 +44,15 @@ jobs:
     build-installer-offline:
         name: Build Offline Installer
         if: inputs.installer_type == 'offline'
-        uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml
+        uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@fix/installer_builds
         with:
-            esp_idf_version: ${{ inputs.esp_idf_version}}
+            esp_idf_version: ${{ inputs.esp_idf_version }}
         secrets: inherit
 
     build-installer-ide:
         name: Build IDE Installer
         if: inputs.installer_type == 'espressif-ide'
-        uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml
+        uses: espressif/idf-installer/.github/workflows/build-espressif-ide-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version }}
             espressif_ide_version: ${{ inputs.espressif_ide_version }}
@@ -61,7 +61,7 @@ jobs:
     update-docs-files:
         needs: [build-installer-online, build-installer-offline, build-installer-ide]
         name: Create ${{ github.env.INSTALLER_TYPE }} installer release PR
-        if: ${{ always() }} && (${{ needs.build-installer-ide.result }} == 'success' || ${{ needs.build-installer-offline.result }} == 'success' || ${{ needs.build-installer-online.result }} == 'success')
+        if: ${{ always() && (needs.build-installer-ide.result == 'success' || needs.build-installer-offline.result == 'success' || needs.build-installer-online.result == 'success') }}
         runs-on: windows-latest
         strategy:
             fail-fast: false
@@ -85,7 +85,7 @@ jobs:
             
             - name: Get size of online installer and Update docs files
               run: |
-                echo "Instaler size from variable is $(Get-Content variables.txt)"
+                echo "Installer size from variable is $(Get-Content variables.txt)"
 
                 $size_bytes = [int]$(Get-Content variables.txt)
                 # Check if the content is larger than 100000
