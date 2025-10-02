@@ -44,7 +44,7 @@ jobs:
     build-installer-offline:
         name: Build Offline Installer
         if: inputs.installer_type == 'offline'
-        uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@fix/installer_builds
+        uses: espressif/idf-installer/.github/workflows/build-offline-installer.yml@main
         with:
             esp_idf_version: ${{ inputs.esp_idf_version }}
         secrets: inherit
