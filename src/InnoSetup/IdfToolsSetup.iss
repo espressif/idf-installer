@@ -231,9 +231,11 @@ Source: "tools_fallback.json"; DestDir: "{app}"; DestName: "tools_fallback.json"
 Source: "..\Batch\idf_cmd_init.bat"; DestDir: "{app}";
 Source: "..\PowerShell\Initialize-Idf.ps1"; DestDir: "{app}";
 Source: "{#BUILD}\espidf.constraints.v*.txt"; DestDir: "{app}"; Flags: skipifsourcedoesntexist;
+
 ; IDF Documentation
 #if OFFLINE == 'yes'
-Source: "{#BUILD}\IDFdocumentation.html"; DestDir: "{app}";
+Source: "{#BUILD}\IDFdocumentation.html"; DestDir: "{app}"; Flags: skipifsourcedoesntexist;
+Source: "{#BUILD}\IDFdocumentation.pdf"; DestDir: "{app}"; Flags: skipifsourcedoesntexist;
 #endif
 
 ; createallsubdirs is necessary for git repo. Otherwise empty directories disappears
@@ -383,7 +385,8 @@ Filename: "cmd"; Parameters: "/c start https://docs.espressif.com/projects/esp-i
 #endif
 
 #if OFFLINE == 'yes'
-Filename: "cmd"; Parameters: "/c start """" ""{app}\IDFdocumentation.html"""; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess;
+Filename: "cmd"; Parameters: "/c start """" ""{app}\IDFdocumentation.html"""; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess and FileExists(ExpandConstant('{app}\IDFdocumentation.html'));
+Filename: "cmd"; Parameters: "/c start """" ""{app}\IDFdocumentation.pdf"""; Flags: nowait postinstall; Description: {cm:PointToDocumentation}; Check: IsInstallSuccess and FileExists(ExpandConstant('{app}\IDFdocumentation.pdf'));
 #endif
 
 ; WD registration checkbox is identified by 'Windows Defender' substring anywhere in its caption, not by the position index in WizardForm.TasksList.Items
