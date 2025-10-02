@@ -268,8 +268,7 @@ function PrepareIdfPythonWheels {
 
         $ConstraintFile = GetConstraintFile
 
-        &$Python -m pip download --python-version $IdfPythonShortVersion `
-            --only-binary=":all:" `
+        &$Python -m pip download `
             --extra-index-url "https://dl.espressif.com/pypi/" `
             -r ${Requirements} `
             -d ${WheelsDirectory} `
@@ -379,6 +378,10 @@ function FindSignTool {
         return $SignTool
     }
     $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.19041.0\x64\signtool.exe"
+    if (Test-Path -Path $SignTool -PathType Leaf) {
+        return $SignTool
+    }
+    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
     if (Test-Path -Path $SignTool -PathType Leaf) {
         return $SignTool
     }
