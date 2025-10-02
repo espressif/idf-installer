@@ -72,6 +72,45 @@ function GetConstraintFile() {
     return "espidf.constraints.v${ShortVersion}.txt"
 }
 
+# Extract major and minor version from a version string and return as [System.Version] object
+# For example, "v5.0.1" returns [System.Version]"5.0", "v4.4.2-rc" returns [System.Version]"4.4"
+# Handles patch versions correctly by extracting only major.minor parts
+function GetVersionObject() {
+    param (
+        [Parameter(Mandatory)]
+        [String]
+        $VersionString
+    )
+    
+    # Remove 'v' prefix and any suffix after '-'
+    $CleanVersion = $VersionString -replace "^v" -replace "-.*$"
+    $SplitVersion = $CleanVersion -split "\."
+    
+    # Get major and minor parts, default to 0 if missing
+    $Major = if ($SplitVersion.Length -gt 0 -and $SplitVersion[0] -match '^\d+$') { [int]$SplitVersion[0] } else { 0 }
+    $Minor = if ($SplitVersion.Length -gt 1 -and $SplitVersion[1] -match '^\d+$') { [int]$SplitVersion[1] } else { 0 }
+    
+    return [System.Version]"${Major}.${Minor}"
+}
+
+# Compare two version strings properly
+# Returns $true if Version1 >= Version2, $false otherwise
+function Version2AtLeastVersion1() {
+    param (
+        [Parameter(Mandatory)]
+        [String]
+        $Version1,
+        [Parameter(Mandatory)]
+        [String]
+        $Version2
+    )
+    
+    $Ver1 = GetVersionObject -VersionString $Version1
+    $Ver2 = GetVersionObject -VersionString $Version2
+    
+    return $Ver1 -ge $Ver2
+}
+
 function PrepareConstraints {
     $ConstraintFile = GetConstraintFile
     $ConstraintUrl = "https://dl.espressif.com/dl/esp-idf/$ConstraintFile"
@@ -177,20 +216,75 @@ function PrepareIdfPython {
 }
 
 function PrepareIdfDocumentation {
-    $DocumentationBasePath = ".\build\$InstallerType\docs"
-    $DownloadedZipName = "esp-idf-en-$OfflineBranch.zip"
-    $DownloadUrl = "https://docs.espressif.com/projects/esp-idf/en/$OfflineBranch/esp32/$DownloadedZipName"
+    if (Version2AtLeastVersion1 -Version1 $OfflineBranch -Version2 'v5.3') {
+        $DocumentationBasePath = ".\build\$InstallerType\docs"
+        $DownloadedZipName = "esp-idf-en-$OfflineBranch.zip"
+        $DownloadUrl = "https://docs.espressif.com/projects/esp-idf/en/$OfflineBranch/esp32/$DownloadedZipName"
 
-    if (-Not(Test-Path -Path $DocumentationBasePath -PathType Container)) {
-        New-Item -ItemType Directory -Path $DocumentationBasePath
-    }
+        if (-Not(Test-Path -Path $DocumentationBasePath -PathType Container)) {
+            New-Item -ItemType Directory -Path $DocumentationBasePath
+        }
 
-    $ZipFilePath = Join-Path -Path $DocumentationBasePath -ChildPath $DownloadedZipName
-    # Download the ZIP file if it doesn't already exist
-    if (-Not(Test-Path -Path $ZipFilePath -PathType Leaf)) {
+        $ZipFilePath = Join-Path -Path $DocumentationBasePath -ChildPath $DownloadedZipName
+        # Download the ZIP file if it doesn't already exist
+        if (-Not(Test-Path -Path $ZipFilePath -PathType Leaf)) {
+            "Downloading: $DownloadUrl"
+            try {
+                $Request = Invoke-WebRequest $DownloadUrl -OutFile $ZipFilePath -MaximumRedirection 0
+                [int]$StatusCode = $Request.StatusCode
+            }
+            catch {
+                [int]$StatusCode = $_.Exception.Response.StatusCode
+            }
+
+
+            if ($StatusCode -eq 302) {
+                FailBuild -Message "Failed to download documentation from $DownloadUrl. Status code: $StatusCode"
+            }
+        } else {
+            "Documentation ZIP file already exists: $ZipFilePath"
+        }
+
+        $ExtractedPath = Join-Path -Path $DocumentationBasePath -ChildPath "html"
+        # Extract the ZIP file if not already extracted
+        if (-Not(Test-Path -Path $ExtractedPath -PathType Container)) {
+            "Extracting documentation to: $ExtractedPath"
+            try {
+                Expand-Archive -Path $ZipFilePath -DestinationPath $ExtractedPath
+            } catch {
+                FailBuild -Message "Failed to extract documentation ZIP file at $ZipFilePath. Error: $_"
+            }
+        } else {
+            "Documentation already extracted to: $ExtractedPath"
+        }
+
+        # Create a symbolic link to the HTML index
+        $HtmlIndexPath = Join-Path -Path $ExtractedPath -ChildPath "index.html"
+        if (-Not(Test-Path -Path $HtmlIndexPath -PathType Leaf)) {
+            FailBuild -Message "Documentation HTML index not found in extracted documentation path: $ExtractedPath."
+        }
+        $SymLinkFilePath = ".\build\$InstallerType\IDFdocumentation.html"
+        if (-Not(Test-Path -Path $SymLinkFilePath -PathType Leaf)) {
+            "Creating symbolic link: $SymLinkFilePath -> $HtmlIndexPath"
+            try {
+                $AbsoluteHtmlIndexPath = Resolve-Path -Path $HtmlIndexPath -ErrorAction SilentlyContinue
+                New-Item -ItemType SymbolicLink -Path $SymLinkFilePath -Value $AbsoluteHtmlIndexPath > $null
+            } catch {
+                "ERROR: Failed to create symbolic link at $SymLinkFilePath. Error: $_"
+            }
+        }
+    } else {    # ESP-IDF < v5.3 - documentation is in the PDF file
+        $FullFilePath = ".\build\$InstallerType\IDFdocumentation.pdf"
+        $DownloadUrl = "https://docs.espressif.com/projects/esp-idf/en/$OfflineBranch/esp32/esp-idf-en-$OfflineBranch-esp32.pdf"
+
+        if (Test-Path -Path $FullFilePath -PathType Leaf) {
+            "$FullFilePath found."
+            return
+        }
+
         "Downloading: $DownloadUrl"
         try {
-            $Request = Invoke-WebRequest $DownloadUrl -OutFile $ZipFilePath -MaximumRedirection 0
+	        $Request = Invoke-WebRequest $DownloadUrl -OutFile $FullFilePath -MaximumRedirection 0
             [int]$StatusCode = $Request.StatusCode
         }
         catch {
@@ -200,37 +294,6 @@ function PrepareIdfDocumentation {
 
         if ($StatusCode -eq 302) {
             FailBuild -Message "Failed to download documentation from $DownloadUrl. Status code: $StatusCode"
-        }
-    } else {
-        "Documentation ZIP file already exists: $ZipFilePath"
-    }
-
-    $ExtractedPath = Join-Path -Path $DocumentationBasePath -ChildPath "html"
-    # Extract the ZIP file if not already extracted
-    if (-Not(Test-Path -Path $ExtractedPath -PathType Container)) {
-        "Extracting documentation to: $ExtractedPath"
-        try {
-            Expand-Archive -Path $ZipFilePath -DestinationPath $ExtractedPath
-        } catch {
-            FailBuild -Message "Failed to extract documentation ZIP file at $ZipFilePath. Error: $_"
-        }
-    } else {
-        "Documentation already extracted to: $ExtractedPath"
-    }
-
-    # Create a symbolic link to the HTML index
-    $HtmlIndexPath = Join-Path -Path $ExtractedPath -ChildPath "index.html"
-    if (-Not(Test-Path -Path $HtmlIndexPath -PathType Leaf)) {
-        FailBuild -Message "Documentation HTML index not found in extracted documentation path: $ExtractedPath."
-    }
-    $SymLinkFilePath = ".\build\$InstallerType\IDFdocumentation.html"
-    if (-Not(Test-Path -Path $SymLinkFilePath -PathType Leaf)) {
-        "Creating symbolic link: $SymLinkFilePath -> $HtmlIndexPath"
-        try {
-            $AbsoluteHtmlIndexPath = Resolve-Path -Path $HtmlIndexPath -ErrorAction SilentlyContinue
-            New-Item -ItemType SymbolicLink -Path $SymLinkFilePath -Value $AbsoluteHtmlIndexPath > $null
-        } catch {
-            "ERROR: Failed to create symbolic link at $SymLinkFilePath. Error: $_"
         }
     }
 }
