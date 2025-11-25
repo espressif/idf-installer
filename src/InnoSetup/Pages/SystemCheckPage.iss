@@ -695,7 +695,7 @@ begin
     Top := ScaleY(60);
     ReadOnly := True;
     Font.Name := 'Courier New';
-    Height := WizardForm.CancelButton.Top - ScaleY(40);
+    Height := WizardForm.CancelButton.Top - ScaleY(100);
     Width := WizardForm.ClientWidth + ScaleX(80);
     WordWrap := True;
     Visible := False;
