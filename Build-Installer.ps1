@@ -635,7 +635,8 @@ if (0 -eq $LASTEXITCODE) {
 }
 
 if ($true -eq $SignInstaller) {
-    SignInstaller
+    # SignInstaller
+    "Leaving installer unsigned."
 } else {
     "Signing installer disabled by command line option. Leaving installer unsigned."
 }
