@@ -1,0 +1,73 @@
+name: re-upload_release_to_dl_esp
+
+on:
+    workflow_dispatch:
+        inputs:
+            release_tag:
+                type: string
+                description: 'Release Tag'
+                required: true
+    pull_request:
+        types: [opened, synchronize, reopened]
+
+jobs:
+    re-upload:
+        runs-on: ubuntu-latest
+        # Run on manual trigger or PR events
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Parse release tag from input or use default
+              id: get-tag
+              run: |
+                if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+                  TAG="${{ github.event.inputs.release_tag }}"
+                else
+                  # For PR triggers, use this tag
+                  TAG="offline-5.4.3"
+                  echo "PR trigger detected, using default tag: $TAG"
+                fi
+                echo "release_tag=$TAG" >> $GITHUB_OUTPUT
+                echo "Using release tag: $TAG"
+
+            - name: Download Release Asset
+              id: download-asset
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  RELEASE_NAME: ${{ steps.get-tag.outputs.release_tag }}
+              run: |
+                  # Get the release by name/tag
+                  echo "Fetching release: $RELEASE_NAME"                  
+                  gh release download "$RELEASE_NAME" \
+                    --pattern "esp-idf-tools-setup-*.exe" \
+                    --dir ./build/ \
+                    --repo ${{ github.repository }}
+                  
+                  # Find the downloaded file and set as output
+                  ASSET_FILE=$(find ./build/ -name "esp-idf-tools-setup-*.exe" -type f | head -n1)
+                  echo "Downloaded asset: $ASSET_FILE"
+                  echo "asset_path=$ASSET_FILE" >> $GITHUB_OUTPUT
+                  
+                  # Extract version from filename for later use
+                  FILENAME=$(basename "$ASSET_FILE")
+                  VERSION=$(echo "$FILENAME" | sed -n 's/esp-idf-tools-setup-\(.*\)\.exe/\1/p')
+                  echo "version=$VERSION" >> $GITHUB_OUTPUT
+                  echo "Extracted version: $VERSION"
+
+            - name: Upload Release Asset To dl.espressif.com
+              id: upload-release-asset-espressif
+              env:
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+              run: |
+                  ASSET_PATH="${{ steps.download-asset.outputs.asset_path }}"
+                  VERSION="${{ steps.download-asset.outputs.version }}"
+                  
+                  echo "Uploading $ASSET_PATH to S3..."
+                  aws s3 cp --acl=public-read --no-progress "$ASSET_PATH" \
+                    s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-$VERSION.exe
+                  
+                  echo "Upload completed successfully!"
