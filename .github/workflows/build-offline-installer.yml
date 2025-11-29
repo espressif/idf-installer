@@ -44,7 +44,7 @@ jobs:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         shell: pwsh
-        run: .\Build-Installer.ps1 -InstallerType offline -OfflineBranch v${{ env.IDF_BRANCH }}
+        run: .\Build-Installer.ps1 -InstallerType offline -SignInstaller $false -OfflineBranch v${{ env.IDF_BRANCH }}
 
       - name: Create Release
         id: create_release
@@ -54,12 +54,12 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           release_name: Release ${{ env.VERSION }}
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
 
       - name: Get installer size and store it to file
         run: |
-          echo $(Get-ItemProperty -Path .\build\esp-idf-tools-setup-offline-signed.exe | Select-Object -ExpandProperty Length) > variables.txt
+          echo $(Get-ItemProperty -Path .\build\esp-idf-tools-setup-offline-unsigned.exe | Select-Object -ExpandProperty Length) > variables.txt
           echo "Instaler size from variable is $(Get-Content variables.txt)"
       - name: Upload artifacts of installer size
         uses: actions/upload-artifact@v4
@@ -74,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/esp-idf-tools-setup-offline-signed.exe
+          asset_path: ./build/esp-idf-tools-setup-offline-unsigned.exe
           asset_name: esp-idf-tools-setup-${{ env.VERSION }}.exe
           asset_content_type: application/octet-stream
 
@@ -85,4 +85,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         shell: pwsh
-        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-offline-signed.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ env.VERSION }}.exe
+        run: aws s3 cp --acl=public-read --no-progress ./build/esp-idf-tools-setup-offline-unsigned.exe s3://${{ secrets.DL_BUCKET }}/dl/idf-installer/esp-idf-tools-setup-${{ env.VERSION }}.exe
