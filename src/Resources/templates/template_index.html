@@ -107,6 +107,26 @@
                 background-color: #f5f5f5;
                 padding: 2em;
             }
+            .warning-message {
+                background-color: #fff3cd;
+                border: 1px solid #ffeaa7;
+                border-left: 5px solid #f39c12;
+                color: #856404;
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 5px;
+                font-size: 14px;
+                line-height: 1.4;
+                text-align: center;
+            }
+            .warning-message a {
+                color: #856404;
+                text-decoration: underline;
+                font-weight: 500;
+            }
+            .warning-message a:hover {
+                color: #533f03;
+            }
             .instructions {
                 margin-bottom: 2rem;
                 text-align: center;
@@ -187,8 +207,17 @@ window.onload = () => {
         </script>
     </head>
     <body>
-        <h1 class="text-center">ESP-IDF Windows Installer Download</h1>
+        <h1 class="text-center">ESP-IDF v5.* Windows Installer Download</h1>
         <h2 class="text-center">Open Source IoT Development Framework for ESP32</h2>
+
+        <div class="swimlane">
+            <h2 class="text-center">Do you want to test our new installer?</h2>
+            <div class="text-center"><a href="https://dl.espressif.com/dl/eim/">Try out EIM</a></div>
+            <div class="warning-message">
+                <strong>⚠️ Legacy Notice:</strong> If you are looking for installers for <a href="https://github.com/espressif/esp-idf">ESP-IDF</a> v6.0 or later versions then please visit the Espressif's Installation Manager: <a href="https://github.com/espressif/idf-im-ui">EIM website</a>
+            </div>
+        </div>
+
         <div id="section-download">
 		{# Download buttons are updated according to releases.json by index_updater.py script #}
 		{# LATEST RELEASES (online and espressif_ide) ARE CONSIDERED THE MOST TOP ONES OF THE FILE #}
@@ -232,12 +261,6 @@ window.onload = () => {
         <div class="instructions">
             Installation instructions: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html">ESP-IDF documentation</a>
             and <a href="https://www.youtube.com/watch?v=byVPAfodTyY">Espressif Systems Youtube channel</a>.
-        </div>
-
-
-        <div class="swimlane">
-            <h2 class="text-center">Want new installer features sooner?</h2>
-            <div class="text-center">Get <a href="https://github.com/espressif/idf-installer/releases">Beta version</a>.</div>
         </div>
 
         <div>

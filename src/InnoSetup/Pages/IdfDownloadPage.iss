@@ -52,6 +52,27 @@ begin
   ExtractTemporaryFile('idf_versions.txt');
 end;
 
+{ Filter out unsupported versions (master, v6.*, release/v6.*) }
+procedure FilterIDFVersions();
+var
+  i, j: Integer;
+  Version: String;
+begin
+  j := 0;
+  for i := 0 to GetArrayLength(IDFDownloadAvailableVersions) - 1 do
+  begin
+    Version := IDFDownloadAvailableVersions[i];
+    if (Version <> 'master') and 
+       not WildCardMatch(Version, 'v6.*') and 
+       not WildCardMatch(Version, 'release/v6.*') then
+    begin
+      IDFDownloadAvailableVersions[j] := Version;
+      j := j + 1;
+    end;
+  end;
+  SetArrayLength(IDFDownloadAvailableVersions, j);
+end;
+
 procedure DownloadIDFVersionsList();
 var
   VersionFile: String;
@@ -90,6 +111,9 @@ begin
     Log('Failed to load versions from ' + VersionFile);
     exit;
   end;
+
+  { Filter out unsupported versions }
+  FilterIDFVersions();
 
   Log('Versions count: ' + IntToStr(GetArrayLength(IDFDownloadAvailableVersions)))
   for i := 0 to GetArrayLength(IDFDownloadAvailableVersions) - 1 do
