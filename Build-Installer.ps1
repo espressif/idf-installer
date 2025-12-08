@@ -19,8 +19,6 @@ param (
     $OfflineBranch = 'v5.0.1',
     [String]
     $Python = 'python',
-    [Boolean]
-    $SignInstaller = $true,
     [String]
     $SetupCompiler = 'iscc',
     [String]
@@ -49,7 +47,6 @@ $ErrorView = 'NormalView'
 "-JdkArtifactVersion     = ${JdkArtifactVersion}"
 "-OfflineBranch          = ${OfflineBranch}"
 "-Python                 = ${Python}"
-"-SignInstaller          = ${SignInstaller}"
 "-SetupCompiler          = ${SetupCompiler}"
 
 $BundleDir="build\$InstallerType\frameworks\esp-idf-${OfflineBranch}"
@@ -427,68 +424,6 @@ function PrepareIdfComponents {
     &$Compote registry sync --recursive $ComponentsDirectory
 }
 
-function FindSignTool {
-    $SignTool = "signtool.exe"
-    if (Get-Command $SignTool -ErrorAction SilentlyContinue) {
-        return $SignTool
-    }
-    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\x64\signtool.exe"
-    if (Test-Path -Path $SignTool -PathType Leaf) {
-        return $SignTool
-    }
-    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\x86\signtool.exe"
-    if (Test-Path -Path $SignTool -PathType Leaf) {
-        return $SignTool
-    }
-    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.19041.0\x64\signtool.exe"
-    if (Test-Path -Path $SignTool -PathType Leaf) {
-        return $SignTool
-    }
-    $SignTool = "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
-    if (Test-Path -Path $SignTool -PathType Leaf) {
-        return $SignTool
-    }
-    FailBuild -Message "signtool.exe not found"
-}
-
-function SignInstaller {
-    $SignTool = FindSignTool
-    "Using: $SignTool"
-    $CertificateFile = [system.io.path]::GetTempPath() + "certificate.pfx"
-
-    if ($null -eq $env:CERTIFICATE) {
-        FailBuild -Message "CERTIFICATE variable not set, unable to sign installer"
-    }
-
-    if ("" -eq $env:CERTIFICATE) {
-        FailBuild -Message "CERTIFICATE variable is empty, unable to sign installer"
-    }
-
-    $SignParameters = @("sign", "/td", 'sha256', "/tr", 'http://timestamp.digicert.com', "/f", $CertificateFile)
-    if ($env:CERTIFICATE_PASSWORD) {
-        "CERTIFICATE_PASSWORD detected, using the password"
-        $SignParameters += "/p"
-        $SignParameters += $env:CERTIFICATE_PASSWORD
-    }
-    $SignParameters += "build\${OutputFileBaseName}.exe"
-
-    [byte[]]$CertificateBytes = [convert]::FromBase64String($env:CERTIFICATE)
-    "File: $CertificateFile"
-    [IO.File]::WriteAllBytes($CertificateFile, $CertificateBytes)
-
-    &$SignTool $SignParameters
-
-    if (0 -eq $LASTEXITCODE) {
-        mv build\${OutputFileBaseName}.exe build\$OutputFileSigned
-        Get-ChildItem -l build\$OutputFileSigned
-        Remove-Item $CertificateFile
-    } else {
-        Remove-Item $CertificateFile
-        FailBuild -Message "Signing failed"
-    }
-
-}
-
 function CheckInnoSetupInstallation {
     if (Get-Command $SetupCompiler -ErrorAction SilentlyContinue) {
         "Inno Setup found"
@@ -513,10 +448,8 @@ CheckPythonInstallation
 if ('espressif-ide' -eq $InstallerType) {
     $EspIdfBranchVersion = $OfflineBranch -replace '^v'
     $OutputFileBaseName = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-unsigned"
-    $OutputFileSigned = "espressif-ide-setup-${InstallerType}-with-esp-idf-${EspIdfBranchVersion}-signed.exe"
 } else {
     $OutputFileBaseName = "esp-idf-tools-setup-${InstallerType}-unsigned"
-    $OutputFileSigned = "esp-idf-tools-setup-${InstallerType}-signed.exe"
 }
 
 $IdfToolsPath = Join-Path -Path (Get-Location).Path -ChildPath "build/$InstallerType"
@@ -634,9 +567,5 @@ if (0 -eq $LASTEXITCODE) {
     FailBuild -Message "Build failed!"
 }
 
-if ($true -eq $SignInstaller) {
-    SignInstaller
-} else {
-    "Signing installer disabled by command line option. Leaving installer unsigned."
-}
+Write-Host "Leaving installer unsigned."
 
