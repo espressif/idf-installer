@@ -46,6 +46,19 @@ jobs:
         shell: pwsh
         run: .\Build-Installer.ps1 -InstallerType offline -OfflineBranch v${{ env.IDF_BRANCH }}
 
+      - name: Sign Installer
+        uses: espressif/release-sign@master
+        with:
+          path: .\build\esp-idf-tools-setup-offline-unsigned.exe
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-keyvault-uri: ${{ secrets.AZURE_KEYVAULT_URI }}
+          azure-keyvault-cert-name: ${{ secrets.AZURE_KEYVAULT_CERT_NAME }}
+      - name: Rename signed installer
+        run: |
+          mv .\build\esp-idf-tools-setup-offline-unsigned.exe .\build\esp-idf-tools-setup-offline-signed.exe
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
