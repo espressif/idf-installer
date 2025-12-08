@@ -48,6 +48,19 @@ jobs:
         shell: pwsh
         working-directory: "P:"
         run: .\Build-Installer.ps1 -InstallerType espressif-ide -OfflineBranch "v${{ inputs.esp_idf_version }}" -EspressifIdeVersion "${{ inputs.espressif_ide_version }}"
+
+      - name: Sign Installer
+        uses: espressif/release-sign@master
+        with:
+          path: .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-unsigned.exe
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-keyvault-uri: ${{ secrets.AZURE_KEYVAULT_URI }}
+          azure-keyvault-cert-name: ${{ secrets.AZURE_KEYVAULT_CERT_NAME }}
+      - name: Rename signed installer
+        run: |
+          mv .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-unsigned.exe .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
       
       - name: Create Release
         id: create_release
@@ -78,7 +91,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: .\build\espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
+          asset_path: ./build/espressif-ide-setup-espressif-ide-with-esp-idf-${{ inputs.esp_idf_version }}-signed.exe
           asset_name: esp-idf-tools-setup-espressif-ide-${{ inputs.espressif_ide_version }}-with-esp-idf-${{ inputs.esp_idf_version }}.exe
           asset_content_type: application/octet-stream
 
