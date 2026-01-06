@@ -1,5 +1,9 @@
 # ESP-IDF Tools Installer for Windows
 
+> [!IMPORTANT]
+> Starting the [ESP-IDF](https://github.com/espressif/esp-idf) release v 6.0.0 this Windows Installer will become a legacy one.
+> Please use the new Espressif's Installation Manager: [EIM](https://github.com/espressif/idf-im-ui)
+
 ## Download
 
 ESP-IDF Tools Installer for Windows download page: https://dl.espressif.com/dl/esp-idf/
