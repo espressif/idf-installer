@@ -95,6 +95,14 @@ begin
     Result := Result + 'ESP32-C6 ';
   end;
 
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C5}')) then begin
+    Result := Result + 'ESP32-C5 ';
+  end;
+
+  if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_C61}')) then begin
+    Result := Result + 'ESP32-C61 ';
+  end;
+
   if (WizardIsComponentSelected('{#COMPONENT_TARGET_ESP32_H2}')) then begin
     Result := Result + 'ESP32-H2 ';
   end;

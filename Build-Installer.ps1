@@ -476,6 +476,8 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
 
     if (($OfflineBranch -like 'v4.1*') -or ($OfflineBranch -like 'v4.2*') ){
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C3'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C5'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C61'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_S3'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C2'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
@@ -484,16 +486,28 @@ if (('offline' -eq $InstallerType) -or ('espressif-ide' -eq $InstallerType)){
 
     if (($OfflineBranch -like 'v4.3*') -or ($OfflineBranch -like 'v4.4*') ){
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C2'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C5'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C61'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
     }
 
     if ($OfflineBranch -like 'v5.0*') {
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C5'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C61'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_C6'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
     }
 
     if (($OfflineBranch -like 'v5.1*') -or ($OfflineBranch -like 'v5.2*') ){
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C5'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C61'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
+    }
+
+    if (($OfflineBranch -like 'v5.3*') -or ($OfflineBranch -like 'v5.4*') ){
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C5'
+        $IsccParameters += '/DDISABLE_TARGET_ESP32_C61'
         $IsccParameters += '/DDISABLE_TARGET_ESP32_P4'
     }
 
