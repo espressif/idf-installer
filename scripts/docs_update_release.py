@@ -59,7 +59,7 @@ def update_index(releases, supported_idf_versions):
     offline_sorted = sorted(offline, key=lambda item: item['version'], reverse=True)
 
     try:
-        with open(INDEX_TEMPLATE_PATH, 'r') as f:
+        with open(INDEX_TEMPLATE_PATH, encoding="utf-8") as f:
             template = f.read()
     except FileNotFoundError as e:
         raise SystemExit(f"Error reading file {INDEX_TEMPLATE_PATH} - {e}")
@@ -88,7 +88,7 @@ def update_index(releases, supported_idf_versions):
     }
 
     try:
-        with open(path.abspath(INDEX_PATH), "w") as index_file:
+        with open(path.abspath(INDEX_PATH), "w", encoding="utf-8") as index_file:
             index_file.write(j2_template.render(variables))
     except FileNotFoundError as e:
         raise SystemExit(f"Error writing file {INDEX_PATH} - {e}")
@@ -98,7 +98,7 @@ def update_index(releases, supported_idf_versions):
 def update_releases_json(new_idf_version: str, installer_type: str, online_installer_version: str,  ide_version: str, installer_size: str):
     """Update the releases.json file with the new release of the installer"""
     try:
-        with open(path.abspath(RELEASES_JSON_PATH), "r") as releases_file:
+        with open(path.abspath(RELEASES_JSON_PATH), encoding="utf-8") as releases_file:
             releases_data = releases_file.read()
     except FileNotFoundError as e:
         raise SystemExit(f"Error opening file {RELEASES_JSON_PATH} - {e}")
@@ -123,7 +123,7 @@ def update_releases_json(new_idf_version: str, installer_type: str, online_insta
         })
 
     try:
-        with open(path.abspath(RELEASES_JSON_PATH), "w") as releases_file:
+        with open(path.abspath(RELEASES_JSON_PATH), "w", encoding="utf-8") as releases_file:
             json.dump(releases_json, releases_file, indent=4)
     except FileNotFoundError as e:
         raise SystemExit(f"Error writing file {RELEASES_JSON_PATH} - {e}")
@@ -134,7 +134,7 @@ def update_releases_json(new_idf_version: str, installer_type: str, online_insta
 def update_inno_setup(installer_type: str, online_installer_version: str, ide_version: str):
     """Update the version of the installer in the InnoSetup file"""
     try:
-        with open(path.abspath(INNO_SETUP_PATH), "r") as inno_setup_file:
+        with open(path.abspath(INNO_SETUP_PATH), encoding="utf-8") as inno_setup_file:
             inno_setup_data = inno_setup_file.read()
     except FileNotFoundError as e:
         raise SystemExit(f"Error opening file {INNO_SETUP_PATH} - {e}")
@@ -145,7 +145,7 @@ def update_inno_setup(installer_type: str, online_installer_version: str, ide_ve
         replaced = re.sub(r'#define ESPRESSIFIDEVERSION "(\d+\.\d+\.\d+)"', f'#define ESPRESSIFIDEVERSION "{ide_version}"', inno_setup_data)
 
     try:
-        with open(path.abspath(INNO_SETUP_PATH), "w") as inno_setup_file:
+        with open(path.abspath(INNO_SETUP_PATH), "w", encoding="utf-8") as inno_setup_file:
             inno_setup_file.write(replaced)
     except FileNotFoundError as e:
         raise SystemExit(f"Error writing file {INNO_SETUP_PATH} - {e}")
