@@ -17,6 +17,7 @@ jobs:
     runs-on: windows-2022
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Enable Windows long paths
         shell: pwsh
@@ -25,7 +26,7 @@ jobs:
           git config --system core.longpaths true
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Map workspace to short path
         shell: pwsh
@@ -74,14 +75,11 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ env.VERSION }}
-          release_name: Release ${{ env.VERSION }}
-          draft: false
-          prerelease: false
+          name: Release ${{ env.VERSION }}
 
       - name: Get installer size and store it to file
         run: |
