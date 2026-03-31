@@ -3,11 +3,6 @@ name: update-index
 on:
   workflow_dispatch:
 
-  pull_request:
-    branches:
-      - release-offline-installer, release-online-installer, release-espressif-ide-installer
-    types: [closed]
-
 jobs:
   update-index:
     name: Update index.html
@@ -16,7 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.4.1
+        uses: lycheeverse/lychee-action@v2
         with:
           args: --verbose --no-progress './README.md'
           fail: true
