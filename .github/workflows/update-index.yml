@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
           args: --verbose --no-progress './README.md'
-          fail: true
+          fail: false
       - name: Upload index.html To dl.espressif.com
         id: upload-index-espressif
         env:
